@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>百家樂火柴占卜</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 使用 Noto Sans TC 作為預設字體 */
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            -webkit-tap-highlight-color: transparent; /* 移除行動裝置點擊高光效果 */
+        }
+
+        /* 按鈕點擊時的視覺效果 */
+        .divine-button:active {
+            transform: scale(0.95);
+            filter: brightness(0.9);
+        }
+
+        /* 結果顯示的淡入動畫 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        /* --- 火柴動畫樣式 --- */
+        .matchstick {
+            position: relative;
+            width: 8px;
+            height: 70px;
+            background-color: #deb887; /* 木色 (BurlyWood) */
+            border-radius: 99px;
+            transform-origin: center;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 加入落地回彈效果 */
+        }
+        .matchstick::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            background-color: #b22222; /* 火柴頭紅色 (FireBrick) */
+            border-radius: 50%;
+            transition: background-color 0.3s; /* 加入顏色變換過渡 */
+        }
+        
+        /* 新增：代表「陰」的樣式 (燒過的火柴頭) */
+        .matchstick.yin::before {
+            background-color: #4a5568; /* 燒過的灰色 */
+        }
+
+        /* 擲出動畫 */
+        @keyframes toss {
+            0% { transform: translateY(80px) rotate(0deg) scale(0.5); opacity: 0; }
+            40% { transform: translateY(-50px) rotate(360deg) scale(1); opacity: 1; }
+            70% { transform: translateY(10px) rotate(680deg); }
+            100% { transform: translateY(0) rotate(720deg); opacity: 1; }
+        }
+
+        /* 為每個火柴設定不同的延遲 */
+        .animate-toss .matchstick:nth-child(1) {
+            animation: toss 1.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+        .animate-toss .matchstick:nth-child(2) {
+            animation: toss 1.3s cubic-bezier(0.25, 1, 0.5, 1) 0.1s forwards;
+        }
+        .animate-toss .matchstick:nth-child(3) {
+            animation: toss 1.3s cubic-bezier(0.25, 1, 0.5, 1) 0.2s forwards;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-md mx-auto bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-8 text-center space-y-6">
+        
+        <!-- 標題 -->
+        <header>
+            <h1 class="text-3xl md:text-4xl font-bold text-amber-400">百家樂火柴占卜</h1>
+            <p class="text-gray-400 mt-2">誠心祈求，火柴將給予你啟示</p>
+        </header>
+
+        <!-- 占卜結果顯示區域 -->
+        <div id="result-container" class="bg-gray-900/50 rounded-lg p-6 min-h-[200px] flex flex-col items-center justify-center space-y-3 transition-all duration-300">
+            <p id="placeholder" class="text-gray-500">請點擊下方按鈕開始</p>
+
+            <!-- 火柴動畫容器 (固定高度) -->
+            <div id="animation-container" class="hidden items-center justify-center space-x-6 h-[70px]">
+                <div class="matchstick"></div>
+                <div class="matchstick"></div>
+                <div class="matchstick"></div>
+            </div>
+            
+            <!-- 卦象結果 (預設隱藏) -->
+            <div id="divination-result" class="hidden flex-col items-center justify-center space-y-3">
+                <!-- 這行文字結果現在由火柴圖案取代 -->
+                <div id="matches" class="hidden text-2xl font-mono tracking-widest"></div>
+                <div id="trigram" class="text-4xl"></div>
+                <div id="trigram-name" class="text-amber-300 text-lg"></div>
+            </div>
+
+            <!-- 投注建議 (預設隱藏) -->
+            <div id="suggestion" class="hidden text-3xl md:text-4xl font-bold tracking-wider"></div>
+        </div>
+
+        <!-- 按鈕 -->
+        <button id="divine-button" class="divine-button w-full bg-amber-500 hover:bg-amber-600 text-gray-900 text-xl font-bold py-4 px-6 rounded-xl shadow-lg transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-amber-400/50">
+            開始占卜
+        </button>
+
+        <!-- 免責聲明 -->
+        <footer class="pt-4">
+            <p class="text-xs text-gray-600">免責聲明：本工具僅供娛樂，結果不構成任何投資或投注建議。請對自己的決定負責，理智博彩。</p>
+        </footer>
+    </div>
+
+    <script>
+        // DOM 元素
+        const divineButton = document.getElementById('divine-button');
+        const placeholder = document.getElementById('placeholder');
+        
+        const animationContainer = document.getElementById('animation-container');
+        const matchstickElements = animationContainer.querySelectorAll('.matchstick');
+        
+        const divinationResult = document.getElementById('divination-result');
+        const trigramEl = document.getElementById('trigram');
+        const trigramNameEl = document.getElementById('trigram-name');
+        
+        const suggestionEl = document.getElementById('suggestion');
+
+        // 定義八卦及其對應的投注建議
+        // 1 代表 陽 (紅頭), 0 代表 陰 (灰頭)
+        const trigrams = {
+            '111': { symbol: '☰', name: '乾 (天)', suggestion: '莊', color: 'text-red-400' },
+            '000': { symbol: '☷', name: '坤 (地)', suggestion: '閒', color: 'text-blue-400' },
+            '100': { symbol: '☳', name: '震 (雷)', suggestion: '莊', color: 'text-red-400' },
+            '110': { symbol: '☴', name: '巽 (風)', suggestion: '閒', color: 'text-blue-400' },
+            '010': { symbol: '☵', name: '坎 (水)', suggestion: '休息', color: 'text-gray-400' },
+            '101': { symbol: '☲', name: '離 (火)', suggestion: '莊', color: 'text-red-400' },
+            '001': { symbol: '☶', name: '艮 (山)', suggestion: '休息', color: 'text-gray-400' },
+            '011': { symbol: '☱', name: '兌 (澤)', suggestion: '閒', color: 'text-blue-400' },
+        };
+
+        // 按鈕點擊事件
+        divineButton.addEventListener('click', () => {
+            // 1. 禁用按鈕，顯示載入狀態
+            divineButton.disabled = true;
+            divineButton.textContent = '占卜中...';
+            divineButton.classList.remove('bg-amber-500', 'hover:bg-amber-600');
+            divineButton.classList.add('bg-gray-600', 'cursor-not-allowed');
+
+            // 2. 清除上次結果
+            placeholder.classList.add('hidden');
+            divinationResult.classList.add('hidden');
+            suggestionEl.classList.add('hidden');
+            suggestionEl.classList.remove('fade-in');
+            divinationResult.classList.remove('fade-in');
+
+            // 重置火柴樣式，為新動畫做準備
+            matchstickElements.forEach(stick => {
+                stick.style.transform = '';
+                stick.classList.remove('yin');
+                stick.style.opacity = '0';
+            });
+            
+            // 顯示動畫容器並觸發動畫
+            animationContainer.classList.remove('hidden');
+            animationContainer.classList.add('flex', 'animate-toss');
+
+            // 3. 模擬占卜過程 (延遲1.5秒)
+            setTimeout(() => {
+                // 模擬擲三枝火柴
+                const matchResults = [
+                    Math.round(Math.random()), 
+                    Math.round(Math.random()), 
+                    Math.round(Math.random())
+                ];
+                
+                const key = matchResults.join('');
+                const result = trigrams[key];
+
+                // 4. 移除動畫class，並為每個火柴設定最終隨機狀態
+                animationContainer.classList.remove('animate-toss');
+                matchstickElements.forEach((stick, index) => {
+                    const finalRotate = Math.random() * 360 - 180; // -180 to 180 度
+                    const finalX = Math.random() * 10 - 5;       // -5 to 5 px 水平偏移
+                    const finalY = Math.random() * 10 - 5;       // -5 to 5 px 垂直偏移
+
+                    stick.style.opacity = '1';
+                    stick.style.transform = `translateX(${finalX}px) translateY(${finalY}px) rotate(${finalRotate}deg)`;
+
+                    // 根據結果決定是否為「陰」(0)，並改變火柴頭顏色
+                    if (matchResults[index] === 0) {
+                        stick.classList.add('yin');
+                    }
+                });
+
+                // 5. 顯示卦象及建議
+                trigramEl.textContent = result.symbol;
+                trigramNameEl.textContent = result.name;
+                suggestionEl.textContent = `建議：投 ${result.suggestion}`;
+                suggestionEl.className = 'hidden text-3xl md:text-4xl font-bold tracking-wider';
+                suggestionEl.classList.add(result.color);
+
+                divinationResult.classList.remove('hidden');
+                suggestionEl.classList.remove('hidden');
+                divinationResult.classList.add('fade-in');
+                suggestionEl.classList.add('fade-in');
+
+                // 6. 恢復按鈕狀態
+                divineButton.disabled = false;
+                divineButton.textContent = '再次占卜';
+                divineButton.classList.remove('bg-gray-600', 'cursor-not-allowed');
+                divineButton.classList.add('bg-amber-500', 'hover:bg-amber-600');
+
+            }, 1500); // 延遲時間需大致配合動畫長度
+        });
+    </script>
+</body>
+</html>
+
