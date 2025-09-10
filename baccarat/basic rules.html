@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>百家樂規則與玩法 - Bust the Casino</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --color-bg-primary: #1A1D24;
+            --color-bg-secondary: #2C323A;
+            --color-text-primary: #EAEAEA;
+            --color-text-secondary: #a0aec0;
+            --color-accent-blue: #4A90E2;
+            --color-accent-gold: #F1C40F;
+        }
+        body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
+        .font-heading { font-family: var(--font-heading); }
+        .font-body { font-family: var(--font-body); }
+        .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
+        .content-card { background-color: var(--color-bg-secondary); border-radius: 0.75rem; padding: 2rem; }
+        .content-card h3 { border-left: 4px solid var(--color-accent-gold); padding-left: 1rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #4a5568; }
+        th { font-family: var(--font-heading); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header / Navigation (與全站相同) -->
+    <header class="sticky-nav border-b border-gray-700/50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" id="nav-brand" class="text-2xl font-black font-heading tracking-wider" style="color: var(--color-accent-gold);">
+                BUST THE CASINO
+            </a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html#games" id="nav-games" class="text-gray-300 hover:text-white transition duration-300">遊戲專區</a>
+                <a href="index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
+                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                <a href="index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
+
+                <!-- Language Switcher -->
+                <div id="language-selector" class="flex space-x-2">
+                    <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
+                    <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
+                </div>
+            </div>
+            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12 md:py-20">
+        
+        <!-- Page Title -->
+        <div class="text-center mb-12">
+            <a href="baccarat.html" id="back-to-baccarat" class="text-sm hover:text-white transition" style="color: var(--color-text-secondary);">&larr; 返回百家樂專區</a>
+            <h1 id="bcr-title" class="text-4xl md:text-5xl font-black uppercase tracking-wider mt-2">規則與玩法</h1>
+        </div>
+
+        <!-- Rules Content -->
+        <div class="max-w-4xl mx-auto space-y-8">
+            
+            <div class="content-card">
+                <h3 id="bcr-obj-title" class="text-2xl font-bold mb-4">遊戲目標</h3>
+                <p id="bcr-obj-desc" style="color: var(--color-text-secondary);">
+                    百家樂的目標比21點更簡單，你不是在跟莊家對決，而是在預測哪一方的手牌點數總和會更接近9點。你可以在「閒家」(Player)、「莊家」(Banker) 或「和局」(Tie) 三個區域下注。
+                </p>
+            </div>
+
+            <div class="content-card">
+                <h3 id="bcr-card-title" class="text-2xl font-bold mb-4">牌值計算</h3>
+                <ul class="list-disc list-inside space-y-2" style="color: var(--color-text-secondary);">
+                    <li id="bcr-card-1"><b>數字牌 (2-9):</b> 牌值與其數字相同。</li>
+                    <li id="bcr-card-2"><b>10, J, Q, K:</b> 每張牌值均為0點。</li>
+                    <li id="bcr-card-3"><b>A牌 (Ace):</b> 牌值為1點。</li>
+                </ul>
+                <p id="bcr-card-desc" class="mt-4" style="color: var(--color-text-secondary);">
+                    手牌總點數只取個位數。例如，一手牌是7和8，總和是15，那麼這手牌的點數就是5。一手牌是K和9，總和是9，這就是最強的「例牌」。
+                </p>
+            </div>
+
+            <div class="content-card">
+                <h3 id="bcr-payouts-title" class="text-2xl font-bold mb-4">下注與賠率</h3>
+                <div class="space-y-4" style="color: var(--color-text-secondary);">
+                    <div>
+                        <b id="bcr-player-title">押閒家 (Player):</b> 
+                        <span id="bcr-player-desc">如果你認為閒家的手牌會贏，賠率為1賠1。</span>
+                    </div>
+                    <div>
+                        <b id="bcr-banker-title">押莊家 (Banker):</b> 
+                        <span id="bcr-banker-desc">如果你認為莊家的手牌會贏，賠率同樣為1賠1，但賭場會從你的贏利中抽取5%的佣金。這是因為莊家在數學上略有優勢。</span>
+                    </div>
+                    <div>
+                        <b id="bcr-tie-title">押和局 (Tie):</b> 
+                        <span id="bcr-tie-desc">如果你認為雙方點數相同，賠率通常為1賠8。雖然賠率高，但這是莊家優勢最高的選項，不建議長期下注。</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h3 id="bcr-third-title" class="text-2xl font-bold mb-4">第三張牌規則</h3>
+                <p id="bcr-third-desc" class="mb-4" style="color: var(--color-text-secondary);">
+                    這是百家樂最複雜的部分，但好消息是你不需要記住它，荷官會自動處理。規則決定了閒家和莊家在何時需要補第三張牌。
+                </p>
+                <b id="bcr-third-player" class="font-bold">閒家規則:</b>
+                <ul class="list-disc list-inside my-2 space-y-1" style="color: var(--color-text-secondary);">
+                    <li id="bcr-third-p1">如果閒家最初兩張牌總點數為0-5，必須補牌。</li>
+                    <li id="bcr-third-p2">如果總點數為6-7，必須停牌。</li>
+                    <li id="bcr-third-p3">如果總點數為8-9 (例牌)，雙方都停牌，遊戲結束。</li>
+                </ul>
+                <b id="bcr-third-banker" class="font-bold mt-4 block">莊家規則 (取決於閒家是否補牌以及補了什麼牌):</b>
+                <p id="bcr-third-b-desc" class="text-sm mt-1" style="color: var(--color-text-secondary);">莊家的規則更為複雜，總結如下表：</p>
+                <div class="overflow-x-auto mt-4">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th id="bcr-table-b-total">莊家首兩張總點</th>
+                                <th id="bcr-table-p-card">閒家補的第三張牌</th>
+                                <th id="bcr-table-action">莊家行動</th>
+                            </tr>
+                        </thead>
+                        <tbody style="color: var(--color-text-secondary);">
+                            <tr><td>3</td><td id="bcr-table-r1">不是8</td><td id="bcr-table-hit1">補牌</td></tr>
+                            <tr><td>4</td><td id="bcr-table-r2">2, 3, 4, 5, 6, 7</td><td id="bcr-table-hit2">補牌</td></tr>
+                            <tr><td>5</td><td id="bcr-table-r3">4, 5, 6, 7</td><td id="bcr-table-hit3">補牌</td></tr>
+                            <tr><td>6</td><td id="bcr-table-r4">6, 7</td><td id="bcr-table-hit4">補牌</td></tr>
+                            <tr><td id="bcr-table-r5">7</td><td>-</td><td id="bcr-table-stand">停牌</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer (與全站相同) -->
+    <footer class="py-8 mt-12 border-t border-gray-800">
+        <div class="container mx-auto text-center text-sm" style="color: var(--color-text-secondary);">
+            <p id="footer-copyright">&copy; 2025 Bust the Casino. 版權所有。</p>
+            <p id="footer-disclaimer" class="mt-2">請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。</p>
+        </div>
+    </footer>
+
+    <script src="languages.js"></script>
+    <script src="app.js"></script>
+
+</body>
+</html>
