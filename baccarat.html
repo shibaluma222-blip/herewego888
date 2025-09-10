@@ -1,1 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>百家樂專區 - Bust the Casino</title>
+    
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 引入 Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 自訂字體和顏色變數 (與全站保持一致) */
+        :root {
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --color-bg-primary: #1A1D24;
+            --color-bg-secondary: #2C323A;
+            --color-text-primary: #EAEAEA;
+            --color-text-secondary: #a0aec0;
+            --color-accent-blue: #4A90E2;
+            --color-accent-gold: #F1C40F;
+        }
+        
+        body {
+            background-color: var(--color-bg-primary);
+            color: var(--color-text-primary);
+            font-family: var(--font-body);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+        }
+        
+        .font-heading { font-family: var(--font-heading); }
+        .font-body { font-family: var(--font-body); }
+        
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+            background-color: rgba(26, 29, 36, 0.8);
+        }
+    </style>
+</head>
+<body class="antialiased">
 
+    <!-- Header / Navigation (與全站相同) -->
+    <header class="sticky-nav border-b border-gray-700/50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-black font-heading tracking-wider" style="color: var(--color-accent-gold);">
+                BUST THE CASINO
+            </a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html#games" class="text-gray-300 hover:text-white transition duration-300">遊戲專區</a>
+                <a href="index.html#strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
+                <a href="#" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                <a href="index.html#about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
+            </div>
+            <button class="md:hidden focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Baccarat Hero Section -->
+        <section class="text-center py-20 md:py-24 px-6" style="background-color: var(--color-bg-secondary);">
+            <div class="container mx-auto">
+                <h1 class="text-4xl md:text-5xl font-black uppercase tracking-wider">百家樂專區</h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto" style="color: var(--color-text-secondary);">
+                    節奏明快，規則簡單。了解莊、閒、和背後的數學，做出最有利的投注決策。
+                </p>
+            </div>
+        </section>
+
+        <!-- Baccarat Sub-sections -->
+        <section id="baccarat-menu" class="py-20 px-6">
+            <div class="container mx-auto">
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Rules Card -->
+                    <a href="#" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-secondary);">
+                        <h3 class="text-2xl font-bold">規則與玩法</h3>
+                        <p class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
+                            從零開始，學習百家樂的派牌流程、補牌規則和不同下注選項。
+                        </p>
+                    </a>
+                    <!-- Basic Strategy Card -->
+                    <a href="#" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-secondary);">
+                        <h3 class="text-2xl font-bold">基礎策略</h3>
+                        <p class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
+                            分析莊、閒、和的真實賠率與賭場優勢，了解為何押莊是數學上的最佳選擇。
+                        </p>
+                    </a>
+                    <!-- Advanced Strategy Card -->
+                    <a href="#" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-secondary);">
+                        <h3 class="text-2xl font-bold">進階技巧</h3>
+                        <p class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
+                            破解路紙迷思，探討邊注的陷阱，並學習穩健的資金管理策略。
+                        </p>
+                    </a>
+                    <!-- Simulator Card -->
+                    <a href="#" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-secondary);">
+                        <h3 class="text-2xl font-bold" style="color: var(--color-accent-blue);">遊戲模擬器</h3>
+                        <p class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
+                            在無風險的環境中熟悉遊戲節奏，測試你的投注策略。
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer (與全站相同) -->
+    <footer class="py-8 border-t border-gray-800">
+        <div class="container mx-auto text-center text-sm" style="color: var(--color-text-secondary);">
+            <p>&copy; 2025 Bust the Casino. All Rights Reserved.</p>
+            <p class="mt-2">請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。</p>
+        </div>
+    </footer>
+
+</body>
+</html>
