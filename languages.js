@@ -20,6 +20,8 @@ const languages = {
         "blackjack-desc": "Known as the most skill-based game in the casino. Learn basic strategy and card counting to minimize the house edge.",
         "baccarat-title": "Baccarat",
         "baccarat-desc": "A fast-paced and simple game beloved by many players. Understand the math behind Player, Banker, and Tie bets to make the most informed decisions.",
+        "uth-title": "Ultimate Texas Hold'em",
+        "uth-desc": "Combines the skill of Texas Hold'em with the thrill of casino play. Learn to make optimal raise or fold decisions based on your hole cards and the community cards.",
 
         // --- Blackjack Page (blackjack.html) ---
         "blackjack-page-title": "Blackjack Section",
@@ -40,6 +42,14 @@ const languages = {
         "baccarat-basic-desc": "Analyze the true odds and house edge of each bet to understand why betting on the Banker is the best mathematical choice.",
         "baccarat-divination-title": "Probability Oracle",
         "baccarat-divination-desc": "A random simulator based on I-Ching trigrams to explore short-term probability fluctuations. For entertainment only.",
+        
+        // --- UTH Page (uth.html) ---
+        "uth-page-title": "Ultimate Texas Hold'em",
+        "uth-page-subtitle": "Combines the thrill of traditional Texas Hold'em with the speed of casino table games. Learning when to bet big is the key to beating the dealer.",
+        "uth-rules-title": "Rules & How to Play",
+        "uth-rules-desc": "Learn the game flow, different betting stages, and the all-important poker hand rankings.",
+        "uth-basic-title": "Basic Strategy",
+        "uth-basic-desc": "Analyze your starting hands and learn when to make the 4x, 2x, or fold decision before and after the flop.",
 
         // --- Blackjack Rules Page (blackjack-rules.html) ---
         "back-to-blackjack": "&larr; Back to Blackjack Section",
@@ -170,8 +180,40 @@ const languages = {
         "bka-bet4": "8 Units",
         "bka-bet5": "10-12 Units",
         "bka-disclaimer-title": "Important Warning",
-        "bka-disclaimer-desc": "Card counting is extremely challenging and requires immense practice to maintain accuracy in a distracting casino environment. Furthermore, casinos actively look for and ban card counters. This tutorial is for academic purposes only. Do not attempt without understanding the risks."
+        "bka-disclaimer-desc": "Card counting is extremely challenging and requires immense practice to maintain accuracy in a distracting casino environment. Furthermore, casinos actively look for and ban card counters. This tutorial is for academic purposes only. Do not attempt without understanding the risks.",
         
+        // --- UTH Rules Page (uth-rules.html) ---
+        "back-to-uth": "&larr; Back to UTH Section",
+        "uthr-title": "UTH Rules & How to Play",
+        "uthr-obj-title": "Objective of the Game",
+        "uthr-obj-desc": "The objective of Ultimate Texas Hold'em is to form the best five-card poker hand using your two hole cards and five community cards to beat the dealer. Unlike traditional poker, you are playing against the house, not other players.",
+        "uthr-hands-title": "Poker Hand Rankings",
+        "uthr-hands-desc": "The hand rankings are identical to traditional Texas Hold'em, listed from highest to lowest:",
+        "uthr-table-rank": "Rank",
+        "uthr-table-hand": "Hand",
+        "uthr-table-example": "Example",
+        "uthr-rank-1": "Royal Flush",
+        "uthr-rank-2": "Straight Flush",
+        "uthr-rank-3": "Four of a Kind",
+        "uthr-rank-4": "Full House",
+        "uthr-rank-5": "Flush",
+        "uthr-rank-6": "Straight",
+        "uthr-rank-7": "Three of a Kind",
+        "uthr-rank-8": "Two Pair",
+        "uthr-rank-9": "One Pair",
+        "uthr-rank-10": "High Card",
+        "uthr-flow-title": "Game Flow & Betting",
+        "uthr-flow-1-title": "1. Initial Bets (Ante & Blind)",
+        "uthr-flow-1-desc": "Before the game starts, you must make two equal bets: the 'Blind' and the 'Ante'. For example, if you bet $10 on the Blind, you must also bet $10 on the Ante. You may also make an optional 'Trips' bonus bet.",
+        "uthr-flow-2-title": "2. The Deal & First Bet (Pre-Flop)",
+        "uthr-flow-2-desc": "You and the dealer each receive two hole cards (face down). After looking at your cards, you have two choices:<br>• <b>Check:</b> Do nothing and wait to see the community cards.<br>• <b>Play Bet:</b> Make a bet of 3x or 4x your Ante bet in the 'Play' spot. Once you bet, you cannot bet again in the hand.",
+        "uthr-flow-3-title": "3. The Flop & Second Bet",
+        "uthr-flow-3-desc": "The dealer reveals the first three community cards (the Flop). If you checked in the previous step, you now have two new choices:<br>• <b>Check:</b> Check again and wait for the remaining community cards.<br>• <b>Play Bet:</b> Make a bet of 2x your Ante bet in the 'Play' spot.",
+        "uthr-flow-4-title": "4. The Turn & River & Final Bet",
+        "uthr-flow-4-desc": "The dealer reveals the final two community cards. If you have checked twice, you now have only two choices:<br>• <b>Fold:</b> You forfeit the hand and lose both your Ante and Blind bets.<br>• <b>Play Bet:</b> Make a bet of 1x your Ante bet in the 'Play' spot.",
+        "uthr-flow-5-title": "5. Showdown & Payouts",
+        "uthr-flow-5-desc": "Both hands are revealed and the best five-card hand wins.<br>• <b>Dealer Qualification:</b> The dealer needs at least a pair to 'qualify'.<br>• <b>Blind Payout:</b> Pays only if your winning hand is a Straight or better (payout varies). If less than a Straight, the Blind pushes.<br>• <b>Ante Payout:</b> Pays 1-to-1 if you win and the dealer qualifies. If the dealer does not qualify, the Ante pushes.<br>• <b>Play Payout:</b> Pays 1-to-1 if you win.<br>• <b>Trips Payout:</b> Pays if your final hand is Three of a Kind or better, regardless of whether you beat the dealer."
+
     },
     zh: {
         // --- Global (Navigation & Footer) ---
@@ -194,6 +236,8 @@ const languages = {
         "blackjack-desc": "被公認為賭場中最能以技術取勝的遊戲。學習基本策略和算牌技巧，將莊家優勢降到最低。",
         "baccarat-title": "百家樂",
         "baccarat-desc": "節奏明快、規則簡單，深受亞洲玩家喜愛。了解莊、閒、和背後的數學，做出最有利的投注決策。",
+        "uth-title": "Ultimate Texas Hold'em",
+        "uth-desc": "結合德州撲克的技巧與賭場對戰的刺激感，學習根據你的底牌和公共牌，作出最佳的加注或棄牌決定。",
 
         // --- Blackjack Page (blackjack.html) ---
         "blackjack-page-title": "21點專區",
@@ -214,6 +258,14 @@ const languages = {
         "baccarat-basic-desc": "分析莊、閒、和的真實賠率與賭場優勢，了解為何押莊是數學上的最佳選擇。",
         "baccarat-divination-title": "概率啟示工具",
         "baccarat-divination-desc": "一個基於易經卦象的隨機模擬器，用來探索短期投注的概率波動性，僅供娛樂。",
+        
+        // --- UTH Page (uth.html) ---
+        "uth-page-title": "Ultimate Texas Hold'em",
+        "uth-page-subtitle": "結合了傳統德州撲克的刺激與賭場對戰的快感。學習何時下大注，是戰勝莊家的關鍵。",
+        "uth-rules-title": "規則與玩法",
+        "uth-rules-desc": "學習遊戲流程、不同階段的下注選項，以及最重要的德州撲克牌型大小。",
+        "uth-basic-title": "基礎策略",
+        "uth-basic-desc": "分析你的起手牌，學習在翻牌前、翻牌後何時應該下4倍、2倍或棄牌。",
 
         // --- Blackjack Rules Page (blackjack-rules.html) ---
         "back-to-blackjack": "&larr; 返回21點專區",
@@ -284,9 +336,9 @@ const languages = {
         "bks-legend-d": "D = 加倍",
         "bks-legend-p": "P = 分牌",
         "bks-legend-sur": "SR = 投降",
-        "bks-hard-title": "硬點",
-        "bks-soft-title": "軟點",
-        "bks-pairs-title": "對子",
+        "bks-hard-title": "硬點 (Hard Totals)",
+        "bks-soft-title": "軟點 (Soft Totals)",
+        "bks-pairs-title": "對子 (Pairs)",
         "bks-dealer-card": "玩家手牌",
         "bks-dealer-card-2": "玩家手牌",
         "bks-dealer-card-3": "玩家手牌",
@@ -315,7 +367,7 @@ const languages = {
         "div-subtitle": "一個基於易經三爻卦的隨機數生成器",
         "placeholder": "點擊下方按鈕開始模擬",
         "btn-start": "開始模擬",
-        "div-disclaimer": "免責聲明：本工具純屬娛樂，其結果基於偽隨機算法，不代表任何真實世界的預測，亦不構成任何投注建議。請時刻以官方策略為準，理智博彩。",
+        "div-disclaimer": "免責聲-明：本工具純屬娛樂，其結果基於偽隨機算法，不代表任何真實世界的預測，亦不構成任何投注建議。請時刻以官方策略為準，理智博彩。",
 
         // --- Blackjack Advanced Strategy Page (blackjack-advanced-strategy.html) ---
         "bka-title": "進階技巧：算牌入門 (Hi-Lo System)",
@@ -344,7 +396,39 @@ const languages = {
         "bka-bet4": "8 個單位",
         "bka-bet5": "10-12 個單位",
         "bka-disclaimer-title": "重要警告",
-        "bka-disclaimer-desc": "算牌極具挑戰性，需要大量練習才能在嘈雜嘅賭場環境中保持準確。同時，賭場會主動尋找並驅逐算牌客。本教學僅供學術研究，切勿輕易嘗試，風險自負。"
+        "bka-disclaimer-desc": "算牌極具挑戰性，需要大量練習才能在嘈雜嘅賭場環境中保持準確。同時，賭場會主動尋找並驅逐算牌客。本教學僅供學術研究，切勿輕易嘗試，風險自負。",
+        
+        // --- UTH Rules Page (uth-rules.html) ---
+        "back-to-uth": "&larr; 返回UTH專區",
+        "uthr-title": "UTH 規則與玩法",
+        "uthr-obj-title": "遊戲目標",
+        "uthr-obj-desc": "Ultimate Texas Hold'em 嘅目標係用你手上嘅兩張底牌同五張公共牌，組合出最大嘅五張牌型，並擊敗莊家。與傳統德州撲克唔同，你係同莊家對決，而唔係其他玩家。",
+        "uthr-hands-title": "撲克牌型大小",
+        "uthr-hands-desc": "牌型大小同傳統德州撲克完全一樣，由大到細排列如下：",
+        "uthr-table-rank": "排名",
+        "uthr-table-hand": "牌型",
+        "uthr-table-example": "例子",
+        "uthr-rank-1": "皇家同花順",
+        "uthr-rank-2": "同花順",
+        "uthr-rank-3": "四條 (鐵支)",
+        "uthr-rank-4": "葫蘆 (滿堂彩)",
+        "uthr-rank-5": "同花 (花)",
+        "uthr-rank-6": "順子",
+        "uthr-rank-7": "三條",
+        "uthr-rank-8": "兩對",
+        "uthr-rank-9": "一對",
+        "uthr-rank-10": "高牌 (散牌)",
+        "uthr-flow-title": "遊戲流程與下注",
+        "uthr-flow-1-title": "1. 開始下注 (Ante & Blind)",
+        "uthr-flow-1-desc": "遊戲開始前，你必須下兩個等額嘅注碼：「盲注 (Blind)」同「底注 (Ante)」。例如，你喺盲注區下$10，就必須喺底注區下$10。你亦可以選擇性喺「旅程 (Trips)」獎賞區下注。",
+        "uthr-flow-2-title": "2. 派牌 & 第一次下注 (Pre-Flop)",
+        "uthr-flow-2-desc": "你同莊家會各自收到兩張底牌（面朝下）。睇完你嘅底牌後，你有兩個選擇：<br>• <b>過牌 (Check):</b> 唔做任何事，等待睇公共牌。<br>• <b>加注 (Play Bet):</b> 喺「遊戲注 (Play)」區下一個等於你底注3倍或4倍嘅注碼。一旦加注，呢一局你就唔可以再加注。",
+        "uthr-flow-3-title": "3. 翻牌 & 第二次下注 (The Flop)",
+        "uthr-flow-3-desc": "莊家會發出三張公共牌（面朝上）。如果你喺上一步選擇咗過牌，而家你有兩個新選擇：<br>• <b>過牌 (Check):</b> 再次過牌，等待睇之後嘅公共牌。<br>• <b>加注 (Play Bet):</b> 喺「遊戲注」區下一個等於你底注2倍嘅注碼。",
+        "uthr-flow-4-title": "4. 轉牌與河牌 & 最後下注 (Turn & River)",
+        "uthr-flow-4-desc": "莊家會發出最後兩張公共牌。如果你之前兩次都選擇過牌，而家你只剩下兩個選擇：<br>• <b>棄牌 (Fold):</b> 你放棄呢一局，輸掉你嘅盲注同底注。<br>• <b>加注 (Play Bet):</b> 喺「遊戲注」區下一個等於你底注1倍嘅注碼。",
+        "uthr-flow-5-title": "5. 開牌比大小 (Showdown) & 派彩",
+        "uthr-flow-5-desc": "雙方開牌，用各自嘅兩張底牌同五張公共牌組成最大嘅五張牌型比大小。<br>• <b>莊家「夠格」(Qualify):</b> 莊家至少要有一對或以上嘅牌型先算「夠格」。<br>• <b>盲注派彩:</b> 只有喺你贏咗，並且你嘅牌型係順子或以上時先會派彩（賠率視乎牌型大小）。如果牌型細過順子，盲注會退還 (Push)。<br>• <b>底注派彩:</b> 只有喺你贏咗，並且莊家夠格嘅情況下先會派彩 (1賠1)。如果莊家唔夠格，底注會退還。<br>• <b>遊戲注派彩:</b> 只要你贏咗就會派彩 (1賠1)。<br>• <b>旅程注派彩:</b> 只要你嘅最終牌型係三條或以上，不論輸贏都會根據賠率表派彩。"
     }
 };
 
