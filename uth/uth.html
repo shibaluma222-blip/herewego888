@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Texas Hold'em 專區 - Bust the Casino</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --color-bg-primary: #1A1D24;
+            --color-bg-secondary: #2C323A;
+            --color-text-primary: #EAEAEA;
+            --color-text-secondary: #a0aec0;
+            --color-accent-blue: #4A90E2;
+            --color-accent-gold: #F1C40F;
+        }
+        body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
+        .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Header -->
+    <header class="sticky-nav border-b border-gray-700/50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="../index.html" id="nav-brand" class="text-2xl font-black font-heading tracking-wider" style="color: var(--color-accent-gold);">BUST THE CASINO</a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="../index.html#games" id="nav-games" class="text-gray-300 hover:text-white transition duration-300">遊戲專區</a>
+                <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
+                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
+                <div id="language-selector" class="flex space-x-2">
+                    <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
+                    <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
+                </div>
+            </div>
+            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section class="text-center py-12 md:py-20 px-6" style="background-color: var(--color-bg-secondary);">
+            <div class="container mx-auto">
+                <h1 id="uth-page-title" class="text-4xl md:text-5xl font-black uppercase tracking-wider">Ultimate Texas Hold'em</h1>
+                <p id="uth-page-subtitle" class="mt-4 text-lg max-w-2xl mx-auto" style="color: var(--color-text-secondary);">
+                    結合了傳統德州撲克的刺激與賭場對戰的快感。學習何時下大注，是戰勝莊家的關鍵。
+                </p>
+            </div>
+        </section>
+
+        <section id="uth-menu" class="py-20 px-6">
+            <div class="container mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                    <a href="uth-rules.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-secondary);">
+                        <h3 id="uth-rules-title" class="text-2xl font-bold">規則與玩法</h3>
+                        <p id="uth-rules-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
+                            學習遊戲流程、不同階段的下注選項，以及最重要的德州撲克牌型大小。
+                        </p>
+                    </a>
+                    <a href="#" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-secondary);">
+                        <h3 id="uth-basic-title" class="text-2xl font-bold">基礎策略</h3>
+                        <p id="uth-basic-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
+                            分析你的起手牌，學習在翻牌前、翻牌後何時應該下4倍、2倍或棄牌。
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 mt-12 border-t border-gray-800">
+        <div class="container mx-auto text-center text-sm" style="color: var(--color-text-secondary);">
+            <p id="footer-copyright">&copy; 2025 Bust the Casino. 版權所有。</p>
+            <p id="footer-disclaimer" class="mt-2">請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。</p>
+        </div>
+    </footer>
+
+    <script src="../languages.js"></script>
+    <script src="../app.js"></script>
+</body>
+</html>
