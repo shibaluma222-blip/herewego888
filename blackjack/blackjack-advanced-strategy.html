@@ -23,6 +23,7 @@
         }
         body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
         h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
+        .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
         .content-card { background-color: var(--color-bg-secondary); }
         .value-tag {
             display: inline-block;
@@ -38,15 +39,29 @@
 </head>
 <body class="antialiased">
     <!-- Header -->
-    <header class="sticky-nav border-b border-gray-700/50" style="position:sticky; top:0; z-index:50; backdrop-filter:blur(10px); background-color:rgba(26,29,36,0.8);">
+    <header class="sticky-nav border-b border-gray-700/50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="../index.html" id="nav-brand" class="text-2xl font-black font-heading tracking-wider" style="color: var(--color-accent-gold);">BUST THE CASINO</a>
+            <a href="../index.html" id="nav-brand" class="text-2xl font-black font-heading tracking-wider" style="color: var(--color-accent-gold);">
+                BUST THE CASINO
+            </a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="../index.html#games" id="nav-games" class="text-gray-300 hover:text-white transition duration-300">遊戲專區</a>
+                <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
+                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
+                <div id="language-selector" class="flex space-x-2">
+                    <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
+                    <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
+                </div>
+            </div>
+            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
         </nav>
     </header>
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="max-w-4xl mx-auto">
+             <!-- *** UPDATED BUTTON POSITION *** -->
             <a href="blackjack.html" id="back-to-blackjack" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回21點專區</a>
             <h1 id="bka-title" class="text-3xl md:text-4xl font-black text-center">進階技巧：算牌入門 (Hi-Lo System)</h1>
             <p id="bka-intro" class="mt-4 text-center max-w-3xl mx-auto" style="color: var(--color-text-secondary);">
@@ -54,7 +69,6 @@
             </p>
 
             <div class="mt-12 space-y-10">
-
                 <!-- Step 1: Card Values -->
                 <div class="p-8 rounded-lg content-card">
                     <h2 id="bka-step1-title" class="text-2xl font-bold">第一步：賦予牌值 (Assigning Values)</h2>
@@ -155,3 +169,4 @@
     <script src="../app.js"></script>
 </body>
 </html>
+
