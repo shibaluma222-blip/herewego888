@@ -99,7 +99,43 @@ const languages = {
         "bcr-table-r4": "is 6, 7",
         "bcr-table-hit4": "Draw",
         "bcr-table-r5": "7",
-        "bcr-table-stand": "Stand"
+        "bcr-table-stand": "Stand",
+
+        // --- Blackjack Basic Strategy Page (blackjack-basic-strategy.html) ---
+        "bks-title": "Blackjack Basic Strategy",
+        "bks-intro": "Basic strategy is the cornerstone of beating Blackjack. It's based on mathematical probabilities and tells you the optimal decision (Hit, Stand, Double, Split) for any given situation (your hand vs. the dealer's upcard) to maximize your long-term return. Strictly following this chart can reduce the house edge to about 0.5%.",
+        "bks-legend-title": "Legend",
+        "bks-legend-h": "H = Hit",
+        "bks-legend-s": "S = Stand",
+        "bks-legend-d": "D = Double",
+        "bks-legend-p": "P = Split",
+        "bks-legend-sur": "SR = Surrender",
+        "bks-hard-title": "Hard Totals",
+        "bks-soft-title": "Soft Totals",
+        "bks-pairs-title": "Pairs",
+        "bks-dealer-card": "Player's Hand",
+        "bks-dealer-card-2": "Player's Hand",
+        "bks-dealer-card-3": "Player's Hand",
+
+        // --- Baccarat Basic Strategy Page (baccarat-basic-strategy.html) ---
+        "bcs-title": "Baccarat Basic Strategy",
+        "bcs-intro": "Baccarat strategy is not about in-game decisions, but about pre-bet choices. Unlike Blackjack, once bets are placed, the game plays out according to fixed rules. Therefore, the only strategy is to choose the bet with the lowest house edge.",
+        "bcs-analysis-title": "Analysis of the Three Main Bets",
+        "bcs-banker-title": "1. Banker Bet - The Best Choice",
+        "bcs-banker-desc": "Despite the 5% commission on winnings, the Banker bet is the most mathematically advantageous choice. The drawing rules are slightly in favor of the Banker's hand winning.",
+        "bcs-banker-edge-label": "House Edge",
+        "bcs-banker-win-label": "Win Rate",
+        "bcs-player-title": "2. Player Bet",
+        "bcs-player-desc": "The Player bet also has a very low house edge, making it a decent second choice. If you prefer to avoid calculating commissions, it's an acceptable strategy.",
+        "bcs-player-edge-label": "House Edge",
+        "bcs-player-win-label": "Win Rate",
+        "bcs-tie-title": "3. Tie Bet - Avoid at All Costs",
+        "bcs-tie-desc": "While the 8-to-1 payout for a Tie is tempting, its probability of occurring is very low, resulting in an extremely high house edge. In the long run, the Tie bet is the fastest way to lose money.",
+        "bcs-tie-edge-label": "House Edge",
+        "bcs-tie-win-label": "Occurrence",
+        "bcs-summary-title": "Conclusion: The One and Only Strategy",
+        "bcs-summary-desc": "The optimal strategy for Baccarat is simple: **Always bet on the Banker**. Don't be swayed by 'The Road' or your gut feelings; mathematics proves the Banker bet is the best decision you can make at the table. At the same time, **absolutely avoid the Tie bet**."
+
     },
     zh: {
         // --- Global (Navigation & Footer) ---
@@ -201,7 +237,42 @@ const languages = {
         "bcr-table-r4": "是6, 7",
         "bcr-table-hit4": "補牌",
         "bcr-table-r5": "7",
-        "bcr-table-stand": "停牌"
+        "bcr-table-stand": "停牌",
+
+        // --- Blackjack Basic Strategy Page (blackjack-basic-strategy.html) ---
+        "bks-title": "21點基礎策略",
+        "bks-intro": "基礎策略是戰勝21點的基石。它基於數學概率，告訴你在任何情況下（你的手牌 vs 莊家明牌）應該做出哪個決定（要牌、停牌、加倍、分牌）才能最大化你的長期回報率。嚴格遵守此表，可以將莊家優勢降至約0.5%。",
+        "bks-legend-title": "圖例",
+        "bks-legend-h": "H = 要牌",
+        "bks-legend-s": "S = 停牌",
+        "bks-legend-d": "D = 加倍",
+        "bks-legend-p": "P = 分牌",
+        "bks-legend-sur": "SR = 投降",
+        "bks-hard-title": "硬點",
+        "bks-soft-title": "軟點",
+        "bks-pairs-title": "對子",
+        "bks-dealer-card": "玩家手牌",
+        "bks-dealer-card-2": "玩家手牌",
+        "bks-dealer-card-3": "玩家手牌",
+
+        // --- Baccarat Basic Strategy Page (baccarat-basic-strategy.html) ---
+        "bcs-title": "百家樂基礎策略",
+        "bcs-intro": "百家樂的策略並非關於遊戲中的決策，而是關於下注前的選擇。與21點不同，一旦下注，遊戲過程就完全由規則決定。因此，唯一的策略就是選擇擁有最低莊家優勢的投注選項。",
+        "bcs-analysis-title": "三大投注選項分析",
+        "bcs-banker-title": "1. 押莊家 (Banker Bet) - 最佳選擇",
+        "bcs-banker-desc": "儘管押莊贏錢後會被抽取5%的佣金，但它依然是數學上最有利的選擇。因為根據發牌規則，莊家手牌的贏率略高於閒家。",
+        "bcs-banker-edge-label": "莊家優勢",
+        "bcs-banker-win-label": "勝率",
+        "bcs-player-title": "2. 押閒家 (Player Bet)",
+        "bcs-player-desc": "押閒家的莊家優勢也非常低，是一個僅次於押莊的好選擇。如果你不想每次都計算佣金，押閒家也是一個可以接受的策略。",
+        "bcs-player-edge-label": "莊家優勢",
+        "bcs-player-win-label": "勝率",
+        "bcs-tie-title": "3. 押和局 (Tie Bet) - 避免下注",
+        "bcs-tie-desc": "雖然和局1賠8的賠率非常誘人，但其出現的機率極低，導致莊家優勢非常高。長期來看，押和局是虧損最快的投注方式。",
+        "bcs-tie-edge-label": "莊家優勢",
+        "bcs-tie-win-label": "出現機率",
+        "bcs-summary-title": "結論：唯一嘅策略",
+        "bcs-summary-desc": "百家樂嘅最佳策略非常簡單：**永遠都押莊家**。唔好被所謂嘅「路紙」或者直覺迷惑，數學證明咗押莊係你喺牌桌上可以做嘅最好決定。同時，**絕對要避免押和局**。"
     }
 };
 
