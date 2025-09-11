@@ -79,8 +79,8 @@
                             <thead><tr><th></th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr></thead>
                             <tbody>
                                 <tr><td>17-20</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td></tr>
-                                <tr><td>16</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-sr">SR</td><td class="cell-sr">SR</td><td class="cell-sr">SR</td></tr>
-                                <tr><td>15</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-sr">SR</td><td class="cell-h">H</td></tr>
+                                <tr><td>16</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
+                                <tr><td>15</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
                                 <tr><td>14</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
                                 <tr><td>13</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
                                 <tr><td>12</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
@@ -125,6 +125,38 @@
                     </div>
                 </div>
             </div>
+
+            <!-- *** NEW SURRENDER SECTION *** -->
+            <div class="mt-12">
+                <h2 id="bks-surrender-title" class="text-2xl font-bold text-center mb-4">投降策略 (Late Surrender)</h2>
+                <p id="bks-surrender-intro" class="text-center max-w-3xl mx-auto text-sm" style="color: var(--color-text-secondary);">
+                    並非所有賭桌都提供投降選項。如果提供，這是一個可以讓你喺極不利情況下放棄一半賭注以減少損失嘅策略。基本規則如下：
+                </p>
+                <div class="mt-6 max-w-lg mx-auto overflow-x-auto">
+                    <table class="w-full text-sm strategy-table">
+                        <thead>
+                            <tr>
+                                <th id="bks-surrender-player-hand">你的手牌</th>
+                                <th id="bks-surrender-dealer-hand">莊家明牌</th>
+                                <th id="bks-surrender-action">行動</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="bks-surrender-hard16">硬16點</td>
+                                <td>9, 10, A</td>
+                                <td id="bks-surrender-action-surrender" class="cell-sr font-bold">投降</td>
+                            </tr>
+                            <tr>
+                                <td id="bks-surrender-hard15">硬15點</td>
+                                <td>10</td>
+                                <td class="cell-sr font-bold">投降</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </main>
 
