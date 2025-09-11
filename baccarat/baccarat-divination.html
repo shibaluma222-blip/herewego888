@@ -1,1 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>百家樂概率啟示工具 - Bust the Casino</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --color-bg-primary: #1A1D24;
+            --color-bg-secondary: #2C323A;
+            --color-text-primary: #EAEAEA;
+            --color-text-secondary: #a0aec0;
+            --color-accent-blue: #4A90E2;
+            --color-accent-gold: #F1C40F;
+        }
+        body { 
+            font-family: var(--font-body);
+            background-color: var(--color-bg-primary);
+            color: var(--color-text-primary);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .action-button:active {
+            transform: scale(0.95);
+            filter: brightness(0.9);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        .matchstick {
+            position: relative;
+            width: 8px;
+            height: 70px;
+            background-color: #deb887;
+            border-radius: 99px;
+            transform-origin: center;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .matchstick::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            background-color: #b22222;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+        .matchstick.yin::before { background-color: #4a5568; }
+        @keyframes toss {
+            0% { transform: translateY(80px) rotate(0deg) scale(0.5); opacity: 0; }
+            40% { transform: translateY(-50px) rotate(360deg) scale(1); opacity: 1; }
+            70% { transform: translateY(10px) rotate(680deg); }
+            100% { transform: translateY(0) rotate(720deg); opacity: 1; }
+        }
+        .animate-toss .matchstick:nth-child(1) { animation: toss 1.3s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        .animate-toss .matchstick:nth-child(2) { animation: toss 1.3s cubic-bezier(0.25, 1, 0.5, 1) 0.1s forwards; }
+        .animate-toss .matchstick:nth-child(3) { animation: toss 1.3s cubic-bezier(0.25, 1, 0.5, 1) 0.2s forwards; }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-md mx-auto text-center space-y-6">
+        
+        <header>
+            <h1 id="div-title" class="text-3xl md:text-4xl font-bold font-heading" style="color:var(--color-accent-gold)">金錢卦</h1>
+            <p id="div-subtitle" class="text-sm mt-2" style="color:var(--color-text-secondary)">一個基於易經三爻卦的隨機數生成器</p>
+        </header>
+
+        <div class="bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-8 space-y-6">
+            <div id="result-container" class="bg-gray-900/50 rounded-lg p-6 min-h-[200px] flex flex-col items-center justify-center space-y-3 transition-all duration-300">
+                <p id="placeholder" class="text-gray-500">點擊下方按鈕開始模擬</p>
+                <div id="animation-container" class="hidden items-center justify-center space-x-6 h-[70px]">
+                    <div class="matchstick"></div> <div class="matchstick"></div> <div class="matchstick"></div>
+                </div>
+                <div id="divination-result" class="hidden flex-col items-center justify-center space-y-3">
+                    <div id="trigram" class="text-4xl"></div>
+                    <div id="trigram-name" class="text-lg" style="color:var(--color-accent-gold)"></div>
+                </div>
+                <div id="suggestion" class="hidden text-3xl md:text-4xl font-bold tracking-wider"></div>
+            </div>
+
+            <button id="divine-button" class="action-button w-full text-white text-xl font-bold py-4 px-6 rounded-xl shadow-lg transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-blue-500/50" style="background-color: var(--color-accent-blue);">
+                <span id="btn-start">開始模擬</span>
+            </button>
+        </div>
+
+        <footer class="pt-2">
+            <a href="baccarat.html" id="back-to-baccarat" class="text-sm mb-4 inline-block" style="color: var(--color-accent-blue);">&larr; 返回百家樂專區</a>
+            <p id="div-disclaimer" class="text-xs text-gray-600">免責聲明：本工具純屬娛樂，其結果基於偽隨機算法，不代表任何真實世界的預測，亦不構成任何投注建議。請時刻以官方策略為準，理智博彩。</p>
+        </footer>
+    </div>
+
+    <script>
+        const divineButton = document.getElementById('divine-button');
+        const placeholder = document.getElementById('placeholder');
+        const animationContainer = document.getElementById('animation-container');
+        const matchstickElements = animationContainer.querySelectorAll('.matchstick');
+        const divinationResult = document.getElementById('divination-result');
+        const trigramEl = document.getElementById('trigram');
+        const trigramNameEl = document.getElementById('trigram-name');
+        const suggestionEl = document.getElementById('suggestion');
+        const btnText = document.getElementById('btn-start');
+
+        const trigrams = {
+            '111': { symbol: '☰', name: '乾 (天)', suggestion: '莊', color: 'text-red-400' },
+            '000': { symbol: '☷', name: '坤 (地)', suggestion: '閒', color: 'text-blue-400' },
+            '100': { symbol: '☳', name: '震 (雷)', suggestion: '莊', color: 'text-red-400' },
+            '110': { symbol: '☴', name: '巽 (風)', suggestion: '閒', color: 'text-blue-400' },
+            '010': { symbol: '☵', name: '坎 (水)', suggestion: '休息', color: 'text-gray-400' },
+            '101': { symbol: '☲', name: '離 (火)', suggestion: '莊', color: 'text-red-400' },
+            '001': { symbol: '☶', name: '艮 (山)', suggestion: '休息', color: 'text-gray-400' },
+            '011': { symbol: '☱', name: '兌 (澤)', suggestion: '閒', color: 'text-blue-400' },
+        };
+
+        const translations = {
+            zh: { suggestion_prefix: "隨機建議: ", suggestion_banker: "莊", suggestion_player: "閒", suggestion_rest: "休息", btn_loading: "模擬中...", btn_again: "再次模擬" },
+            en: { suggestion_prefix: "Random Suggestion: ", suggestion_banker: "Banker", suggestion_player: "Player", suggestion_rest: "Rest", btn_loading: "Simulating...", btn_again: "Simulate Again" }
+        };
+
+        divineButton.addEventListener('click', () => {
+            const currentLang = document.documentElement.lang.startsWith('en') ? 'en' : 'zh';
+            
+            divineButton.disabled = true;
+            btnText.textContent = translations[currentLang].btn_loading;
+            divineButton.classList.remove('bg-blue-500', 'hover:bg-blue-600');
+            divineButton.classList.add('bg-gray-600', 'cursor-not-allowed');
+
+            placeholder.classList.add('hidden');
+            divinationResult.classList.add('hidden');
+            suggestionEl.classList.add('hidden');
+            suggestionEl.classList.remove('fade-in');
+            divinationResult.classList.remove('fade-in');
+
+            matchstickElements.forEach(stick => {
+                stick.style.transform = '';
+                stick.classList.remove('yin');
+                stick.style.opacity = '0';
+            });
+            
+            animationContainer.classList.remove('hidden');
+            animationContainer.classList.add('flex', 'animate-toss');
+
+            setTimeout(() => {
+                const matchResults = [ Math.round(Math.random()), Math.round(Math.random()), Math.round(Math.random()) ];
+                const key = matchResults.join('');
+                const result = trigrams[key];
+                
+                let suggestionText;
+                if (result.suggestion === '莊') suggestionText = translations[currentLang].suggestion_banker;
+                else if (result.suggestion === '閒') suggestionText = translations[currentLang].suggestion_player;
+                else suggestionText = translations[currentLang].suggestion_rest;
+
+                animationContainer.classList.remove('animate-toss');
+                matchstickElements.forEach((stick, index) => {
+                    const finalRotate = Math.random() * 360 - 180;
+                    const finalX = Math.random() * 10 - 5;
+                    const finalY = Math.random() * 10 - 5;
+                    stick.style.opacity = '1';
+                    stick.style.transform = `translateX(${finalX}px) translateY(${finalY}px) rotate(${finalRotate}deg)`;
+                    if (matchResults[index] === 0) stick.classList.add('yin');
+                });
+
+                trigramEl.textContent = result.symbol;
+                trigramNameEl.textContent = result.name;
+                suggestionEl.textContent = translations[currentLang].suggestion_prefix + suggestionText;
+                suggestionEl.className = 'hidden text-3xl md:text-4xl font-bold tracking-wider';
+                suggestionEl.classList.add(result.color);
+
+                divinationResult.classList.remove('hidden');
+                suggestionEl.classList.remove('hidden');
+                divinationResult.classList.add('fade-in');
+                suggestionEl.classList.add('fade-in');
+
+                divineButton.disabled = false;
+                btnText.textContent = translations[currentLang].btn_again;
+                divineButton.classList.remove('bg-gray-600', 'cursor-not-allowed');
+                divineButton.style.backgroundColor = 'var(--color-accent-blue)';
+            }, 1500);
+        });
+    </script>
+     <!-- 呢個頁面嘅 JS 檔案喺 body 入面自己搞掂，但係都需要 languages.js 嚟做初始語言設定 -->
+    <script src="../languages.js"></script>
+    <script src="../app.js"></script>
+</body>
+</html>
 
