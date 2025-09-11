@@ -38,8 +38,8 @@ const languages = {
         "baccarat-rules-desc": "Start from scratch and learn the dealing process, third-card rules, and different betting options.",
         "baccarat-basic-title": "Basic Strategy",
         "baccarat-basic-desc": "Analyze the true odds and house edge of each bet to understand why betting on the Banker is the best mathematical choice.",
-        "baccarat-advanced-title": "Advanced Strategy",
-        "baccarat-advanced-desc": "Debunk the myths of 'The Road', explore the traps of side bets, and learn robust bankroll management.",
+        "baccarat-divination-title": "Probability Oracle",
+        "baccarat-divination-desc": "A random simulator based on I-Ching trigrams to explore short-term probability fluctuations. For entertainment only.",
 
         // --- Blackjack Rules Page (blackjack-rules.html) ---
         "back-to-blackjack": "&larr; Back to Blackjack Section",
@@ -134,8 +134,44 @@ const languages = {
         "bcs-tie-edge-label": "House Edge",
         "bcs-tie-win-label": "Occurrence",
         "bcs-summary-title": "Conclusion: The One and Only Strategy",
-        "bcs-summary-desc": "The optimal strategy for Baccarat is simple: **Always bet on the Banker**. Don't be swayed by 'The Road' or your gut feelings; mathematics proves the Banker bet is the best decision you can make at the table. At the same time, **absolutely avoid the Tie bet**."
+        "bcs-summary-desc": "The optimal strategy for Baccarat is simple: **Always bet on the Banker**. Don't be swayed by 'The Road' or your gut feelings; mathematics proves the Banker bet is the best decision you can make at the table. At the same time, **absolutely avoid the Tie bet**.",
 
+        // --- Baccarat Divination Tool (baccarat-divination.html) ---
+        "div-title": "Probability Oracle",
+        "div-subtitle": "A random number generator based on I-Ching Trigrams",
+        "placeholder": "Click the button below to start simulation",
+        "btn-start": "Start Simulation",
+        "div-disclaimer": "Disclaimer: This tool is for entertainment purposes only. Its results are based on a pseudo-random algorithm and do not represent any real-world prediction or constitute any betting advice. Please always refer to official strategies and gamble responsibly.",
+        
+        // --- Blackjack Advanced Strategy Page (blackjack-advanced-strategy.html) ---
+        "bka-title": "Advanced Strategy: Intro to Card Counting (Hi-Lo System)",
+        "bka-intro": "Card counting isn't a superpower memory trick from movies; it's a system to track the ratio of high cards to low cards in the deck. When the remaining deck is rich in high cards (10, J, Q, K, A), the advantage shifts heavily to the player, as the probability of getting a Blackjack increases. Hi-Lo is the most popular and easiest system to learn.",
+        "bka-step1-title": "Step 1: Assigning Values",
+        "bka-step1-desc": "The Hi-Lo system categorizes all cards into three groups and assigns a simple value. Your goal is not to remember every card, but to maintain a single, ongoing count.",
+        "bka-step1-low": "Low Cards (2, 3, 4, 5, 6)",
+        "bka-step1-neutral": "Neutral Cards (7, 8, 9)",
+        "bka-step1-high": "High Cards (10, J, Q, K, A)",
+        "bka-step2-title": "Step 2: Keeping the Running Count",
+        "bka-step2-desc": "Starting from a new shoe, the running count is 0. For every card dealt, you mentally add or subtract its value from the count.",
+        "bka-step2-example": "<b>Example:</b> The first cards dealt are 10, 3, K, 8, A, 5. Your mental calculation would be:<br>10(-1), 3(+1), K(-1), 8(0), A(-1), 5(+1) → <span class='font-bold text-lg' style='color:var(--color-accent-gold);'>-1 + 1 - 1 + 0 - 1 + 1 = -1</span>.<br>So, after the first round, the running count is <span class='font-bold'>-1</span>. You only need to remember this number and continue counting in the next round.",
+        "bka-step2-goal": "A positive running count (e.g., +5) means more small cards have been dealt, leaving the deck rich in high cards, which is advantageous to the player. Conversely, a negative count favors the dealer.",
+        "bka-step3-title": "Step 3: Calculating the True Count - The Key",
+        "bka-step3-desc": "The running count can be misleading. A running count of +5 means very little with 6 decks remaining, but it's a huge advantage if only 1 deck is left. Therefore, we must standardize the count to get the 'True Count'.",
+        "bka-step3-formula": "True Count = Running Count / Decks Remaining",
+        "bka-step3-example": "<b>Example:</b> Your running count is +10. It's a 6-deck game, and you estimate about 4 decks are left in the shoe. Your true count is:<br><span class='font-bold text-lg' style='color:var(--color-accent-gold);'>+10 / 4 = +2.5</span>. The true count is what you base your betting decisions on. Estimating remaining decks takes practice.",
+        "bka-step4-title": "Step 4: Bet Spreading",
+        "bka-step4-desc": "The whole point of counting is to bet big when you have the advantage and small when you don't. You should have a predetermined betting unit and strategy.",
+        "bka-table-tc": "True Count",
+        "bka-table-bet": "Suggested Bet",
+        "bka-table-advantage": "Player Edge",
+        "bka-bet1": "1 Unit (Min Bet)",
+        "bka-bet2": "2 Units",
+        "bka-bet3": "4 Units",
+        "bka-bet4": "8 Units",
+        "bka-bet5": "10-12 Units",
+        "bka-disclaimer-title": "Important Warning",
+        "bka-disclaimer-desc": "Card counting is extremely challenging and requires immense practice to maintain accuracy in a distracting casino environment. Furthermore, casinos actively look for and ban card counters. This tutorial is for academic purposes only. Do not attempt without understanding the risks."
+        
     },
     zh: {
         // --- Global (Navigation & Footer) ---
@@ -176,9 +212,9 @@ const languages = {
         "baccarat-rules-desc": "從零開始，學習百家樂的派牌流程、補牌規則和不同下注選項。",
         "baccarat-basic-title": "基礎策略",
         "baccarat-basic-desc": "分析莊、閒、和的真實賠率與賭場優勢，了解為何押莊是數學上的最佳選擇。",
-        "baccarat-advanced-title": "進階技巧",
-        "baccarat-advanced-desc": "破解路紙迷思，探討邊注的陷阱，並學習穩健的資金管理策略。",
-        
+        "baccarat-divination-title": "概率啟示工具",
+        "baccarat-divination-desc": "一個基於易經卦象的隨機模擬器，用來探索短期投注的概率波動性，僅供娛樂。",
+
         // --- Blackjack Rules Page (blackjack-rules.html) ---
         "back-to-blackjack": "&larr; 返回21點專區",
         "bkr-title": "規則與玩法",
@@ -272,7 +308,43 @@ const languages = {
         "bcs-tie-edge-label": "莊家優勢",
         "bcs-tie-win-label": "出現機率",
         "bcs-summary-title": "結論：唯一嘅策略",
-        "bcs-summary-desc": "百家樂嘅最佳策略非常簡單：**永遠都押莊家**。唔好被所謂嘅「路紙」或者直覺迷惑，數學證明咗押莊係你喺牌桌上可以做嘅最好決定。同時，**絕對要避免押和局**。"
+        "bcs-summary-desc": "百家樂嘅最佳策略非常簡單：**永遠都押莊家**。唔好被所謂嘅「路紙」或者直覺迷惑，數學證明咗押莊係你喺牌桌上可以做嘅最好決定。同時，**絕對要避免押和局**。",
+        
+        // --- Baccarat Divination Tool (baccarat-divination.html) ---
+        "div-title": "概率啟示工具",
+        "div-subtitle": "一個基於易經三爻卦的隨機數生成器",
+        "placeholder": "點擊下方按鈕開始模擬",
+        "btn-start": "開始模擬",
+        "div-disclaimer": "免責聲明：本工具純屬娛樂，其結果基於偽隨機算法，不代表任何真實世界的預測，亦不構成任何投注建議。請時刻以官方策略為準，理智博彩。",
+
+        // --- Blackjack Advanced Strategy Page (blackjack-advanced-strategy.html) ---
+        "bka-title": "進階技巧：算牌入門 (Hi-Lo System)",
+        "bka-intro": "算牌並非電影中嘅超能力記憶，而係一套追蹤牌堆中大牌與細牌比例嘅系統。當牌堆中剩下嘅大牌（10, J, Q, K, A）比例較高時，對玩家極為有利，因為出現Blackjack嘅機率大增。Hi-Lo係最流行、最易上手嘅算牌系統。",
+        "bka-step1-title": "第一步：賦予牌值 (Assigning Values)",
+        "bka-step1-desc": "Hi-Lo系統將所有牌分為三類，並賦予簡單嘅數值。你嘅目標唔係記住每一張出過嘅牌，而係記住一個持續累加嘅數字。",
+        "bka-step1-low": "低牌 (2, 3, 4, 5, 6)",
+        "bka-step1-neutral": "中性牌 (7, 8, 9)",
+        "bka-step1-high": "高牌 (10, J, Q, K, A)",
+        "bka-step2-title": "第二步：計算流水數 (Running Count)",
+        "bka-step2-desc": "從一副新牌（或一靴新牌）開始，流水數為0。每一張牌發出後，你根據上面嘅牌值喺腦中進行加減。",
+        "bka-step2-example": "<b>例子:</b> 第一輪發出嘅牌係 10, 3, K, 8, A, 5。你嘅心算過程應該係：<br>10(-1), 3(+1), K(-1), 8(0), A(-1), 5(+1) → <span class='font-bold text-lg' style='color:var(--color-accent-gold);'>-1 + 1 - 1 + 0 - 1 + 1 = -1</span>。<br>所以，第一輪結束後，流水數係 <span class='font-bold'>-1</span>。你只需要記住呢個最終數字，然後喺下一輪繼續累加。",
+        "bka-step2-goal": "一個正數嘅流水數 (e.g., +5) 代表目前為止出過嘅細牌比大牌多，牌堆對玩家有利。相反，一個負數則代表牌堆對莊家有利。",
+        "bka-step3-title": "第三步：換算真數 (True Count) - 核心關鍵",
+        "bka-step3-desc": "流水數本身有誤導性。喺剩餘6副牌時，+5嘅流水數意義不大；但如果只剩1副牌，+5就代表優勢極大。因此，我哋需要將流水數標準化，得出「真數」。",
+        "bka-step3-formula": "真數 (True Count) = 流水數 (Running Count) / 剩餘牌副數 (Decks Remaining)",
+        "bka-step3-example": "<b>例子:</b> 你嘅流水數係+10，而賭桌上用嘅係6副牌，你估計大約仲剩4副牌未發。咁你嘅真數就係：<br><span class='font-bold text-lg' style='color:var(--color-accent-gold);'>+10 / 4 = +2.5</span>。真數先至係你調整注碼嘅真正依據。估算剩餘牌副數需要大量練習。",
+        "bka-step4-title": "第四步：調整注碼 (Bet Spreading)",
+        "bka-step4-desc": "算牌嘅最終目的就係喺你擁有優勢嘅時候下大注，冇優勢嘅時候下細注或離場。你應該預先設定好你嘅投注單位同策略。",
+        "bka-table-tc": "真數 (True Count)",
+        "bka-table-bet": "建議注碼 (Bet)",
+        "bka-table-advantage": "玩家優勢 (Player Edge)",
+        "bka-bet1": "1 個單位 (最低注)",
+        "bka-bet2": "2 個單位",
+        "bka-bet3": "4 個單位",
+        "bka-bet4": "8 個單位",
+        "bka-bet5": "10-12 個單位",
+        "bka-disclaimer-title": "重要警告",
+        "bka-disclaimer-desc": "算牌極具挑戰性，需要大量練習才能在嘈雜嘅賭場環境中保持準確。同時，賭場會主動尋找並驅逐算牌客。本教學僅供學術研究，切勿輕易嘗試，風險自負。"
     }
 };
 
