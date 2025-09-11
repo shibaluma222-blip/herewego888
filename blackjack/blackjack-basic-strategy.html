@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>21點基礎策略 - Bust the Casino</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --color-bg-primary: #1A1D24;
+            --color-bg-secondary: #2C323A;
+            --color-text-primary: #EAEAEA;
+            --color-text-secondary: #a0aec0;
+            --color-accent-blue: #4A90E2; /* Double */
+            --color-accent-green: #2ECC71; /* Hit */
+            --color-accent-red: #E53E3E; /* Stand */
+            --color-accent-gold: #F1C40F; /* Split */
+            --color-accent-purple: #9F7AEA; /* Surrender */
+        }
+        body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
+        .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
+        .strategy-table th, .strategy-table td {
+            border: 1px solid #4A5568;
+            text-align: center;
+            padding: 0.75rem;
+            font-weight: 600;
+        }
+        .bg-hit { background-color: var(--color-accent-green); }
+        .bg-stand { background-color: var(--color-accent-red); }
+        .bg-double { background-color: var(--color-accent-blue); }
+        .bg-split { background-color: var(--color-accent-gold); }
+        .bg-surrender { background-color: var(--color-accent-purple); }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Header -->
+    <header class="sticky-nav border-b border-gray-700/50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="../index.html" id="nav-brand" class="text-2xl font-black font-heading tracking-wider" style="color: var(--color-accent-gold);">BUST THE CASINO</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-5xl mx-auto">
+            <a href="blackjack.html" id="back-to-blackjack" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回21點專區</a>
+            <h1 id="bks-title" class="text-3xl md:text-4xl font-black text-center">21點基礎策略</h1>
+            <p id="bks-intro" class="mt-4 text-center max-w-3xl mx-auto" style="color: var(--color-text-secondary);">
+                基礎策略是戰勝21點的基石。它基於數學概率，告訴你在任何情況下（你的手牌 vs 莊家明牌）應該做出哪個決定（要牌、停牌、加倍、分牌）才能最大化你的長期回報率。嚴格遵守此表，可以將莊家優勢降至約0.5%。
+            </p>
+
+            <!-- Legend -->
+            <div class="mt-8 p-4 rounded-lg" style="background-color: var(--color-bg-secondary);">
+                <h3 id="bks-legend-title" class="text-xl font-bold text-center mb-4">圖例 (Legend)</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 text-center text-sm">
+                    <div><span class="inline-block w-4 h-4 rounded-full bg-hit"></span> <span id="bks-legend-h">H = 要牌 (Hit)</span></div>
+                    <div><span class="inline-block w-4 h-4 rounded-full bg-stand"></span> <span id="bks-legend-s">S = 停牌 (Stand)</span></div>
+                    <div><span class="inline-block w-4 h-4 rounded-full bg-double"></span> <span id="bks-legend-d">D = 加倍 (Double)</span></div>
+                    <div><span class="inline-block w-4 h-4 rounded-full bg-split"></span> <span id="bks-legend-p">P = 分牌 (Split)</span></div>
+                    <div><span class="inline-block w-4 h-4 rounded-full bg-surrender"></span> <span id="bks-legend-sur">SR = 投降 (Surrender)</span></div>
+                </div>
+            </div>
+
+            <!-- Strategy Charts -->
+            <div class="mt-10 space-y-12">
+
+                <!-- Hard Totals -->
+                <div>
+                    <h2 id="bks-hard-title" class="text-2xl font-bold text-center mb-4">硬點 (Hard Totals)</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full min-w-max strategy-table">
+                            <thead>
+                                <tr>
+                                    <th id="bks-dealer-card" rowspan="2">莊家明牌</th>
+                                    <th colspan="10">Dealer's Upcard</th>
+                                </tr>
+                                <tr>
+                                    <th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>17-20</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td></tr>
+                                <tr><td>16</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-surrender">SR</td><td class="bg-surrender">SR</td><td class="bg-surrender">SR</td></tr>
+                                <tr><td>15</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-surrender">SR</td><td class="bg-hit">H</td></tr>
+                                <tr><td>14</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td></tr>
+                                <tr><td>13</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td></tr>
+                                <tr><td>12</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td></tr>
+                                <tr><td>11</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-hit">H</td></tr>
+                                <tr><td>10</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-hit">H</td><td class="bg-hit">H</td></tr>
+                                <tr><td>9</td><td class="bg-hit">H</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td></tr>
+                                <tr><td>5-8</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Soft Totals -->
+                <div>
+                    <h2 id="bks-soft-title" class="text-2xl font-bold text-center mb-4">軟點 (Soft Totals)</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full min-w-max strategy-table">
+                           <thead><tr><th id="bks-dealer-card-2" rowspan="2">莊家明牌</th><th colspan="10">Dealer's Upcard</th></tr><tr><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr></thead>
+                            <tbody>
+                                <tr><td>A,8 / A,9</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td></tr>
+                                <tr><td>A,7</td><td class="bg-stand">S</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td></tr>
+                                <tr><td>A,6</td><td class="bg-hit">H</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td></tr>
+                                <tr><td>A,4 / A,5</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td></tr>
+                                <tr><td>A,2 / A,3</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Pairs -->
+                <div>
+                    <h2 id="bks-pairs-title" class="text-2xl font-bold text-center mb-4">對子 (Pairs)</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full min-w-max strategy-table">
+                           <thead><tr><th id="bks-dealer-card-3" rowspan="2">莊家明牌</th><th colspan="10">Dealer's Upcard</th></tr><tr><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr></thead>
+                            <tbody>
+                                <tr><td>A,A / 8,8</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td></tr>
+                                <tr><td>10,10</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td><td class="bg-stand">S</td></tr>
+                                <tr><td>9,9</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-stand">S</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-stand">S</td><td class="bg-stand">S</td></tr>
+                                <tr><td>7,7</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td></tr>
+                                <tr><td>6,6</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td></tr>
+                                <tr><td>5,5</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-double">D</td><td class="bg-hit">H</td><td class="bg-hit">H</td></tr>
+                                <tr><td>4,4</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td></tr>
+                                <tr><td>2,2 / 3,3</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-split">P</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td><td class="bg-hit">H</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 mt-12 border-t border-gray-800">
+        <div class="container mx-auto text-center text-sm" style="color: var(--color-text-secondary);">
+            <p id="footer-copyright">&copy; 2025 Bust the Casino. 版權所有。</p>
+            <p id="footer-disclaimer" class="mt-2">請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。</p>
+        </div>
+    </footer>
+
+    <script src="../languages.js"></script>
+    <script src="../app.js"></script>
+</body>
+</html>
