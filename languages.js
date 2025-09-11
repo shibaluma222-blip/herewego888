@@ -145,7 +145,7 @@ const languages = {
         "bcs-tie-win-label": "Occurrence",
         "bcs-summary-title": "Conclusion: The One and Only Strategy",
         "bcs-summary-desc": "The optimal strategy for Baccarat is simple: **Always bet on the Banker**. Don't be swayed by 'The Road' or your gut feelings; mathematics proves the Banker bet is the best decision you can make at the table. At the same time, **absolutely avoid the Tie bet**.",
-
+        
         // --- Baccarat Divination Tool (baccarat-divination.html) ---
         "div-title": "Probability Oracle",
         "div-subtitle": "A random number generator based on I-Ching Trigrams",
@@ -212,8 +212,36 @@ const languages = {
         "uthr-flow-4-title": "4. The Turn & River & Final Bet",
         "uthr-flow-4-desc": "The dealer reveals the final two community cards. If you have checked twice, you now have only two choices:<br>• <b>Fold:</b> You forfeit the hand and lose both your Ante and Blind bets.<br>• <b>Play Bet:</b> Make a bet of 1x your Ante bet in the 'Play' spot.",
         "uthr-flow-5-title": "5. Showdown & Payouts",
-        "uthr-flow-5-desc": "Both hands are revealed and the best five-card hand wins.<br>• <b>Dealer Qualification:</b> The dealer needs at least a pair to 'qualify'.<br>• <b>Blind Payout:</b> Pays only if your winning hand is a Straight or better (payout varies). If less than a Straight, the Blind pushes.<br>• <b>Ante Payout:</b> Pays 1-to-1 if you win and the dealer qualifies. If the dealer does not qualify, the Ante pushes.<br>• <b>Play Payout:</b> Pays 1-to-1 if you win.<br>• <b>Trips Payout:</b> Pays if your final hand is Three of a Kind or better, regardless of whether you beat the dealer."
+        "uthr-flow-5-desc": "Both hands are revealed and the best five-card hand wins.<br>• <b>Dealer Qualification:</b> The dealer needs at least a pair to 'qualify'.<br>• <b>Blind Payout:</b> Pays only if your winning hand is a Straight or better (payout varies). If less than a Straight, the Blind pushes.<br>• <b>Ante Payout:</b> Pays 1-to-1 if you win and the dealer qualifies. If the dealer does not qualify, the Ante pushes.<br>• <b>Play Payout:</b> Pays 1-to-1 if you win.<br>• <b>Trips Payout:</b> Pays if your final hand is Three of a Kind or better, regardless of whether you beat the dealer.",
 
+        // --- UTH Basic Strategy Page (uth-basic-strategy.html) ---
+        "uths-title": "UTH Basic Strategy",
+        "uths-intro": "The core strategy of UTH revolves around deciding 'when' and 'how much' to bet. The goal is to maximize your wager (3x or 4x) with strong hands, reserve options (Check) with developing hands, and cut your losses early (Fold) with weak hands.",
+        "uths-preflop-title": "Pre-Flop Strategy: Raise 4x or Check",
+        "uths-preflop-desc": "This is the most crucial decision of the hand, as it offers the chance to make your largest bet. A simple, effective strategy is to raise 4x with your strong, premium hands and check with all other hands. Checking isn't a sign of weakness; it's about gathering more information from the flop.",
+        "uths-preflop-raise-title": "Recommended Hands to Raise 4x",
+        "uths-pairs-title": "Pairs",
+        "uths-pairs-desc": "3-3 and up",
+        "uths-suited-title": "Suited",
+        "uths-suited-desc": "Any Ace<br>K-5s and up<br>Q-8s and up<br>J-9s and up",
+        "uths-offsuit-title": "Off-suit",
+        "uths-offsuit-desc": "A-Jo and up<br>K-Qo",
+        "uths-preflop-check": "* All other hands should Check.",
+        "uths-flop-title": "Post-Flop Strategy: Raise 2x or Check",
+        "uths-flop-desc": "If you checked pre-flop, after seeing the first three community cards, you must decide if your hand is strong enough to make a 2x bet.",
+        "uths-flop-raise-title": "Situations to Raise 2x:",
+        "uths-flop-cond1": "You have made Two Pair or better.",
+        "uths-flop-cond2": "You have a 'hidden pair' (one of your hole cards pairs the board) that is a Top Pair or better. (e.g., You hold A-8 on an 8-5-K flop).",
+        "uths-flop-cond3": "You have a four-card flush draw, and one of your hole cards is a 10 or higher.",
+        "uths-flop-check": "* In other situations, you should Check.",
+        "uths-river-title": "Turn/River Strategy: Raise 1x or Fold",
+        "uths-river-desc": "If you've checked twice, this is your final decision after all five community cards are out. The rule is relatively simple:",
+        "uths-river-raise-title": "Situations to Raise 1x:",
+        "uths-river-cond1": "You have made a 'hidden pair' or better.",
+        "uths-river-cond2": "A simple guideline: if your hand cannot beat a 'hidden pair' from the dealer (i.e., if the dealer pairs the lowest board card and you still lose), you should fold.",
+        "uths-river-fold": "* All other hands should be folded without hesitation. Cut your losses.",
+        "uths-trips-title": "A Note on the 'Trips' Bet",
+        "uths-trips-desc": "The 'Trips' bet is an independent side bet that pays out if your final five-card hand is Three of a Kind or better. This bet has a relatively high house edge (around 3.5%) and is similar to a lottery ticket. Our main game strategy should not be influenced by this side bet."
     },
     zh: {
         // --- Global (Navigation & Footer) ---
@@ -340,7 +368,7 @@ const languages = {
         "bks-soft-title": "軟點 (Soft Totals)",
         "bks-pairs-title": "對子 (Pairs)",
         "bks-dealer-card": "玩家手牌",
-        "bks-dealer-card-2": "玩家手牌",
+        "bks-dealer-card-2": "玩家手HSBCand",
         "bks-dealer-card-3": "玩家手牌",
 
         // --- Baccarat Basic Strategy Page (baccarat-basic-strategy.html) ---
@@ -428,7 +456,36 @@ const languages = {
         "uthr-flow-4-title": "4. 轉牌與河牌 & 最後下注 (Turn & River)",
         "uthr-flow-4-desc": "莊家會發出最後兩張公共牌。如果你之前兩次都選擇過牌，而家你只剩下兩個選擇：<br>• <b>棄牌 (Fold):</b> 你放棄呢一局，輸掉你嘅盲注同底注。<br>• <b>加注 (Play Bet):</b> 喺「遊戲注」區下一個等於你底注1倍嘅注碼。",
         "uthr-flow-5-title": "5. 開牌比大小 (Showdown) & 派彩",
-        "uthr-flow-5-desc": "雙方開牌，用各自嘅兩張底牌同五張公共牌組成最大嘅五張牌型比大小。<br>• <b>莊家「夠格」(Qualify):</b> 莊家至少要有一對或以上嘅牌型先算「夠格」。<br>• <b>盲注派彩:</b> 只有喺你贏咗，並且你嘅牌型係順子或以上時先會派彩（賠率視乎牌型大小）。如果牌型細過順子，盲注會退還 (Push)。<br>• <b>底注派彩:</b> 只有喺你贏咗，並且莊家夠格嘅情況下先會派彩 (1賠1)。如果莊家唔夠格，底注會退還。<br>• <b>遊戲注派彩:</b> 只要你贏咗就會派彩 (1賠1)。<br>• <b>旅程注派彩:</b> 只要你嘅最終牌型係三條或以上，不論輸贏都會根據賠率表派彩。"
+        "uthr-flow-5-desc": "雙方開牌，用各自嘅兩張底牌同五張公共牌組成最大嘅五張牌型比大小。<br>• <b>莊家「夠格」(Qualify):</b> 莊家至少要有一對或以上嘅牌型先算「夠格」。<br>• <b>盲注派彩:</b> 只有喺你贏咗，並且你嘅牌型係順子或以上時先會派彩（賠率視乎牌型大小）。如果牌型細過順子，盲注會退還 (Push)。<br>• <b>底注派彩:</b> 只有喺你贏咗，並且莊家夠格嘅情況下先會派彩 (1賠1)。如果莊家唔夠格，底注會退還。<br>• <b>遊戲注派彩:</b> 只要你贏咗就會派彩 (1賠1)。<br>• <b>旅程注派彩:</b> 只要你嘅最終牌型係三條或以上，不論輸贏都會根據賠率表派彩。",
+        
+        // --- UTH Basic Strategy Page (uth-basic-strategy.html) ---
+        "uths-title": "UTH 基礎策略",
+        "uths-intro": "UTH嘅核心策略就係決定「何時」以及「下注多少」。目標係喺有好牌時最大化你嘅注碼 (3倍或4倍)，喺牌唔明朗時保留選擇權 (過牌)，並喺劣勢時盡早放棄 (棄牌)。",
+        "uths-preflop-title": "翻牌前策略 (Pre-Flop): 4倍加注或過牌",
+        "uths-preflop-desc": "呢個係成局遊戲中最重要嘅決定，因為佢俾你機會落最大嘅注碼。一個簡單有效嘅策略係，只用你嘅強牌去加注4倍，其他所有牌都選擇過牌。過牌並唔代表你弱，只係代表你想睇埋頭三張公共牌再決定。",
+        "uths-preflop-raise-title": "建議加注4倍 (Raise 4x) 的起手牌",
+        "uths-pairs-title": "對子 (Pairs)",
+        "uths-pairs-desc": "3-3 或以上",
+        "uths-suited-title": "同花 (Suited)",
+        "uths-suited-desc": "任何 A<br>K-5s 或以上<br>Q-8s 或以上<br>J-9s 或以上",
+        "uths-offsuit-title": "非同花 (Off-suit)",
+        "uths-offsuit-desc": "A-Jo 或以上<br>K-Qo",
+        "uths-preflop-check": "* 所有其他牌都應該選擇過牌 (Check)。",
+        "uths-flop-title": "翻牌後策略 (The Flop): 2倍加注或過牌",
+        "uths-flop-desc": "如果你喺翻牌前選擇過牌，睇完頭三張公共牌後，你需要決定係咪值得落一個2倍嘅注碼。",
+        "uths-flop-raise-title": "建議加注2倍 (Raise 2x) 的情況：",
+        "uths-flop-cond1": "你組成咗「兩對」或更好嘅牌型。",
+        "uths-flop-cond2": "你手上嘅其中一張底牌同公共牌組成咗一對 (稱為隱藏對子, Hidden Pair)，並且呢對牌係頂對 (Top Pair) 或更好。 (例如：你手持 A-8，公共牌係 8-5-K)",
+        "uths-flop-cond3": "你差一張就組成同花 (即有四張同花牌)，並且你嘅其中一張底牌係 10 或以上。",
+        "uths-flop-check": "* 其他情況都應該選擇過牌 (Check)。",
+        "uths-river-title": "轉牌/河牌後策略 (Turn/River): 1倍加注或棄牌",
+        "uths-river-desc": "如果你過牌兩次，睇晒五張公共牌之後，呢個係你最後嘅決定。規則相對簡單：",
+        "uths-river-raise-title": "建議加注1倍 (Raise 1x) 的情況：",
+        "uths-river-cond1": "你組成咗「隱藏對子」(Hidden Pair) 或更好嘅牌型。",
+        "uths-river-cond2": "一個簡單嘅判斷標準：如果你嘅牌細過莊家嘅「隱藏對子」(即係話，如果莊家對中公共牌嘅最細一張牌，而你都贏唔到)，就應該棄牌。",
+        "uths-river-fold": "* 其他所有牌都應該果斷棄牌 (Fold)，輸少當贏。",
+        "uths-trips-title": "關於「旅程 (Trips)」注",
+        "uths-trips-desc": "「旅程」注係一個獨立嘅邊注，佢只係賭你最終嘅五張牌能否組成三條或以上嘅牌型。呢個注嘅莊家優勢相對較高 (約3.5%)，類似買彩票。我哋嘅主要策略唔應該受到呢個邊注嘅影響。"
     }
 };
 
