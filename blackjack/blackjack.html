@@ -30,17 +30,14 @@
     <!-- Header / Navigation -->
     <header class="sticky-nav border-b border-gray-700/50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <!-- 更新：返回主頁嘅連結 -->
             <a href="../index.html" id="nav-brand" class="text-2xl font-black font-heading tracking-wider" style="color: var(--color-accent-gold);">
                 BUST THE CASINO
             </a>
             <div class="hidden md:flex space-x-8 items-center">
-                <!-- 更新：返回主頁 Section 嘅連結 -->
                 <a href="../index.html#games" id="nav-games" class="text-gray-300 hover:text-white transition duration-300">遊戲專區</a>
                 <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
                 <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
                 <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
-                <!-- Language Switcher -->
                 <div id="language-selector" class="flex space-x-2">
                     <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
                     <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
@@ -52,7 +49,6 @@
 
     <!-- Main Content -->
     <main>
-        <!-- Page Title -->
         <section class="text-center py-12 md:py-20 px-6" style="background-color: var(--color-bg-secondary);">
             <div class="container mx-auto">
                 <h1 id="blackjack-page-title" class="text-4xl md:text-5xl font-black uppercase tracking-wider">21點專區</h1>
@@ -62,18 +58,17 @@
             </div>
         </section>
 
-        <!-- Blackjack Sub-sections -->
         <section id="blackjack-menu" class="py-20 px-6">
             <div class="container mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                    <!-- 連結不變，因為 blackjack-rules.html 喺同一個資料夾 -->
                     <a href="blackjack-rules.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-secondary);">
                         <h3 id="blackjack-rules-title" class="text-2xl font-bold">規則與玩法</h3>
                         <p id="blackjack-rules-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
                             從零開始，學習21點的基本流程、牌值計算和各種遊戲選項。
                         </p>
                     </a>
-                    <a href="#" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-secondary);">
+                    <!-- *** UPDATED LINK *** -->
+                    <a href="blackjack-basic-strategy.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-secondary);">
                         <h3 id="blackjack-basic-title" class="text-2xl font-bold">基礎策略</h3>
                         <p id="blackjack-basic-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
                             學習在任何情況下做出數學上的最佳決策，這是戰勝21點的第一步。
@@ -98,8 +93,8 @@
         </div>
     </footer>
 
-    <!-- 更新：JS 檔案嘅路徑 -->
     <script src="../languages.js"></script>
     <script src="../app.js"></script>
 </body>
 </html>
+
