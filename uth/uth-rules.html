@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTH 規則與玩法 - Bust the Casino</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --color-bg-primary: #1A1D24;
+            --color-bg-secondary: #2C323A;
+            --color-text-primary: #EAEAEA;
+            --color-text-secondary: #a0aec0;
+            --color-accent-blue: #4A90E2;
+            --color-accent-gold: #F1C40F;
+        }
+        body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
+        .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
+        .content-card { background-color: var(--color-bg-secondary); }
+        .rules-table td, .rules-table th { padding: 0.75rem; text-align: left; border-bottom: 1px solid #4A5568; }
+        .rules-table th { font-weight: 600; color: var(--color-text-primary); }
+        .rules-table tbody tr:last-child td { border-bottom: none; }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Header -->
+    <header class="sticky-nav border-b border-gray-700/50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="../index.html" id="nav-brand" class="text-2xl font-black font-heading tracking-wider" style="color: var(--color-accent-gold);">BUST THE CASINO</a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="../index.html#games" id="nav-games" class="text-gray-300 hover:text-white transition duration-300">遊戲專區</a>
+                <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
+                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
+                <div id="language-selector" class="flex space-x-2">
+                    <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
+                    <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
+                </div>
+            </div>
+            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-4xl mx-auto">
+            <a href="uth.html" id="back-to-uth" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回UTH專區</a>
+            <h1 id="uthr-title" class="text-3xl md:text-4xl font-black text-center">UTH 規則與玩法</h1>
+            
+            <div class="mt-12 space-y-10">
+                <div class="p-8 rounded-lg content-card">
+                    <h2 id="uthr-obj-title" class="text-2xl font-bold">遊戲目標</h2>
+                    <p id="uthr-obj-desc" class="mt-2" style="color: var(--color-text-secondary);">
+                        Ultimate Texas Hold'em 嘅目標係用你手上嘅兩張底牌同五張公共牌，組合出最大嘅五張牌型，並擊敗莊家。與傳統德州撲克唔同，你係同莊家對決，而唔係其他玩家。
+                    </p>
+                </div>
+
+                <div class="p-8 rounded-lg content-card">
+                    <h2 id="uthr-hands-title" class="text-2xl font-bold">撲克牌型大小</h2>
+                    <p id="uthr-hands-desc" class="mt-2 mb-6" style="color: var(--color-text-secondary);">
+                        牌型大小同傳統德州撲克完全一樣，由大到細排列如下：
+                    </p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm rules-table">
+                            <thead>
+                                <tr><th id="uthr-table-rank">排名</th><th id="uthr-table-hand">牌型</th><th id="uthr-table-example">例子</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td id="uthr-rank-1">皇家同花順</td><td>A, K, Q, J, 10，全部同一花色</td><td>A♠ K♠ Q♠ J♠ 10♠</td></tr>
+                                <tr><td id="uthr-rank-2">同花順</td><td>五張連續數字且同一花色嘅牌</td><td>9♥ 8♥ 7♥ 6♥ 5♥</td></tr>
+                                <tr><td id="uthr-rank-3">四條 (鐵支)</td><td>四張相同數字嘅牌</td><td>7♠ 7♥ 7♦ 7♣ K♠</td></tr>
+                                <tr><td id="uthr-rank-4">葫蘆 (滿堂彩)</td><td>三張相同數字嘅牌，加一對</td><td>J♠ J♥ J♣ 8♦ 8♣</td></tr>
+                                <tr><td id="uthr-rank-5">同花 (花)</td><td>五張同一花色但唔連續嘅牌</td><td>A♦ K♦ 9♦ 6♦ 2♦</td></tr>
+                                <tr><td id="uthr-rank-6">順子</td><td>五張連續數字但唔同花色嘅牌</td><td>7♠ 6♥ 5♦ 4♣ 3♠</td></tr>
+                                <tr><td id="uthr-rank-7">三條</td><td>三張相同數字嘅牌</td><td>5♠ 5♥ 5♦ K♠ 2♣</td></tr>
+                                <tr><td id="uthr-rank-8">兩對</td><td>兩對唔同數字嘅牌</td><td>A♠ A♥ 8♦ 8♣ Q♠</td></tr>
+                                <tr><td id="uthr-rank-9">一對</td><td>一對相同數字嘅牌</td><td>K♠ K♥ 9♦ 6♣ 2♠</td></tr>
+                                <tr><td id="uthr-rank-10">高牌 (散牌)</td><td>以上牌型都冇，比較最大一張牌</td><td>A♠ Q♥ 9♦ 6♣ 2♠</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="p-8 rounded-lg content-card">
+                    <h2 id="uthr-flow-title" class="text-2xl font-bold">遊戲流程與下注</h2>
+                    <div class="mt-4 space-y-6" style="color:var(--color-text-secondary)">
+                        <div>
+                            <h3 id="uthr-flow-1-title" class="text-lg font-semibold" style="color:var(--color-accent-gold)">1. 開始下注 (Ante & Blind)</h3>
+                            <p id="uthr-flow-1-desc" class="mt-1 text-sm">遊戲開始前，你必須下兩個等額嘅注碼：「盲注 (Blind)」同「底注 (Ante)」。例如，你喺盲注區下$10，就必須喺底注區下$10。你亦可以選擇性喺「旅程 (Trips)」獎賞區下注。</p>
+                        </div>
+                        <div>
+                            <h3 id="uthr-flow-2-title" class="text-lg font-semibold" style="color:var(--color-accent-gold)">2. 派牌 & 第一次下注 (Pre-Flop)</h3>
+                            <p id="uthr-flow-2-desc" class="mt-1 text-sm">你同莊家會各自收到兩張底牌（面朝下）。睇完你嘅底牌後，你有兩個選擇：<br>
+                                • <b>過牌 (Check):</b> 唔做任何事，等待睇公共牌。<br>
+                                • <b>加注 (Play Bet):</b> 喺「遊戲注 (Play)」區下一個等於你底注3倍或4倍嘅注碼。一旦加注，呢一局你就唔可以再加注。</p>
+                        </div>
+                        <div>
+                            <h3 id="uthr-flow-3-title" class="text-lg font-semibold" style="color:var(--color-accent-gold)">3. 翻牌 & 第二次下注 (The Flop)</h3>
+                            <p id="uthr-flow-3-desc" class="mt-1 text-sm">莊家會發出三張公共牌（面朝上）。如果你喺上一步選擇咗過牌，而家你有兩個新選擇：<br>
+                                • <b>過牌 (Check):</b> 再次過牌，等待睇之後嘅公共牌。<br>
+                                • <b>加注 (Play Bet):</b> 喺「遊戲注」區下一個等於你底注2倍嘅注碼。</p>
+                        </div>
+                         <div>
+                            <h3 id="uthr-flow-4-title" class="text-lg font-semibold" style="color:var(--color-accent-gold)">4. 轉牌與河牌 & 最後下注 (Turn & River)</h3>
+                            <p id="uthr-flow-4-desc" class="mt-1 text-sm">莊家會發出最後兩張公共牌。如果你之前兩次都選擇過牌，而家你只剩下兩個選擇：<br>
+                                • <b>棄牌 (Fold):</b> 你放棄呢一局，輸掉你嘅盲注同底注。<br>
+                                • <b>加注 (Play Bet):</b> 喺「遊戲注」區下一個等於你底注1倍嘅注碼。</p>
+                        </div>
+                        <div>
+                            <h3 id="uthr-flow-5-title" class="text-lg font-semibold" style="color:var(--color-accent-gold)">5. 開牌比大小 (Showdown) & 派彩</h3>
+                            <p id="uthr-flow-5-desc" class="mt-1 text-sm">雙方開牌，用各自嘅兩張底牌同五張公共牌組成最大嘅五張牌型比大小。<br>
+                                • <b>莊家「夠格」(Qualify):</b> 莊家至少要有一對或以上嘅牌型先算「夠格」。<br>
+                                • <b>盲注派彩:</b> 只有喺你贏咗，並且你嘅牌型係順子或以上時先會派彩（賠率視乎牌型大小）。如果牌型細過順子，盲注會退還 (Push)。<br>
+                                • <b>底注派彩:</b> 只有喺你贏咗，並且莊家夠格嘅情況下先會派彩 (1賠1)。如果莊家唔夠格，底注會退還。<br>
+                                • <b>遊戲注派彩:</b> 只要你贏咗就會派彩 (1賠1)。<br>
+                                • <b>旅程注派彩:</b> 只要你嘅最終牌型係三條或以上，不論輸贏都會根據賠率表派彩。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 mt-12 border-t border-gray-800">
+        <div class="container mx-auto text-center text-sm" style="color: var(--color-text-secondary);">
+            <p id="footer-copyright">&copy; 2025 Bust the Casino. 版權所有。</p>
+            <p id="footer-disclaimer" class="mt-2">請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。</p>
+        </div>
+    </footer>
+
+    <script src="../languages.js"></script>
+    <script src="../app.js"></script>
+</body>
+</html>
