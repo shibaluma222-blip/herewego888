@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>21點基礎策略練習器 - Bust the Casino</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --color-bg-primary: #1A1D24;
+            --color-bg-secondary: #2C323A;
+            --color-text-primary: #EAEAEA;
+            --color-text-secondary: #a0aec0;
+            --color-accent-blue: #4A90E2;
+            --color-accent-gold: #F1C40F;
+            --color-accent-green: #2ECC71;
+            --color-accent-red: #E53E3E;
+        }
+        body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
+        .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
+        .card {
+            width: 80px;
+            height: 112px;
+            border-radius: 8px;
+            background-color: white;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 4px;
+            font-size: 20px;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .card.red { color: var(--color-accent-red); }
+        .card-value { line-height: 1; }
+        .card-suit { font-size: 16px; line-height: 1; }
+        .card-suit-center { font-size: 32px; text-align: center; }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Header -->
+    <header class="sticky-nav border-b border-gray-700/50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="../index.html" class="flex items-center space-x-3">
+                <img src="../assets/images/logo.png" alt="Bust the Casino Logo" class="h-10">
+                <span id="nav-brand-text" class="text-2xl font-black font-heading tracking-wider" style="color: var(--color-accent-gold);">BUST THE CASINO</span>
+            </a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
+                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
+            </div>
+            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 id="bkt-title" class="text-3xl md:text-4xl font-black">基礎策略練習器</h1>
+            <p id="bkt-subtitle" class="mt-2 text-gray-400">練習並鞏固你嘅21點基本策略</p>
+            
+            <div id="trainer-container" class="mt-8 p-6 bg-gray-800 rounded-lg">
+                <!-- Stats Display -->
+                <div class="flex justify-between items-center text-lg mb-6">
+                    <div>
+                        <span id="bkt-streak-label">連續答對：</span>
+                        <span id="streak" class="font-bold text-orange-400">0</span>
+                    </div>
+                    <div>
+                        <span id="bkt-total-label">總數：</span>
+                        <span id="total" class="font-bold">0</span>
+                    </div>
+                </div>
+
+                <!-- Game Area -->
+                <div class="space-y-6 min-h-[350px] flex flex-col justify-around">
+                    <!-- Dealer's Hand -->
+                    <div>
+                        <h2 id="bkt-dealer-hand" class="text-xl font-bold mb-2">莊家</h2>
+                        <div id="dealer-cards" class="flex justify-center items-center space-x-2 h-28"></div>
+                    </div>
+                    
+                    <!-- Feedback Area -->
+                    <div id="feedback-area" class="h-16 flex items-center justify-center">
+                        <p id="question" class="text-2xl font-bold text-yellow-400">你應該點做？</p>
+                    </div>
+
+                    <!-- Player's Hand -->
+                    <div>
+                        <h2 id="bkt-player-hand" class="text-xl font-bold mb-2">玩家</h2>
+                        <div id="player-cards" class="flex justify-center items-center space-x-2 h-28"></div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div id="action-buttons" class="mt-6 grid grid-cols-2 gap-4">
+                    <button data-action="H" class="p-4 bg-red-600 hover:bg-red-700 rounded-lg font-bold text-xl transition disabled:opacity-50" id="bkt-hit">要牌</button>
+                    <button data-action="S" class="p-4 bg-yellow-500 hover:bg-yellow-600 text-black rounded-lg font-bold text-xl transition disabled:opacity-50" id="bkt-stand">停牌</button>
+                    <button data-action="D" class="p-4 bg-green-500 hover:bg-green-600 rounded-lg font-bold text-xl transition disabled:opacity-50" id="bkt-double">加倍</button>
+                    <button data-action="P" class="p-4 bg-blue-500 hover:bg-blue-600 rounded-lg font-bold text-xl transition disabled:opacity-50" id="bkt-split">分牌</button>
+                </div>
+
+                <!-- Control Button -->
+                <div class="mt-6">
+                    <button id="control-button" class="w-full p-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold text-2xl transition">開始練習</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Game logic will go here
+    </script>
+    <script src="../languages.js"></script>
+    <script src="../app.js"></script>
+</body>
+</html>
