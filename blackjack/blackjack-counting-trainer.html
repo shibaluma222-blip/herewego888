@@ -22,22 +22,31 @@
         body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
         .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
         .card {
-            width: 100px;
-            height: 140px;
-            border-radius: 8px;
-            background-color: white;
-            color: black;
+            width: 120px;
+            height: 175px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            color: #212529;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             padding: 8px;
-            font-size: 24px;
-            font-weight: 600;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            position: absolute;
-            transition: opacity 0.2s, transform 0.2s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            position: relative;
+            user-select: none;
+            transition: opacity 0.3s, transform 0.3s;
         }
         .card.red { color: #E53E3E; }
+        .card-corner { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+        .card-value { font-size: 28px; font-weight: 700; }
+        .card-suit { font-size: 24px; }
+        .card-suit-center { font-size: 60px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.9; }
+        /* Animation for card dealing */
+        @keyframes dealCard {
+            from { transform: scale(0.8) translateY(20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .deal-in { animation: dealCard 0.4s ease-out forwards; }
     </style>
 </head>
 <body class="antialiased">
@@ -45,7 +54,7 @@
     <header class="sticky-nav border-b border-gray-700/50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="../index.html" class="flex items-center space-x-3">
-                <img src="../assets/images/logo.png" alt="Bust the Casino Logo" class="h-10">
+                <img src="../assets/images/logo.png" alt="Bust the Casino Logo" class="h-8">
                 <span id="nav-brand-text" class="text-2xl font-black font-heading tracking-wider" style="color: var(--color-accent-gold);">BUST THE CASINO</span>
             </a>
             <div class="hidden md:flex space-x-8 items-center">
@@ -60,55 +69,216 @@
     <!-- Main Content -->
     <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="max-w-md mx-auto text-center">
-            <h1 id="bkc-title" class="text-3xl md:text-4xl font-black">算牌練習器 (Hi-Lo)</h1>
-            <p id="bkc-subtitle" class="mt-2 text-gray-400">訓練你嘅速度同準確度</p>
+            <h1 id="bct-title" class="text-3xl md:text-4xl font-black">算牌練習器</h1>
+            <p id="bct-subtitle" class="mt-2 text-gray-400">練習 Hi-Lo 算牌系統</p>
             
-            <div id="trainer-container" class="mt-8 p-6 bg-gray-800 rounded-lg min-h-[400px] flex flex-col justify-center">
-                <!-- Ready Screen -->
-                <div id="ready-screen">
-                    <div class="space-y-6">
-                        <p id="bkc-instructions" class="text-lg">當牌出現時，心中默數流水數。練習結束後，輸入最終結果。</p>
-                        <div>
-                            <label for="speed-slider" class="block mb-2" id="bkc-speed-label">速度: <span id="speed-value">1.5</span> 秒/張</label>
-                            <input id="speed-slider" type="range" min="0.5" max="3.0" value="1.5" step="0.1" class="w-full">
-                        </div>
-                        <button id="start-button" class="w-full p-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold text-2xl transition">開始</button>
-                    </div>
-                </div>
-
-                <!-- Playing Screen -->
-                <div id="playing-screen" class="hidden relative h-48">
-                    <div id="card-display-area" class="w-full h-full flex items-center justify-center">
-                        <!-- Cards will be injected here by JS -->
-                    </div>
-                    <button id="stop-button" class="absolute bottom-0 right-0 p-2 bg-red-600 rounded-lg">停止</button>
-                </div>
+            <div id="trainer-container" class="mt-8 p-6 bg-gray-800 rounded-lg min-h-[500px] flex flex-col justify-center items-center">
                 
-                <!-- Answer Screen -->
-                <div id="answer-screen" class="hidden">
-                     <div class="space-y-4">
-                        <label for="rc-input" class="block text-xl" id="bkc-question-label">最終流水數係幾多？</label>
-                        <input id="rc-input" type="number" class="w-full text-center text-5xl p-4 bg-gray-900 rounded-lg text-white font-mono" placeholder="RC">
-                        <button id="submit-button" class="w-full p-4 bg-green-600 hover:bg-green-700 rounded-lg font-bold text-2xl transition">提交</button>
+                <!-- Ready View -->
+                <div id="ready-view" class="w-full space-y-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mx-auto text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 6L6 18" />
+                    </svg>
+                    <p id="bct-instructions" class="text-lg text-gray-300">練習追蹤流水數(RC)。卡牌會自動發出，練習結束後，請輸入最終嘅流水數。</p>
+                    <div class="px-4">
+                        <label for="speed-slider" id="bct-speed-label" class="block text-sm font-medium text-gray-300 mb-2">速度設定: 1.5s</label>
+                        <input id="speed-slider" type="range" min="0.5" max="3.0" value="1.5" step="0.1" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                    <button id="start-button" class="w-full p-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold text-xl transition">開始練習</button>
+                </div>
+
+                <!-- Playing View -->
+                <div id="playing-view" class="hidden w-full h-full flex flex-col justify-between items-center">
+                    <div id="card-display-area" class="flex-grow flex items-center justify-center mb-8">
+                         <!-- Card will be inserted here by JS -->
+                    </div>
+                    <button id="stop-button" class="w-full p-4 bg-red-600 hover:bg-red-700 rounded-lg font-bold text-xl transition">停止</button>
+                </div>
+
+                <!-- Awaiting Answer View -->
+                <div id="answer-view" class="hidden w-full space-y-6">
+                    <h2 id="bct-final-rc-q" class="text-3xl font-bold">最終流水數係幾多？</h2>
+                    <input type="number" id="answer-input" class="w-full text-center text-6xl font-bold bg-gray-900 rounded-lg p-4 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                    <button id="submit-button" class="w-full p-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold text-xl transition disabled:opacity-50">提交答案</button>
+                    <button id="notsure-button" class="w-full p-3 bg-gray-600 hover:bg-gray-700 rounded-lg font-semibold text-md transition">唔肯定</button>
+                </div>
+
+                <!-- Finished View -->
+                <div id="finished-view" class="hidden w-full space-y-6">
+                    <div id="result-icon"></div>
+                    <h2 id="result-text" class="text-3xl font-bold"></h2>
+                    <p id="your-answer-text" class="text-xl"></p>
+                    <p id="correct-answer-text" class="text-2xl font-bold"></p>
+                    <div class="pt-4 space-y-4 w-full">
+                         <button id="restart-button" class="w-full p-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold text-xl transition">重新練習</button>
+                         <button id="reset-menu-button" class="w-full p-3 bg-gray-600 hover:bg-gray-700 rounded-lg font-semibold text-md transition">返回主選單</button>
                     </div>
                 </div>
 
-                <!-- Result Screen -->
-                <div id="result-screen" class="hidden">
-                    <div class="space-y-4">
-                        <div id="result-feedback"></div>
-                        <p class="text-xl">正確答案係: <span id="correct-rc" class="font-bold text-2xl"></span></p>
-                        <button id="restart-button" class="w-full p-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold text-2xl transition">重新開始</button>
-                    </div>
-                </div>
             </div>
         </div>
     </main>
 
     <script>
-        // Game logic will go here
+    document.addEventListener('DOMContentLoaded', () => {
+        const suits = ['♠', '♥', '♦', '♣'];
+        const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+
+        // Views
+        const readyView = document.getElementById('ready-view');
+        const playingView = document.getElementById('playing-view');
+        const answerView = document.getElementById('answer-view');
+        const finishedView = document.getElementById('finished-view');
+
+        // Elements
+        const speedSlider = document.getElementById('speed-slider');
+        const speedLabel = document.getElementById('bct-speed-label');
+        const startButton = document.getElementById('start-button');
+        const stopButton = document.getElementById('stop-button');
+        const cardDisplayArea = document.getElementById('card-display-area');
+        const answerInput = document.getElementById('answer-input');
+        const submitButton = document.getElementById('submit-button');
+        const notsureButton = document.getElementById('notsure-button');
+        const resultIcon = document.getElementById('result-icon');
+        const resultText = document.getElementById('result-text');
+        const yourAnswerText = document.getElementById('your-answer-text');
+        const correctAnswerText = document.getElementById('correct-answer-text');
+        const restartButton = document.getElementById('restart-button');
+        const resetMenuButton = document.getElementById('reset-menu-button');
+
+        // State
+        let trainerState = 'ready'; // ready, playing, awaitingAnswer, finished
+        let runningCount = 0;
+        let speed = 1.5;
+        let timer;
+        let currentCard = null;
+
+        const updateView = () => {
+            readyView.classList.add('hidden');
+            playingView.classList.add('hidden');
+            answerView.classList.add('hidden');
+            finishedView.classList.add('hidden');
+            
+            switch(trainerState) {
+                case 'ready':
+                    readyView.classList.remove('hidden');
+                    break;
+                case 'playing':
+                    playingView.classList.remove('hidden');
+                    break;
+                case 'awaitingAnswer':
+                    answerView.classList.remove('hidden');
+                    answerInput.focus();
+                    break;
+                case 'finished':
+                    finishedView.classList.remove('hidden');
+                    break;
+            }
+        };
+        
+        const createCardElement = (card) => {
+            const isRed = ['♥', '♦'].includes(card.suit);
+            const cardEl = document.createElement('div');
+            cardEl.className = `card ${isRed ? 'red' : ''} deal-in`;
+            cardEl.innerHTML = `
+                <div class="card-corner self-start"><span class="card-value">${card.value}</span><span class="card-suit">${card.suit}</span></div>
+                <span class="card-suit-center">${card.suit}</span>
+                <div class="card-corner self-end transform rotate-180"><span class="card-value">${card.value}</span><span class="card-suit">${card.suit}</span></div>
+            `;
+            return cardEl;
+        };
+        
+        const getCountValue = (cardValue) => {
+            const val = parseInt(cardValue);
+            if (val >= 2 && val <= 6) return 1;
+            if (val === 10 || cardValue === 'A' || cardValue === 'J' || cardValue === 'Q' || cardValue === 'K') return -1;
+            return 0;
+        };
+
+        const dealNextCard = () => {
+            const randomSuit = suits[Math.floor(Math.random() * suits.length)];
+            const randomValue = values[Math.floor(Math.random() * values.length)];
+            currentCard = { suit: randomSuit, value: randomValue };
+            
+            runningCount += getCountValue(currentCard.value);
+
+            cardDisplayArea.innerHTML = '';
+            cardDisplayArea.appendChild(createCardElement(currentCard));
+        };
+
+        const startTrainer = () => {
+            runningCount = 0;
+            trainerState = 'playing';
+            updateView();
+            dealNextCard();
+            timer = setInterval(dealNextCard, speed * 1000);
+        };
+
+        const stopTrainer = () => {
+            clearInterval(timer);
+            trainerState = 'awaitingAnswer';
+            updateView();
+        };
+
+        const resetToMenu = () => {
+             runningCount = 0;
+             answerInput.value = '';
+             trainerState = 'ready';
+             updateView();
+        };
+        
+        const submitAnswer = () => {
+            const userAnswer = parseInt(answerInput.value);
+            const isCorrect = userAnswer === runningCount;
+            
+            yourAnswerText.textContent = `你嘅答案: ${answerInput.value}`;
+            correctAnswerText.textContent = `正確流水數: ${runningCount}`;
+            
+            if (isCorrect) {
+                resultIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>`;
+                resultText.textContent = '答啱咗！';
+            } else {
+                resultIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto text-red-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>`;
+                resultText.textContent = '答錯咗';
+            }
+            trainerState = 'finished';
+            updateView();
+        };
+
+        const revealAnswer = () => {
+            yourAnswerText.textContent = '';
+            correctAnswerText.textContent = `正確流水數: ${runningCount}`;
+            resultIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>`;
+            resultText.textContent = '正確答案';
+            trainerState = 'finished';
+            updateView();
+        };
+
+        // Event Listeners
+        speedSlider.addEventListener('input', (e) => {
+            speed = parseFloat(e.target.value);
+            speedLabel.textContent = `速度設定: ${speed.toFixed(1)}s`;
+        });
+        
+        answerInput.addEventListener('input', () => {
+            submitButton.disabled = answerInput.value === '';
+        });
+
+        startButton.addEventListener('click', startTrainer);
+        stopButton.addEventListener('click', stopTrainer);
+        submitButton.addEventListener('click', submitAnswer);
+        notsureButton.addEventListener('click', revealAnswer);
+        restartButton.addEventListener('click', startTrainer);
+        resetMenuButton.addEventListener('click', resetToMenu);
+
+        // Initial setup
+        updateView();
+    });
     </script>
     <script src="../languages.js"></script>
     <script src="../app.js"></script>
 </body>
 </html>
+
