@@ -24,6 +24,7 @@
         .font-heading { font-family: var(--font-heading); }
         .font-body { font-family: var(--font-body); }
         .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
+        #nav-brand-text { color: var(--color-accent-gold); }
     </style>
 </head>
 <body class="antialiased">
@@ -31,8 +32,8 @@
     <header class="sticky-nav border-b border-gray-700/50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="../index.html" class="flex items-center space-x-3">
-                <img src="../assets/images/logo.png" alt="Bust the Casino Logo" style="height: 74px;>
-                <span id="nav-brand-text" class="text-2xl font-black font-heading tracking-wider" style="color: var(--color-accent-gold);">BUST THE CASINO</span>
+                <img src="../assets/images/logo.png" alt="Bust the Casino Logo" style="height: 74px;">
+                <span id="nav-brand-text" class="text-2xl font-black font-heading tracking-wider">BUST THE CASINO</span>
             </a>
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
@@ -60,7 +61,7 @@
 
         <section id="blackjack-menu" class="py-20 px-6">
             <div class="container mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                     <!-- Rules Card -->
                     <a href="blackjack-rules.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-secondary);">
                         <h3 id="blackjack-rules-title" class="text-2xl font-bold">規則與玩法</h3>
@@ -82,18 +83,18 @@
                             探索算牌的世界，了解如何利用剩餘牌的組合來獲取真正優勢。
                         </p>
                     </a>
-                    <!-- Strategy Trainer Card -->
-                    <a href="blackjack-strategy-trainer.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl md:col-span-1 lg:col-span-1" style="background-color: var(--color-bg-secondary);">
-                        <h3 id="blackjack-strategy-trainer-title" class="text-2xl font-bold text-white">基礎策略練習器</h3>
-                        <p id="blackjack-strategy-trainer-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
-                            透過實戰模擬，將基本策略表刻入腦中，面對任何牌局都能秒速反應。
+                    <!-- Basic Strategy Trainer Card -->
+                    <a href="blackjack-strategy-trainer.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-secondary);">
+                        <h3 id="bjs-trainer-title" class="text-2xl font-bold">基礎策略練習器</h3>
+                        <p id="bjs-trainer-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
+                            透過無限隨機牌局，將基本策略刻入腦中，化為肌肉記憶。
                         </p>
                     </a>
-                    <!-- Counting Trainer Card -->
-                    <a href="blackjack-counting-trainer.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl md:col-span-1 lg:col-span-1" style="background-color: var(--color-bg-secondary);">
-                        <h3 id="blackjack-counting-trainer-title" class="text-2xl font-bold text-white">算牌練習器</h3>
-                        <p id="blackjack-counting-trainer-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
-                            訓練你嘅專注力同速度，喺快速發牌嘅過程中準確追蹤流水數，掌握賭桌上嘅優勢變化。
+                    <!-- Card Counting Trainer Card -->
+                    <a href="blackjack-counting-trainer.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-secondary);">
+                        <h3 id="bjc-trainer-title" class="text-2xl font-bold">算牌練習器</h3>
+                        <p id="bjc-trainer-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
+                            訓練你快速準確地追蹤流水數(Running Count)，為實戰作好準備。
                         </p>
                     </a>
                 </div>
