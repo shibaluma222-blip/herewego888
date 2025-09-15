@@ -24,39 +24,32 @@
         body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
         .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
         .card {
-            width: 85px;
-            height: 125px;
+            width: 100px;
+            height: 150px;
             border-radius: 8px;
             background-color: #f8f9fa;
             color: #212529;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 6px;
+            padding: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 6px 20px rgba(0,0,0,0.19);
             position: relative;
             user-select: none;
             transition: transform 0.2s ease-in-out;
         }
-        .card:hover {
-            transform: translateY(-5px);
-        }
+        .card:hover { transform: translateY(-5px); }
         .card.red { color: var(--color-accent-red); }
-        .card-corner {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            line-height: 1;
-        }
-        .card-value { font-size: 22px; font-weight: 700; }
-        .card-suit { font-size: 18px; }
-        .card-suit-center {
-            font-size: 44px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.9;
+        .card-corner { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+        .card-value { font-size: 24px; font-weight: 700; }
+        .card-suit { font-size: 20px; }
+        .card-suit-center { font-size: 50px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.9; }
+        #nav-brand-text { color: var(--color-accent-gold); }
+        .trainer-box {
+            background-color: var(--color-bg-secondary);
+            border: 1px solid var(--color-accent-blue);
+            padding: 1.5rem; /* 24px */
+            border-radius: 0.75rem; /* 12px */
         }
     </style>
 </head>
@@ -64,14 +57,18 @@
     <!-- Header -->
     <header class="sticky-nav border-b border-gray-700/50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-          <a href="../index.html" class="flex items-center space-x-3">
-                <img src="../assets/images/logo.png" alt="Bust the Casino Logo" style="height: 74px;>
-                <span id="nav-brand-text" class="text-2xl font-black font-heading tracking-wider" style="color: var(--color-accent-gold);">BUST THE CASINO</span>
+            <a href="../index.html" class="flex items-center space-x-3">
+                <img src="../assets/images/logo.png" alt="Bust the Casino Logo" style="height: 74px;">
+                <span id="nav-brand-text" class="text-2xl font-black font-heading tracking-wider">BUST THE CASINO</span>
             </a>
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
                 <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
                 <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
+                <div id="language-selector" class="flex space-x-2">
+                    <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
+                    <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
+                </div>
             </div>
             <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
         </nav>
@@ -79,368 +76,353 @@
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="max-w-4xl mx-auto text-center">
-              <a href="blackjack.html" id="back-to-blackjack" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回21點專區</a>
-            <div class="content-card p-8 md:p-10 rounded-lg">
-            <h1 id="bkt-title" class="text-3xl md:text-4xl font-black">基礎策略練習器</h1>
-            <p id="bkt-subtitle" class="mt-2 text-gray-400">練習並鞏固你嘅21點基本策略</p>
+        <a href="blackjack.html" id="back-to-blackjack" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回21點專區</a>
+        <div id="trainer-container" class="max-w-4xl mx-auto trainer-box">
             
-            <div id="trainer-container" class="mt-8 p-6 bg-gray-800 rounded-lg min-h-[600px] flex flex-col">
-                
-                <!-- Training Session View -->
-                <div id="training-session-view" class="flex-grow flex flex-col">
-                    <!-- Stats Display -->
-                    <div class="flex justify-between items-center text-lg mb-6">
-                        <div>
-                            <span id="bkt-streak-label">連續答對：</span>
-                            <span id="streak" class="font-bold text-orange-400">0</span>
-                        </div>
-                        <div>
-                            <span id="bkt-total-label">總數：</span>
-                            <span id="total" class="font-bold">0</span>
-                        </div>
-                    </div>
+            <!-- Statistics Header -->
+            <div id="stats-view" class="flex justify-between items-center text-lg mb-6">
+                <div class="flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.934l.643-.643a1 1 0 00-1.414-1.414l-1 1a1 1 0 00.394 1.828l.22-.055a3.002 3.002 0 01-1.422 2.659l-1.12.644a1 1 0 00.5 1.732l.162-.093a3.002 3.002 0 012.38 2.38l.093.162a1 1 0 001.732.5l.644-1.12A3.002 3.002 0 0113 9.61V9a1 1 0 10-2 0v.61a1 1 0 00.54.894l.274.137a1 1 0 01.293.394l.22.44a1 1 0 001.732-.866l-.22-.44a3.002 3.002 0 01-1.172-3.515l.055-.22a1 1 0 00-1.828-.394l-1 1a1 1 0 001.414 1.414l.643-.643a3.002 3.002 0 012.659-1.422l.22.055a1 1 0 00.394-1.828l-1-1a1 1 0 00-1.414 1.414l.643.643a3.002 3.002 0 01.934-.822 1 1 0 00-.385-1.45z" clip-rule="evenodd" /></svg>
+                    <span id="streak-text">連續答對: 0</span>
+                </div>
+                <span id="total-text">總題數: 0</span>
+            </div>
 
-                    <!-- Game Area -->
-                    <div class="space-y-6 flex-grow flex flex-col justify-around">
-                        <!-- Dealer's Hand -->
-                        <div>
-                            <h2 id="bkt-dealer-hand" class="text-xl font-bold mb-2">莊家</h2>
-                            <div id="dealer-cards" class="flex justify-center items-center space-x-[-45px] h-32"></div>
-                        </div>
-                        
-                        <!-- Feedback Area -->
-                        <div id="feedback-area" class="h-16 flex items-center justify-center text-xl md:text-2xl font-bold">
-                            <p id="question" class="text-yellow-400">你應該點做？</p>
-                        </div>
-
-                        <!-- Player's Hand -->
-                        <div>
-                            <h2 id="bkt-player-hand" class="text-xl font-bold mb-2">玩家</h2>
-                            <div id="player-cards" class="flex justify-center items-center space-x-[-45px] h-32"></div>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div id="action-buttons" class="mt-6 grid grid-cols-2 gap-4">
-                        <button data-action="H" class="p-4 bg-red-600 hover:bg-red-700 rounded-lg font-bold text-xl transition disabled:opacity-50" id="bkt-hit">要牌</button>
-                        <button data-action="S" class="p-4 bg-yellow-500 hover:bg-yellow-600 text-black rounded-lg font-bold text-xl transition disabled:opacity-50" id="bkt-stand">停牌</button>
-                        <button data-action="D" class="p-4 bg-green-500 hover:bg-green-600 rounded-lg font-bold text-xl transition disabled:opacity-50" id="bkt-double">加倍</button>
-                        <button data-action="P" class="p-4 bg-blue-500 hover:bg-blue-600 rounded-lg font-bold text-xl transition disabled:opacity-50" id="bkt-split">分牌</button>
-                    </div>
+            <div id="training-session-view" class="space-y-6 text-center">
+                <!-- Dealer Hand -->
+                <div>
+                    <h2 id="dealer-hand-title" class="text-xl font-bold mb-4">莊家</h2>
+                    <div id="dealer-hand" class="flex justify-center items-center h-[160px]"></div>
                 </div>
 
-                <!-- Summary View -->
-                <div id="summary-view" class="hidden flex-grow flex-col justify-center items-center space-y-8">
-                    <h2 id="bkt-summary-title" class="text-4xl font-black text-yellow-400">訓練總結</h2>
-                    <div class="w-full max-w-sm space-y-4 text-left p-6 bg-gray-900 rounded-lg">
-                        <div class="flex justify-between text-xl">
-                            <span id="bkt-summary-total">總題數：</span>
-                            <span id="summary-total" class="font-bold">0</span>
-                        </div>
-                        <div class="flex justify-between text-xl">
-                            <span id="bkt-summary-correct">答對題數：</span>
-                            <span id="summary-correct" class="font-bold text-green-400">0</span>
-                        </div>
-                         <div class="flex justify-between text-xl">
-                            <span id="bkt-summary-accuracy">準確率：</span>
-                            <span id="summary-accuracy" class="font-bold text-green-400">0%</span>
-                        </div>
-                        <div class="flex justify-between text-xl">
-                            <span id="bkt-summary-streak">最長連續答對：</span>
-                            <span id="summary-streak" class="font-bold text-orange-400">0</span>
-                        </div>
-                    </div>
+                <!-- Feedback -->
+                <div id="feedback-view" class="h-20 flex items-center justify-center">
+                    <p id="question-text" class="text-2xl font-bold">你應該點做？</p>
+                </div>
+
+                <!-- Player Hand -->
+                <div>
+                    <h2 id="player-hand-title" class="text-xl font-bold mb-4">玩家</h2>
+                    <div id="player-hand" class="flex justify-center items-center space-x-4 h-[160px]"></div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div id="action-buttons" class="grid grid-cols-2 gap-4 pt-4 max-w-lg mx-auto">
+                    <button data-action="Hit" class="p-4 rounded-lg font-bold text-lg text-white" style="background-color: var(--color-accent-red);">要牌</button>
+                    <button data-action="Stand" class="p-4 rounded-lg font-bold text-lg" style="background-color: var(--color-accent-gold); color: #1A1D24;">停牌</button>
+                    <button data-action="Double" class="p-4 rounded-lg font-bold text-lg" style="background-color: var(--color-accent-green); color: #1A1D24;">加倍</button>
+                    <button data-action="Split" class="p-4 rounded-lg font-bold text-lg text-white" style="background-color: var(--color-accent-blue);">分牌</button>
                 </div>
 
                 <!-- Control Button -->
-                <div class="mt-6">
-                    <button id="control-button" class="w-full p-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold text-2xl transition">開始練習</button>
+                <div id="control-button-container" class="pt-6">
+                    <button id="control-button" class="w-full max-w-lg mx-auto p-4 rounded-lg font-bold text-xl text-white transition-colors duration-300"></button>
                 </div>
+            </div>
+
+            <!-- Summary View (Hidden by default) -->
+            <div id="summary-view" class="hidden text-center">
+                <h1 id="summary-title" class="text-4xl font-black mb-6" style="color: var(--color-accent-gold);">練習總結</h1>
+                <div class="space-y-4 text-left max-w-sm mx-auto text-lg">
+                    <div class="flex justify-between"><span id="summary-total-label">總題數:</span> <span id="summary-total" class="font-bold"></span></div>
+                    <div class="flex justify-between"><span id="summary-correct-label">答對題數:</span> <span id="summary-correct" class="font-bold"></span></div>
+                    <div class="flex justify-between"><span id="summary-accuracy-label">準確率:</span> <span id="summary-accuracy" class="font-bold" style="color: var(--color-accent-green);"></span></div>
+                    <div class="flex justify-between"><span id="summary-streak-label">最長連續答對:</span> <span id="summary-streak" class="font-bold"></span></div>
+                </div>
+                <button id="restart-button" class="mt-8 p-4 w-full max-w-sm mx-auto rounded-lg font-bold text-xl text-white" style="background-color: var(--color-accent-blue);">重新開始</button>
             </div>
         </div>
     </main>
 
+    <!-- Footer -->
+    <footer class="py-8 mt-12 border-t border-gray-800">
+        <div class="container mx-auto text-center text-sm" style="color: var(--color-text-secondary);">
+            <p id="footer-copyright">&copy; 2025 Bust the Casino. 版權所有。</p>
+            <p id="footer-disclaimer" class="mt-2">請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。</p>
+        </div>
+    </footer>
+    
+    <script src="../languages.js"></script>
+    <script src="../app.js"></script>
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const suits = ['♠', '♥', '♦', '♣'];
-        const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-
-        // DOM Elements
-        const streakEl = document.getElementById('streak');
-        const totalEl = document.getElementById('total');
-        const dealerCardsEl = document.getElementById('dealer-cards');
-        const playerCardsEl = document.getElementById('player-cards');
-        const feedbackAreaEl = document.getElementById('feedback-area');
-        const actionButtons = document.getElementById('action-buttons');
-        const controlButton = document.getElementById('control-button');
+        // --- DOM Elements ---
+        const trainerContainer = document.getElementById('trainer-container');
+        const statsView = document.getElementById('stats-view');
         const trainingSessionView = document.getElementById('training-session-view');
         const summaryView = document.getElementById('summary-view');
+        const streakText = document.getElementById('streak-text');
+        const totalText = document.getElementById('total-text');
+        const dealerHandDiv = document.getElementById('dealer-hand');
+        const playerHandDiv = document.getElementById('player-hand');
+        const feedbackView = document.getElementById('feedback-view');
+        const questionText = document.getElementById('question-text');
+        const actionButtonsContainer = document.getElementById('action-buttons');
+        const controlButton = document.getElementById('control-button');
+        const restartButton = document.getElementById('restart-button');
 
-        const summaryTotalEl = document.getElementById('summary-total');
-        const summaryCorrectEl = document.getElementById('summary-correct');
-        const summaryAccuracyEl = document.getElementById('summary-accuracy');
-        const summaryStreakEl = document.getElementById('summary-streak');
+        // --- Enums ---
+        const TrainerState = { READY: 'ready', ASKING: 'asking', SHOWING_RESULT: 'showingResult', FINISHED: 'finished' };
+        const AnswerResult = { NONE: 'none', CORRECT: 'correct', INCORRECT: 'incorrect' };
+        const Suits = { SPADES: '♠', HEARTS: '♥', DIAMONDS: '♦', CLUBS: '♣' };
+        const Ranks = { TWO: 2, THREE: 3, FOUR: 4, FIVE: 5, SIX: 6, SEVEN: 7, EIGHT: 8, NINE: 9, TEN: 10, JACK: 'J', QUEEN: 'Q', KING: 'K', ACE: 'A' };
 
-        // Game State
-        let state = 'ready'; // ready, asking, showingResult, finished
-        let deck = [];
-        let playerHand = [];
-        let dealerUpCard = [];
-        let correctAnswer = '';
-        
-        let streak = 0;
-        let totalQuestions = 0;
-        let correctAnswers = 0;
-        let longestStreak = 0;
+        // --- Game State ---
+        let state = {};
 
-        // --- Card and Deck Logic ---
+        // --- Card Creation and Logic ---
+        function createCard(rank, suit) {
+            let value;
+            if (['J', 'Q', 'K'].includes(rank)) value = 10;
+            else if (rank === 'A') value = 11;
+            else value = rank;
+            return { rank, suit, value };
+        }
+
         function createDeck() {
-            return suits.flatMap(suit => values.map(value => ({ suit, value }))).sort(() => Math.random() - 0.5);
-        }
-
-        function getCardValue(card) {
-            if (['J', 'Q', 'K'].includes(card.value)) return 10;
-            if (card.value === 'A') return 11;
-            return parseInt(card.value);
-        }
-
-        function getHandInfo(hand) {
-            let total = hand.reduce((sum, card) => sum + getCardValue(card), 0);
-            let aces = hand.filter(card => card.value === 'A').length;
-            
-            while (total > 21 && aces > 0) {
-                total -= 10;
-                aces--;
+            const suits = Object.values(Suits);
+            const ranks = Object.values(Ranks);
+            let deck = [];
+            for (const suit of suits) {
+                for (const rank of ranks) {
+                    deck.push(createCard(rank, suit));
+                }
             }
-            let isSoft = aces > 0;
-            return { total, isSoft, isPair: hand.length === 2 && getCardValue(hand[0]) === getCardValue(hand[1]) };
+            return deck.sort(() => Math.random() - 0.5);
         }
+
+        function getHandValue(hand) {
+            let value = hand.reduce((sum, card) => sum + card.value, 0);
+            let aceCount = hand.filter(card => card.rank === 'A').length;
+            while (value > 21 && aceCount > 0) {
+                value -= 10;
+                aceCount--;
+            }
+            return value;
+        }
+
+        function isSoft(hand) {
+            const value = getHandValue(hand);
+            const rawValue = hand.reduce((sum, card) => sum + card.value, 0);
+            return rawValue !== value;
+        }
+
+       function getCorrectAction(playerHand, dealerCard) {
+            const playerValue = getHandValue(playerHand);
+            const dealerValue = dealerCard.value;
+            const isPlayerSoft = isSoft(playerHand);
+            const isPair = playerHand.length === 2 && playerHand[0].rank === playerHand[1].rank;
+            const pRank = playerHand[0].rank;
+
+            if (isPair) {
+                if (pRank === 'A' || pRank === 8) return 'Split';
+                if (pRank === 10) return 'Stand';
+                if (pRank === 9) {
+                    if ([7, 10, 'A'].includes(dealerCard.rank)) return 'Stand';
+                    return 'Split';
+                }
+                if (pRank === 7) return dealerValue <= 7 ? 'Split' : 'Hit';
+                if (pRank === 6) return dealerValue <= 6 ? 'Split' : 'Hit';
+                if (pRank === 5) return dealerValue <= 9 ? 'Double' : 'Hit';
+                if (pRank === 4) return [5, 6].includes(dealerValue) ? 'Split' : 'Hit';
+                if (pRank === 3 || pRank === 2) return dealerValue <= 7 ? 'Split' : 'Hit';
+            }
+
+            if (isPlayerSoft) {
+                if (playerValue >= 19) return 'Stand';
+                if (playerValue === 18) {
+                    if (dealerValue >= 2 && dealerValue <= 6) return 'Double';
+                    if (dealerValue >= 7 && dealerValue <= 8) return 'Stand';
+                    return 'Hit';
+                }
+                if (playerValue === 17) return dealerValue >= 3 && dealerValue <= 6 ? 'Double' : 'Hit';
+                if (playerValue === 16 || playerValue === 15) return dealerValue >= 4 && dealerValue <= 6 ? 'Double' : 'Hit';
+                if (playerValue === 14 || playerValue === 13) return dealerValue >= 5 && dealerValue <= 6 ? 'Double' : 'Hit';
+            }
+
+            // Hard Totals
+            if (playerValue >= 17) return 'Stand';
+            if (playerValue >= 13 && playerValue <= 16) return dealerValue <= 6 ? 'Stand' : 'Hit';
+            if (playerValue === 12) return dealerValue >= 4 && dealerValue <= 6 ? 'Stand' : 'Hit';
+            if (playerValue === 11) return 'Double';
+            if (playerValue === 10) return dealerValue <= 9 ? 'Double' : 'Hit';
+            if (playerValue === 9) return dealerValue >= 3 && dealerValue <= 6 ? 'Double' : 'Hit';
+            
+            return 'Hit';
+        }
+
 
         // --- UI Rendering ---
         function createCardElement(card) {
-            const isRed = ['♥', '♦'].includes(card.suit);
             const cardEl = document.createElement('div');
-            cardEl.className = `card ${isRed ? 'red' : ''}`;
+            cardEl.className = 'card';
+            const suitColor = ['♥', '♦'].includes(card.suit) ? ' red' : '';
+            cardEl.className += suitColor;
+
             cardEl.innerHTML = `
-                <div class="card-corner self-start">
-                    <span class="card-value">${card.value}</span>
+                <div class="card-corner">
+                    <span class="card-value">${card.rank}</span>
                     <span class="card-suit">${card.suit}</span>
                 </div>
-                <span class="card-suit-center">${card.suit}</span>
-                <div class="card-corner self-end transform rotate-180">
-                    <span class="card-value">${card.value}</span>
+                <div class="card-suit-center">${card.suit}</div>
+                <div class="card-corner" style="transform: rotate(180deg);">
+                    <span class="card-value">${card.rank}</span>
                     <span class="card-suit">${card.suit}</span>
                 </div>
             `;
             return cardEl;
         }
-
-        function renderHands() {
-            dealerCardsEl.innerHTML = '';
-            playerCardsEl.innerHTML = '';
-            dealerUpCard.forEach(card => dealerCardsEl.appendChild(createCardElement(card)));
-            playerHand.forEach(card => playerCardsEl.appendChild(createCardElement(card)));
-        }
-
-        function updateStats() {
-            streakEl.textContent = streak;
-            totalEl.textContent = totalQuestions;
-            if(streak > longestStreak) {
-                longestStreak = streak;
-            }
-        }
-
-        function updateUIForState() {
-            trainingSessionView.classList.add('hidden');
-            summaryView.classList.add('hidden');
-
-            if (state === 'ready') {
-                trainingSessionView.classList.remove('hidden');
-                controlButton.textContent = '開始練習';
-                controlButton.className = 'w-full p-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold text-2xl transition';
-                actionButtons.querySelectorAll('button').forEach(btn => btn.disabled = true);
-                dealerCardsEl.innerHTML = '';
-                playerCardsEl.innerHTML = '';
-                feedbackAreaEl.innerHTML = '<p id="question" class="text-gray-500">㩒「開始練習」啦</p>';
-            } else if (state === 'asking') {
-                trainingSessionView.classList.remove('hidden');
-                controlButton.textContent = '結束練習';
-                controlButton.className = 'w-full p-4 bg-red-600 hover:bg-red-700 rounded-lg font-bold text-2xl transition';
-                const { isPair } = getHandInfo(playerHand);
-                actionButtons.querySelectorAll('button').forEach(btn => {
-                    btn.disabled = false;
-                    if(btn.dataset.action === 'P' && !isPair) btn.disabled = true;
-                    if(btn.dataset.action === 'D' && playerHand.length > 2) btn.disabled = true;
-                });
-                feedbackAreaEl.innerHTML = '<p id="question" class="text-2xl font-bold text-yellow-400">你應該點做？</p>';
-                renderHands();
-            } else if (state === 'showingResult') {
-                trainingSessionView.classList.remove('hidden');
-                controlButton.textContent = '下一題';
-                controlButton.className = 'w-full p-4 bg-green-500 hover:bg-green-600 rounded-lg font-bold text-2xl transition';
-                actionButtons.querySelectorAll('button').forEach(btn => btn.disabled = true);
-            } else if (state === 'finished') {
-                summaryView.classList.remove('hidden');
-                summaryTotalEl.textContent = totalQuestions;
-                summaryCorrectEl.textContent = correctAnswers;
-                const accuracy = totalQuestions > 0 ? (correctAnswers / totalQuestions * 100).toFixed(1) : 0;
-                summaryAccuracyEl.textContent = `${accuracy}%`;
-                summaryStreakEl.textContent = longestStreak;
-                controlButton.textContent = '重新練習';
-                controlButton.className = 'w-full p-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold text-2xl transition';
-            }
-        }
         
-        // --- Basic Strategy Logic (Corrected based on provided table) ---
-        function getCorrectAction(playerInfo, dealerValue) {
-            // Note: This logic assumes Surrender is NOT an option in the trainer.
-            // When surrender is the correct move, the alternative (Hit) is used instead.
-            
-            // PAIRS
-            if (playerInfo.isPair) {
-                const pVal = getCardValue(playerHand[0]);
-                if (pVal === 11 || pVal === 8) return 'P';
-                if (pVal === 10) return 'S';
-                if (pVal === 9) {
-                    if (dealerValue === 7 || dealerValue === 10 || dealerValue === 11) return 'S';
-                    return 'P';
-                }
-                if (pVal === 7) return (dealerValue <= 7) ? 'P' : 'H';
-                if (pVal === 6) return (dealerValue <= 6) ? 'P' : 'H';
-                if (pVal === 5) return (dealerValue <= 9) ? 'D' : 'H';
-                if (pVal === 4) return (dealerValue === 5 || dealerValue === 6) ? 'P' : 'H';
-                if (pVal === 2 || pVal === 3) return (dealerValue <= 7) ? 'P' : 'H';
-            }
+        function render() {
+            // Update stats
+            streakText.textContent = `連續答對: ${state.correctStreak}`;
+            totalText.textContent = `總題數: ${state.totalQuestions}`;
 
-            // SOFT HANDS
-            if (playerInfo.isSoft) {
-                if (playerInfo.total >= 20) return 'S'; // A,9
-                if (playerInfo.total === 19) { // A,8
-                    if (dealerValue === 6) return 'D'; // Double or Stand -> Double
-                    return 'S';
-                }
-                if (playerInfo.total === 18) { // A,7
-                    if (dealerValue >= 9) return 'H';
-                    if (dealerValue >= 7) return 'S';
-                    return 'D'; // Double or Stand -> Double
-                }
-                if (playerInfo.total === 17) { // A,6
-                    return (dealerValue >= 3 && dealerValue <= 6) ? 'D' : 'H';
-                }
-                if (playerInfo.total === 16 || playerInfo.total === 15) { // A,5 or A,4
-                    return (dealerValue >= 4 && dealerValue <= 6) ? 'D' : 'H';
-                }
-                if (playerInfo.total <= 14) { // A,3 or A,2
-                    return (dealerValue >= 5 && dealerValue <= 6) ? 'D' : 'H';
-                }
-            }
+            // Show/hide views
+            trainingSessionView.style.display = state.trainerState !== TrainerState.FINISHED ? 'block' : 'none';
+            summaryView.style.display = state.trainerState === TrainerState.FINISHED ? 'block' : 'none';
 
-            // HARD HANDS
-            if (playerInfo.total >= 17) return 'S';
-            if (playerInfo.total === 16) {
-                if (dealerValue >= 9 || dealerValue === 11) return 'H'; // Was Surrender
-                return (dealerValue <= 6) ? 'S' : 'H';
-            }
-            if (playerInfo.total === 15) {
-                 if (dealerValue === 10) return 'H'; // Was Surrender
-                return (dealerValue <= 6) ? 'S' : 'H';
-            }
-            if (playerInfo.total === 14 || playerInfo.total === 13) return (dealerValue <= 6) ? 'S' : 'H';
-            if (playerInfo.total === 12) return (dealerValue >= 4 && dealerValue <= 6) ? 'S' : 'H';
-            if (playerInfo.total === 11) return 'D';
-            if (playerInfo.total === 10) return (dealerValue <= 9) ? 'D' : 'H';
-            if (playerInfo.total === 9) return (dealerValue >= 3 && dealerValue <= 6) ? 'D' : 'H';
-            
-            return 'H'; // 8 or less
-        }
-
-
-        // --- Game Flow ---
-        function nextQuestion() {
-            if(deck.length < 15) deck = createDeck();
-            
-            playerHand = [deck.pop(), deck.pop()];
-            dealerUpCard = [deck.pop()];
-
-            // Re-deal if player gets Blackjack
-            if (getHandInfo(playerHand).total === 21) {
-                nextQuestion(); 
+            if (state.trainerState === TrainerState.FINISHED) {
+                // Render summary
+                document.getElementById('summary-total').textContent = state.totalQuestions;
+                document.getElementById('summary-correct').textContent = state.correctAnswers;
+                const accuracy = state.totalQuestions > 0 ? (state.correctAnswers / state.totalQuestions * 100).toFixed(1) + '%' : '0%';
+                document.getElementById('summary-accuracy').textContent = accuracy;
+                document.getElementById('summary-streak').textContent = state.longestStreak;
                 return;
             }
 
-            const playerInfo = getHandInfo(playerHand);
-            const dealerValue = getCardValue(dealerUpCard[0]);
-            correctAnswer = getCorrectAction(playerInfo, dealerValue);
-            
-            state = 'asking';
-            updateUIForState();
-        }
-        
-        function checkAnswer(chosenAction) {
-            if (state !== 'asking') return;
-            totalQuestions++;
-            let isCorrect = chosenAction === correctAnswer;
+            // Render hands
+            dealerHandDiv.innerHTML = '';
+            playerHandDiv.innerHTML = '';
+            if (state.dealerUpCard) dealerHandDiv.appendChild(createCardElement(state.dealerUpCard));
+            state.playerHand.forEach(card => playerHandDiv.appendChild(createCardElement(card)));
 
-            if (isCorrect) {
-                streak++;
-                correctAnswers++;
-                feedbackAreaEl.innerHTML = `<div class="flex items-center justify-center space-x-2 text-green-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg><span>正確！</span></div>`;
+            // Render feedback
+            feedbackView.innerHTML = '';
+            if (state.answerResult === AnswerResult.NONE) {
+                feedbackView.innerHTML = `<p id="question-text" class="text-2xl font-bold">你應該點做？</p>`;
+            } else if (state.answerResult === AnswerResult.CORRECT) {
+                feedbackView.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>`;
             } else {
-                streak = 0;
-                const correctActionText = { H: '要牌', S: '停牌', D: '加倍', P: '分牌' }[correctAnswer];
-                feedbackAreaEl.innerHTML = `<div class="flex flex-col md:flex-row items-center justify-center space-x-2 text-red-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg><span>錯誤！正確答案係: ${correctActionText}</span></div>`;
+                feedbackView.innerHTML = `
+                    <div class="text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-red-400 mx-auto" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
+                        <p class="font-bold mt-2">正確答案係: <span style="color: var(--color-accent-gold);">${state.correctAnswer}</span></p>
+                    </div>
+                `;
             }
-            state = 'showingResult';
-            updateStats();
-            updateUIForState();
+
+            // Render control button
+            actionButtonsContainer.style.pointerEvents = state.trainerState === TrainerState.ASKING ? 'auto' : 'none';
+            actionButtonsContainer.style.opacity = state.trainerState === TrainerState.ASKING ? '1' : '0.5';
+
+            switch (state.trainerState) {
+                case TrainerState.READY:
+                    controlButton.textContent = '開始練習';
+                    controlButton.style.backgroundColor = 'var(--color-accent-blue)';
+                    break;
+                case TrainerState.ASKING:
+                    controlButton.textContent = '結束練習';
+                    controlButton.style.backgroundColor = 'var(--color-accent-red)';
+                    break;
+                case TrainerState.SHOWING_RESULT:
+                    controlButton.textContent = '下一題';
+                    controlButton.style.backgroundColor = 'var(--color-accent-green)';
+                    break;
+            }
         }
 
-        function startTraining() {
-            reset();
-            nextQuestion();
+        // --- State Management ---
+        function resetState() {
+            state = {
+                trainerState: TrainerState.READY,
+                playerHand: [],
+                dealerUpCard: null,
+                correctAnswer: null,
+                answerResult: AnswerResult.NONE,
+                correctStreak: 0,
+                totalQuestions: 0,
+                correctAnswers: 0,
+                longestStreak: 0,
+                deck: createDeck()
+            };
+            // Ensure deck has enough cards
+            if(state.deck.length < 10) state.deck = createDeck();
+        }
+
+        function nextQuestion() {
+            if (state.deck.length < 10) state.deck = createDeck();
+            
+            let p1 = state.deck.pop();
+            let p2 = state.deck.pop();
+            let d = state.deck.pop();
+
+            // Reshuffle if player gets a blackjack
+            if ((p1.rank === 'A' && p2.value === 10) || (p2.rank === 'A' && p1.value === 10)) {
+                state.deck = createDeck();
+                nextQuestion();
+                return;
+            }
+
+            state.playerHand = [p1, p2];
+            state.dealerUpCard = d;
+            state.correctAnswer = getCorrectAction(state.playerHand, state.dealerUpCard);
+            state.answerResult = AnswerResult.NONE;
+            state.trainerState = TrainerState.ASKING;
+            render();
+        }
+
+        function checkAnswer(chosenAction) {
+            if (state.trainerState !== TrainerState.ASKING) return;
+            
+            state.totalQuestions++;
+
+            if (chosenAction === state.correctAnswer) {
+                state.answerResult = AnswerResult.CORRECT;
+                state.correctAnswers++;
+                state.correctStreak++;
+                if (state.correctStreak > state.longestStreak) {
+                    state.longestStreak = state.correctStreak;
+                }
+            } else {
+                state.answerResult = AnswerResult.INCORRECT;
+                state.correctStreak = 0;
+            }
+            state.trainerState = TrainerState.SHOWING_RESULT;
+            render();
         }
         
         function endTraining() {
-            state = 'finished';
-            updateStats();
-            updateUIForState();
-        }
-        
-        function reset() {
-            state = 'ready';
-            streak = 0;
-            totalQuestions = 0;
-            correctAnswers = 0;
-            longestStreak = 0;
-            deck = createDeck();
-            updateStats();
+            state.trainerState = TrainerState.FINISHED;
+            render();
         }
 
         // --- Event Listeners ---
         controlButton.addEventListener('click', () => {
-            if (state === 'ready' || state === 'finished') {
-                startTraining();
-            } else if (state === 'asking') {
-                endTraining();
-            } else if (state === 'showingResult') {
+            if (state.trainerState === TrainerState.READY || state.trainerState === TrainerState.SHOWING_RESULT) {
                 nextQuestion();
+            } else if (state.trainerState === TrainerState.ASKING) {
+                endTraining();
             }
         });
 
-        actionButtons.addEventListener('click', (e) => {
-            if (e.target.tagName === 'BUTTON' && !e.target.disabled) {
+        actionButtonsContainer.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
                 checkAnswer(e.target.dataset.action);
             }
         });
 
-        // --- Initial Setup ---
-        reset();
-        updateUIForState();
-    });
+        restartButton.addEventListener('click', () => {
+            resetState();
+            render();
+        });
+
+
+        // --- Initial Load ---
+        resetState();
+        render();
+
     </script>
-    <script src="../languages.js"></script>
-    <script src="../app.js"></script>
 </body>
 </html>
 
