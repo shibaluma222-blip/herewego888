@@ -31,6 +31,10 @@ const languages = {
         "blackjack-basic-desc": "Learn to make the mathematically optimal decision in any situation. This is the first step to beating Blackjack.",
         "blackjack-advanced-title": "Advanced Strategy",
         "blackjack-advanced-desc": "Explore the world of card counting and learn how to gain a real advantage over the house.",
+        "blackjack-strategy-trainer-title": "Basic Strategy Trainer",
+        "blackjack-strategy-trainer-desc": "Internalize the basic strategy chart through hands-on simulation, enabling instant, optimal decisions at the table.",
+        "blackjack-counting-trainer-title": "Card Counting Trainer",
+        "blackjack-counting-trainer-desc": "Train your focus and speed to accurately track the running count during a fast-paced game, mastering the shifts in advantage.",
 
         // --- Baccarat Page (baccarat.html) ---
         "baccarat-page-title": "Baccarat Section",
@@ -273,7 +277,11 @@ const languages = {
         "blackjack-basic-title": "基礎策略",
         "blackjack-basic-desc": "學習在任何情況下做出數學上的最佳決策，這是戰勝21點的第一步。",
         "blackjack-advanced-title": "進階技巧",
-        "blackjack-advanced-desc": "探索算牌の世界，了解如何利用剩餘牌的組合來獲取真正優勢。",
+        "blackjack-advanced-desc": "探索算牌的世界，了解如何利用剩餘牌的組合來獲取真正優勢。",
+        "blackjack-strategy-trainer-title": "基礎策略練習器",
+        "blackjack-strategy-trainer-desc": "透過實戰模擬，將基本策略表刻入腦中，面對任何牌局都能秒速反應。",
+        "blackjack-counting-trainer-title": "算牌練習器",
+        "blackjack-counting-trainer-desc": "訓練你嘅專注力同速度，喺快速發牌嘅過程中準確追蹤流水數，掌握賭桌上嘅優勢變化。",
 
         // --- Baccarat Page (baccarat.html) ---
         "baccarat-page-title": "百家樂專區",
@@ -486,3 +494,4 @@ const languages = {
         "uths-trips-desc": "「旅程」注係一個獨立嘅邊注，佢只係賭你最終嘅五張牌能否組成三條或以上嘅牌型。呢個注嘅莊家優勢相對較高 (約3.5%)，類似買彩票。我哋嘅主要策略唔應該受到呢個邊注嘅影響。"
     }
 };
+
