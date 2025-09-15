@@ -108,7 +108,7 @@
                         </div>
                         
                         <!-- Feedback Area -->
-                        <div id="feedback-area" class="h-16 flex items-center justify-center text-2xl font-bold">
+                        <div id="feedback-area" class="h-16 flex items-center justify-center text-xl md:text-2xl font-bold">
                             <p id="question" class="text-yellow-400">你應該點做？</p>
                         </div>
 
@@ -206,13 +206,12 @@
         function getHandInfo(hand) {
             let total = hand.reduce((sum, card) => sum + getCardValue(card), 0);
             let aces = hand.filter(card => card.value === 'A').length;
-            let isSoft = aces > 0;
             
             while (total > 21 && aces > 0) {
                 total -= 10;
                 aces--;
             }
-            isSoft = aces > 0 && total <= 21;
+            let isSoft = aces > 0;
             return { total, isSoft, isPair: hand.length === 2 && getCardValue(hand[0]) === getCardValue(hand[1]) };
         }
 
@@ -291,45 +290,87 @@
             }
         }
         
-        // --- Basic Strategy Logic (from Swift) ---
+        // --- Basic Strategy Logic (Corrected based on provided table) ---
         function getCorrectAction(playerInfo, dealerValue) {
+            // Note: This logic assumes Surrender is NOT an option in the trainer.
+            // When surrender is the correct move, the alternative (Hit) is used instead.
+            
+            // PAIRS
             if (playerInfo.isPair) {
                 const pVal = getCardValue(playerHand[0]);
                 if (pVal === 11 || pVal === 8) return 'P';
                 if (pVal === 10) return 'S';
-                if (pVal === 9) return ([7, 10, 11].includes(dealerValue)) ? 'S' : 'P';
+                if (pVal === 9) {
+                    if (dealerValue === 7 || dealerValue === 10 || dealerValue === 11) return 'S';
+                    return 'P';
+                }
                 if (pVal === 7) return (dealerValue <= 7) ? 'P' : 'H';
                 if (pVal === 6) return (dealerValue <= 6) ? 'P' : 'H';
                 if (pVal === 5) return (dealerValue <= 9) ? 'D' : 'H';
-                if (pVal === 4) return ([5, 6].includes(dealerValue)) ? 'P' : 'H';
+                if (pVal === 4) return (dealerValue === 5 || dealerValue === 6) ? 'P' : 'H';
                 if (pVal === 2 || pVal === 3) return (dealerValue <= 7) ? 'P' : 'H';
             }
+
+            // SOFT HANDS
             if (playerInfo.isSoft) {
-                if (playerInfo.total >= 19) return 'S';
-                if (playerInfo.total === 18) return (dealerValue >= 2 && dealerValue <= 6) ? 'D' : 'S';
-                if (playerInfo.total === 17) return (dealerValue >= 3 && dealerValue <= 6) ? 'D' : 'H';
-                if (playerInfo.total <= 16) return (dealerValue >= 4 && dealerValue <= 6) ? 'D' : 'H';
+                if (playerInfo.total >= 20) return 'S'; // A,9
+                if (playerInfo.total === 19) { // A,8
+                    if (dealerValue === 6) return 'D'; // Double or Stand -> Double
+                    return 'S';
+                }
+                if (playerInfo.total === 18) { // A,7
+                    if (dealerValue >= 9) return 'H';
+                    if (dealerValue >= 7) return 'S';
+                    return 'D'; // Double or Stand -> Double
+                }
+                if (playerInfo.total === 17) { // A,6
+                    return (dealerValue >= 3 && dealerValue <= 6) ? 'D' : 'H';
+                }
+                if (playerInfo.total === 16 || playerInfo.total === 15) { // A,5 or A,4
+                    return (dealerValue >= 4 && dealerValue <= 6) ? 'D' : 'H';
+                }
+                if (playerInfo.total <= 14) { // A,3 or A,2
+                    return (dealerValue >= 5 && dealerValue <= 6) ? 'D' : 'H';
+                }
             }
+
+            // HARD HANDS
             if (playerInfo.total >= 17) return 'S';
-            if (playerInfo.total >= 13 && playerInfo.total <= 16) return (dealerValue <= 6) ? 'S' : 'H';
+            if (playerInfo.total === 16) {
+                if (dealerValue >= 9 || dealerValue === 11) return 'H'; // Was Surrender
+                return (dealerValue <= 6) ? 'S' : 'H';
+            }
+            if (playerInfo.total === 15) {
+                 if (dealerValue === 10) return 'H'; // Was Surrender
+                return (dealerValue <= 6) ? 'S' : 'H';
+            }
+            if (playerInfo.total === 14 || playerInfo.total === 13) return (dealerValue <= 6) ? 'S' : 'H';
             if (playerInfo.total === 12) return (dealerValue >= 4 && dealerValue <= 6) ? 'S' : 'H';
             if (playerInfo.total === 11) return 'D';
             if (playerInfo.total === 10) return (dealerValue <= 9) ? 'D' : 'H';
             if (playerInfo.total === 9) return (dealerValue >= 3 && dealerValue <= 6) ? 'D' : 'H';
-            return 'H';
+            
+            return 'H'; // 8 or less
         }
+
 
         // --- Game Flow ---
         function nextQuestion() {
-            if(deck.length < 10) deck = createDeck();
+            if(deck.length < 15) deck = createDeck();
+            
             playerHand = [deck.pop(), deck.pop()];
             dealerUpCard = [deck.pop()];
+
+            // Re-deal if player gets Blackjack
             if (getHandInfo(playerHand).total === 21) {
-                nextQuestion(); return;
+                nextQuestion(); 
+                return;
             }
+
             const playerInfo = getHandInfo(playerHand);
             const dealerValue = getCardValue(dealerUpCard[0]);
             correctAnswer = getCorrectAction(playerInfo, dealerValue);
+            
             state = 'asking';
             updateUIForState();
         }
@@ -346,7 +387,7 @@
             } else {
                 streak = 0;
                 const correctActionText = { H: '要牌', S: '停牌', D: '加倍', P: '分牌' }[correctAnswer];
-                feedbackAreaEl.innerHTML = `<div class="flex items-center justify-center space-x-2 text-red-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg><span>錯誤！正確答案係: ${correctActionText}</span></div>`;
+                feedbackAreaEl.innerHTML = `<div class="flex flex-col md:flex-row items-center justify-center space-x-2 text-red-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg><span>錯誤！正確答案係: ${correctActionText}</span></div>`;
             }
             state = 'showingResult';
             updateStats();
@@ -374,6 +415,7 @@
             updateStats();
         }
 
+        // --- Event Listeners ---
         controlButton.addEventListener('click', () => {
             if (state === 'ready' || state === 'finished') {
                 startTraining();
@@ -390,6 +432,7 @@
             }
         });
 
+        // --- Initial Setup ---
         reset();
         updateUIForState();
     });
