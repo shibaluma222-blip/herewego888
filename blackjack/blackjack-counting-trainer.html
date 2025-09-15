@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>21點算牌練習器 - Bust the Casino</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --color-bg-primary: #1A1D24;
+            --color-bg-secondary: #2C323A;
+            --color-text-primary: #EAEAEA;
+            --color-text-secondary: #a0aec0;
+            --color-accent-blue: #4A90E2;
+            --color-accent-gold: #F1C40F;
+        }
+        body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
+        .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
+        .card {
+            width: 100px;
+            height: 140px;
+            border-radius: 8px;
+            background-color: white;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 8px;
+            font-size: 24px;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            position: absolute;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        .card.red { color: #E53E3E; }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Header -->
+    <header class="sticky-nav border-b border-gray-700/50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="../index.html" class="flex items-center space-x-3">
+                <img src="../assets/images/logo.png" alt="Bust the Casino Logo" class="h-10">
+                <span id="nav-brand-text" class="text-2xl font-black font-heading tracking-wider" style="color: var(--color-accent-gold);">BUST THE CASINO</span>
+            </a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
+                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
+            </div>
+            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-md mx-auto text-center">
+            <h1 id="bkc-title" class="text-3xl md:text-4xl font-black">算牌練習器 (Hi-Lo)</h1>
+            <p id="bkc-subtitle" class="mt-2 text-gray-400">訓練你嘅速度同準確度</p>
+            
+            <div id="trainer-container" class="mt-8 p-6 bg-gray-800 rounded-lg min-h-[400px] flex flex-col justify-center">
+                <!-- Ready Screen -->
+                <div id="ready-screen">
+                    <div class="space-y-6">
+                        <p id="bkc-instructions" class="text-lg">當牌出現時，心中默數流水數。練習結束後，輸入最終結果。</p>
+                        <div>
+                            <label for="speed-slider" class="block mb-2" id="bkc-speed-label">速度: <span id="speed-value">1.5</span> 秒/張</label>
+                            <input id="speed-slider" type="range" min="0.5" max="3.0" value="1.5" step="0.1" class="w-full">
+                        </div>
+                        <button id="start-button" class="w-full p-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold text-2xl transition">開始</button>
+                    </div>
+                </div>
+
+                <!-- Playing Screen -->
+                <div id="playing-screen" class="hidden relative h-48">
+                    <div id="card-display-area" class="w-full h-full flex items-center justify-center">
+                        <!-- Cards will be injected here by JS -->
+                    </div>
+                    <button id="stop-button" class="absolute bottom-0 right-0 p-2 bg-red-600 rounded-lg">停止</button>
+                </div>
+                
+                <!-- Answer Screen -->
+                <div id="answer-screen" class="hidden">
+                     <div class="space-y-4">
+                        <label for="rc-input" class="block text-xl" id="bkc-question-label">最終流水數係幾多？</label>
+                        <input id="rc-input" type="number" class="w-full text-center text-5xl p-4 bg-gray-900 rounded-lg text-white font-mono" placeholder="RC">
+                        <button id="submit-button" class="w-full p-4 bg-green-600 hover:bg-green-700 rounded-lg font-bold text-2xl transition">提交</button>
+                    </div>
+                </div>
+
+                <!-- Result Screen -->
+                <div id="result-screen" class="hidden">
+                    <div class="space-y-4">
+                        <div id="result-feedback"></div>
+                        <p class="text-xl">正確答案係: <span id="correct-rc" class="font-bold text-2xl"></span></p>
+                        <button id="restart-button" class="w-full p-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold text-2xl transition">重新開始</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Game logic will go here
+    </script>
+    <script src="../languages.js"></script>
+    <script src="../app.js"></script>
+</body>
+</html>
