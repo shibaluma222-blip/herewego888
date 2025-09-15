@@ -24,24 +24,40 @@
         body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
         .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
         .card {
-            width: 80px;
-            height: 112px;
+            width: 85px;
+            height: 125px;
             border-radius: 8px;
-            background-color: white;
-            color: black;
+            background-color: #f8f9fa;
+            color: #212529;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 4px;
-            font-size: 20px;
-            font-weight: 600;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            padding: 6px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 6px 20px rgba(0,0,0,0.19);
             position: relative;
+            user-select: none;
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
         }
         .card.red { color: var(--color-accent-red); }
-        .card-value { line-height: 1; }
-        .card-suit { font-size: 16px; line-height: 1; }
-        .card-suit-center { font-size: 32px; text-align: center; }
+        .card-corner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1;
+        }
+        .card-value { font-size: 22px; font-weight: 700; }
+        .card-suit { font-size: 18px; }
+        .card-suit-center {
+            font-size: 44px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -67,45 +83,72 @@
             <h1 id="bkt-title" class="text-3xl md:text-4xl font-black">基礎策略練習器</h1>
             <p id="bkt-subtitle" class="mt-2 text-gray-400">練習並鞏固你嘅21點基本策略</p>
             
-            <div id="trainer-container" class="mt-8 p-6 bg-gray-800 rounded-lg">
-                <!-- Stats Display -->
-                <div class="flex justify-between items-center text-lg mb-6">
-                    <div>
-                        <span id="bkt-streak-label">連續答對：</span>
-                        <span id="streak" class="font-bold text-orange-400">0</span>
+            <div id="trainer-container" class="mt-8 p-6 bg-gray-800 rounded-lg min-h-[600px] flex flex-col">
+                
+                <!-- Training Session View -->
+                <div id="training-session-view" class="flex-grow flex flex-col">
+                    <!-- Stats Display -->
+                    <div class="flex justify-between items-center text-lg mb-6">
+                        <div>
+                            <span id="bkt-streak-label">連續答對：</span>
+                            <span id="streak" class="font-bold text-orange-400">0</span>
+                        </div>
+                        <div>
+                            <span id="bkt-total-label">總數：</span>
+                            <span id="total" class="font-bold">0</span>
+                        </div>
                     </div>
-                    <div>
-                        <span id="bkt-total-label">總數：</span>
-                        <span id="total" class="font-bold">0</span>
+
+                    <!-- Game Area -->
+                    <div class="space-y-6 flex-grow flex flex-col justify-around">
+                        <!-- Dealer's Hand -->
+                        <div>
+                            <h2 id="bkt-dealer-hand" class="text-xl font-bold mb-2">莊家</h2>
+                            <div id="dealer-cards" class="flex justify-center items-center space-x-[-45px] h-32"></div>
+                        </div>
+                        
+                        <!-- Feedback Area -->
+                        <div id="feedback-area" class="h-16 flex items-center justify-center text-2xl font-bold">
+                            <p id="question" class="text-yellow-400">你應該點做？</p>
+                        </div>
+
+                        <!-- Player's Hand -->
+                        <div>
+                            <h2 id="bkt-player-hand" class="text-xl font-bold mb-2">玩家</h2>
+                            <div id="player-cards" class="flex justify-center items-center space-x-[-45px] h-32"></div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div id="action-buttons" class="mt-6 grid grid-cols-2 gap-4">
+                        <button data-action="H" class="p-4 bg-red-600 hover:bg-red-700 rounded-lg font-bold text-xl transition disabled:opacity-50" id="bkt-hit">要牌</button>
+                        <button data-action="S" class="p-4 bg-yellow-500 hover:bg-yellow-600 text-black rounded-lg font-bold text-xl transition disabled:opacity-50" id="bkt-stand">停牌</button>
+                        <button data-action="D" class="p-4 bg-green-500 hover:bg-green-600 rounded-lg font-bold text-xl transition disabled:opacity-50" id="bkt-double">加倍</button>
+                        <button data-action="P" class="p-4 bg-blue-500 hover:bg-blue-600 rounded-lg font-bold text-xl transition disabled:opacity-50" id="bkt-split">分牌</button>
                     </div>
                 </div>
 
-                <!-- Game Area -->
-                <div class="space-y-6 min-h-[350px] flex flex-col justify-around">
-                    <!-- Dealer's Hand -->
-                    <div>
-                        <h2 id="bkt-dealer-hand" class="text-xl font-bold mb-2">莊家</h2>
-                        <div id="dealer-cards" class="flex justify-center items-center space-x-2 h-28"></div>
+                <!-- Summary View -->
+                <div id="summary-view" class="hidden flex-grow flex-col justify-center items-center space-y-8">
+                    <h2 id="bkt-summary-title" class="text-4xl font-black text-yellow-400">訓練總結</h2>
+                    <div class="w-full max-w-sm space-y-4 text-left p-6 bg-gray-900 rounded-lg">
+                        <div class="flex justify-between text-xl">
+                            <span id="bkt-summary-total">總題數：</span>
+                            <span id="summary-total" class="font-bold">0</span>
+                        </div>
+                        <div class="flex justify-between text-xl">
+                            <span id="bkt-summary-correct">答對題數：</span>
+                            <span id="summary-correct" class="font-bold text-green-400">0</span>
+                        </div>
+                         <div class="flex justify-between text-xl">
+                            <span id="bkt-summary-accuracy">準確率：</span>
+                            <span id="summary-accuracy" class="font-bold text-green-400">0%</span>
+                        </div>
+                        <div class="flex justify-between text-xl">
+                            <span id="bkt-summary-streak">最長連續答對：</span>
+                            <span id="summary-streak" class="font-bold text-orange-400">0</span>
+                        </div>
                     </div>
-                    
-                    <!-- Feedback Area -->
-                    <div id="feedback-area" class="h-16 flex items-center justify-center">
-                        <p id="question" class="text-2xl font-bold text-yellow-400">你應該點做？</p>
-                    </div>
-
-                    <!-- Player's Hand -->
-                    <div>
-                        <h2 id="bkt-player-hand" class="text-xl font-bold mb-2">玩家</h2>
-                        <div id="player-cards" class="flex justify-center items-center space-x-2 h-28"></div>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div id="action-buttons" class="mt-6 grid grid-cols-2 gap-4">
-                    <button data-action="H" class="p-4 bg-red-600 hover:bg-red-700 rounded-lg font-bold text-xl transition disabled:opacity-50" id="bkt-hit">要牌</button>
-                    <button data-action="S" class="p-4 bg-yellow-500 hover:bg-yellow-600 text-black rounded-lg font-bold text-xl transition disabled:opacity-50" id="bkt-stand">停牌</button>
-                    <button data-action="D" class="p-4 bg-green-500 hover:bg-green-600 rounded-lg font-bold text-xl transition disabled:opacity-50" id="bkt-double">加倍</button>
-                    <button data-action="P" class="p-4 bg-blue-500 hover:bg-blue-600 rounded-lg font-bold text-xl transition disabled:opacity-50" id="bkt-split">分牌</button>
                 </div>
 
                 <!-- Control Button -->
@@ -117,9 +160,242 @@
     </main>
 
     <script>
-        // Game logic will go here
+    document.addEventListener('DOMContentLoaded', () => {
+        const suits = ['♠', '♥', '♦', '♣'];
+        const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+
+        // DOM Elements
+        const streakEl = document.getElementById('streak');
+        const totalEl = document.getElementById('total');
+        const dealerCardsEl = document.getElementById('dealer-cards');
+        const playerCardsEl = document.getElementById('player-cards');
+        const feedbackAreaEl = document.getElementById('feedback-area');
+        const actionButtons = document.getElementById('action-buttons');
+        const controlButton = document.getElementById('control-button');
+        const trainingSessionView = document.getElementById('training-session-view');
+        const summaryView = document.getElementById('summary-view');
+
+        const summaryTotalEl = document.getElementById('summary-total');
+        const summaryCorrectEl = document.getElementById('summary-correct');
+        const summaryAccuracyEl = document.getElementById('summary-accuracy');
+        const summaryStreakEl = document.getElementById('summary-streak');
+
+        // Game State
+        let state = 'ready'; // ready, asking, showingResult, finished
+        let deck = [];
+        let playerHand = [];
+        let dealerUpCard = [];
+        let correctAnswer = '';
+        
+        let streak = 0;
+        let totalQuestions = 0;
+        let correctAnswers = 0;
+        let longestStreak = 0;
+
+        // --- Card and Deck Logic ---
+        function createDeck() {
+            return suits.flatMap(suit => values.map(value => ({ suit, value }))).sort(() => Math.random() - 0.5);
+        }
+
+        function getCardValue(card) {
+            if (['J', 'Q', 'K'].includes(card.value)) return 10;
+            if (card.value === 'A') return 11;
+            return parseInt(card.value);
+        }
+
+        function getHandInfo(hand) {
+            let total = hand.reduce((sum, card) => sum + getCardValue(card), 0);
+            let aces = hand.filter(card => card.value === 'A').length;
+            let isSoft = aces > 0;
+            
+            while (total > 21 && aces > 0) {
+                total -= 10;
+                aces--;
+            }
+            isSoft = aces > 0 && total <= 21;
+            return { total, isSoft, isPair: hand.length === 2 && getCardValue(hand[0]) === getCardValue(hand[1]) };
+        }
+
+        // --- UI Rendering ---
+        function createCardElement(card) {
+            const isRed = ['♥', '♦'].includes(card.suit);
+            const cardEl = document.createElement('div');
+            cardEl.className = `card ${isRed ? 'red' : ''}`;
+            cardEl.innerHTML = `
+                <div class="card-corner self-start">
+                    <span class="card-value">${card.value}</span>
+                    <span class="card-suit">${card.suit}</span>
+                </div>
+                <span class="card-suit-center">${card.suit}</span>
+                <div class="card-corner self-end transform rotate-180">
+                    <span class="card-value">${card.value}</span>
+                    <span class="card-suit">${card.suit}</span>
+                </div>
+            `;
+            return cardEl;
+        }
+
+        function renderHands() {
+            dealerCardsEl.innerHTML = '';
+            playerCardsEl.innerHTML = '';
+            dealerUpCard.forEach(card => dealerCardsEl.appendChild(createCardElement(card)));
+            playerHand.forEach(card => playerCardsEl.appendChild(createCardElement(card)));
+        }
+
+        function updateStats() {
+            streakEl.textContent = streak;
+            totalEl.textContent = totalQuestions;
+            if(streak > longestStreak) {
+                longestStreak = streak;
+            }
+        }
+
+        function updateUIForState() {
+            trainingSessionView.classList.add('hidden');
+            summaryView.classList.add('hidden');
+
+            if (state === 'ready') {
+                trainingSessionView.classList.remove('hidden');
+                controlButton.textContent = '開始練習';
+                controlButton.className = 'w-full p-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold text-2xl transition';
+                actionButtons.querySelectorAll('button').forEach(btn => btn.disabled = true);
+                dealerCardsEl.innerHTML = '';
+                playerCardsEl.innerHTML = '';
+                feedbackAreaEl.innerHTML = '<p id="question" class="text-gray-500">㩒「開始練習」啦</p>';
+            } else if (state === 'asking') {
+                trainingSessionView.classList.remove('hidden');
+                controlButton.textContent = '結束練習';
+                controlButton.className = 'w-full p-4 bg-red-600 hover:bg-red-700 rounded-lg font-bold text-2xl transition';
+                const { isPair } = getHandInfo(playerHand);
+                actionButtons.querySelectorAll('button').forEach(btn => {
+                    btn.disabled = false;
+                    if(btn.dataset.action === 'P' && !isPair) btn.disabled = true;
+                    if(btn.dataset.action === 'D' && playerHand.length > 2) btn.disabled = true;
+                });
+                feedbackAreaEl.innerHTML = '<p id="question" class="text-2xl font-bold text-yellow-400">你應該點做？</p>';
+                renderHands();
+            } else if (state === 'showingResult') {
+                trainingSessionView.classList.remove('hidden');
+                controlButton.textContent = '下一題';
+                controlButton.className = 'w-full p-4 bg-green-500 hover:bg-green-600 rounded-lg font-bold text-2xl transition';
+                actionButtons.querySelectorAll('button').forEach(btn => btn.disabled = true);
+            } else if (state === 'finished') {
+                summaryView.classList.remove('hidden');
+                summaryTotalEl.textContent = totalQuestions;
+                summaryCorrectEl.textContent = correctAnswers;
+                const accuracy = totalQuestions > 0 ? (correctAnswers / totalQuestions * 100).toFixed(1) : 0;
+                summaryAccuracyEl.textContent = `${accuracy}%`;
+                summaryStreakEl.textContent = longestStreak;
+                controlButton.textContent = '重新練習';
+                controlButton.className = 'w-full p-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold text-2xl transition';
+            }
+        }
+        
+        // --- Basic Strategy Logic (from Swift) ---
+        function getCorrectAction(playerInfo, dealerValue) {
+            if (playerInfo.isPair) {
+                const pVal = getCardValue(playerHand[0]);
+                if (pVal === 11 || pVal === 8) return 'P';
+                if (pVal === 10) return 'S';
+                if (pVal === 9) return ([7, 10, 11].includes(dealerValue)) ? 'S' : 'P';
+                if (pVal === 7) return (dealerValue <= 7) ? 'P' : 'H';
+                if (pVal === 6) return (dealerValue <= 6) ? 'P' : 'H';
+                if (pVal === 5) return (dealerValue <= 9) ? 'D' : 'H';
+                if (pVal === 4) return ([5, 6].includes(dealerValue)) ? 'P' : 'H';
+                if (pVal === 2 || pVal === 3) return (dealerValue <= 7) ? 'P' : 'H';
+            }
+            if (playerInfo.isSoft) {
+                if (playerInfo.total >= 19) return 'S';
+                if (playerInfo.total === 18) return (dealerValue >= 2 && dealerValue <= 6) ? 'D' : 'S';
+                if (playerInfo.total === 17) return (dealerValue >= 3 && dealerValue <= 6) ? 'D' : 'H';
+                if (playerInfo.total <= 16) return (dealerValue >= 4 && dealerValue <= 6) ? 'D' : 'H';
+            }
+            if (playerInfo.total >= 17) return 'S';
+            if (playerInfo.total >= 13 && playerInfo.total <= 16) return (dealerValue <= 6) ? 'S' : 'H';
+            if (playerInfo.total === 12) return (dealerValue >= 4 && dealerValue <= 6) ? 'S' : 'H';
+            if (playerInfo.total === 11) return 'D';
+            if (playerInfo.total === 10) return (dealerValue <= 9) ? 'D' : 'H';
+            if (playerInfo.total === 9) return (dealerValue >= 3 && dealerValue <= 6) ? 'D' : 'H';
+            return 'H';
+        }
+
+        // --- Game Flow ---
+        function nextQuestion() {
+            if(deck.length < 10) deck = createDeck();
+            playerHand = [deck.pop(), deck.pop()];
+            dealerUpCard = [deck.pop()];
+            if (getHandInfo(playerHand).total === 21) {
+                nextQuestion(); return;
+            }
+            const playerInfo = getHandInfo(playerHand);
+            const dealerValue = getCardValue(dealerUpCard[0]);
+            correctAnswer = getCorrectAction(playerInfo, dealerValue);
+            state = 'asking';
+            updateUIForState();
+        }
+        
+        function checkAnswer(chosenAction) {
+            if (state !== 'asking') return;
+            totalQuestions++;
+            let isCorrect = chosenAction === correctAnswer;
+
+            if (isCorrect) {
+                streak++;
+                correctAnswers++;
+                feedbackAreaEl.innerHTML = `<div class="flex items-center justify-center space-x-2 text-green-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg><span>正確！</span></div>`;
+            } else {
+                streak = 0;
+                const correctActionText = { H: '要牌', S: '停牌', D: '加倍', P: '分牌' }[correctAnswer];
+                feedbackAreaEl.innerHTML = `<div class="flex items-center justify-center space-x-2 text-red-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg><span>錯誤！正確答案係: ${correctActionText}</span></div>`;
+            }
+            state = 'showingResult';
+            updateStats();
+            updateUIForState();
+        }
+
+        function startTraining() {
+            reset();
+            nextQuestion();
+        }
+        
+        function endTraining() {
+            state = 'finished';
+            updateStats();
+            updateUIForState();
+        }
+        
+        function reset() {
+            state = 'ready';
+            streak = 0;
+            totalQuestions = 0;
+            correctAnswers = 0;
+            longestStreak = 0;
+            deck = createDeck();
+            updateStats();
+        }
+
+        controlButton.addEventListener('click', () => {
+            if (state === 'ready' || state === 'finished') {
+                startTraining();
+            } else if (state === 'asking') {
+                endTraining();
+            } else if (state === 'showingResult') {
+                nextQuestion();
+            }
+        });
+
+        actionButtons.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON' && !e.target.disabled) {
+                checkAnswer(e.target.dataset.action);
+            }
+        });
+
+        reset();
+        updateUIForState();
+    });
     </script>
     <script src="../languages.js"></script>
     <script src="../app.js"></script>
 </body>
 </html>
+
