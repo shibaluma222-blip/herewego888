@@ -29,10 +29,6 @@
             border-radius: 8px;
             background-color: #f8f9fa;
             color: #212529;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 6px 20px rgba(0,0,0,0.19);
             position: relative;
             user-select: none;
@@ -40,7 +36,23 @@
         }
         .card:hover { transform: translateY(-5px); }
         .card.red { color: var(--color-accent-red); }
-        .card-corner { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+        .card-corner { 
+            position: absolute;
+            width: 30px; /* Give a fixed width for alignment */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1;
+        }
+        .card-corner.top-left {
+            top: 8px;
+            left: 2px;
+        }
+        .card-corner.bottom-right {
+            bottom: 8px;
+            right: 2px;
+            transform: rotate(180deg);
+        }
         .card-value { font-size: 24px; font-weight: 700; }
         .card-suit { font-size: 20px; }
         .card-suit-center { font-size: 50px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.9; }
@@ -201,9 +213,10 @@
         }
 
         function isSoft(hand) {
-            const value = getHandValue(hand);
+            const hasAce = hand.some(card => card.rank === 'A');
+            if (!hasAce) return false;
             const rawValue = hand.reduce((sum, card) => sum + card.value, 0);
-            return rawValue !== value;
+            return rawValue > getHandValue(hand);
         }
 
        function getCorrectAction(playerHand, dealerCard) {
@@ -215,7 +228,7 @@
 
             if (isPair) {
                 if (pRank === 'A' || pRank === 8) return 'Split';
-                if (pRank === 10) return 'Stand';
+                if (pRank === 10 || pRank === 'J' || pRank === 'Q' || pRank === 'K') return 'Stand';
                 if (pRank === 9) {
                     if ([7, 10, 'A'].includes(dealerCard.rank)) return 'Stand';
                     return 'Split';
@@ -234,18 +247,18 @@
                     if (dealerValue >= 7 && dealerValue <= 8) return 'Stand';
                     return 'Hit';
                 }
-                if (playerValue === 17) return dealerValue >= 3 && dealerValue <= 6 ? 'Double' : 'Hit';
-                if (playerValue === 16 || playerValue === 15) return dealerValue >= 4 && dealerValue <= 6 ? 'Double' : 'Hit';
-                if (playerValue === 14 || playerValue === 13) return dealerValue >= 5 && dealerValue <= 6 ? 'Double' : 'Hit';
+                if (playerValue === 17) return (dealerValue >= 3 && dealerValue <= 6) ? 'Double' : 'Hit';
+                if (playerValue === 16 || playerValue === 15) return (dealerValue >= 4 && dealerValue <= 6) ? 'Double' : 'Hit';
+                if (playerValue === 14 || playerValue === 13) return (dealerValue >= 5 && dealerValue <= 6) ? 'Double' : 'Hit';
             }
 
             // Hard Totals
             if (playerValue >= 17) return 'Stand';
             if (playerValue >= 13 && playerValue <= 16) return dealerValue <= 6 ? 'Stand' : 'Hit';
-            if (playerValue === 12) return dealerValue >= 4 && dealerValue <= 6 ? 'Stand' : 'Hit';
+            if (playerValue === 12) return (dealerValue >= 4 && dealerValue <= 6) ? 'Stand' : 'Hit';
             if (playerValue === 11) return 'Double';
             if (playerValue === 10) return dealerValue <= 9 ? 'Double' : 'Hit';
-            if (playerValue === 9) return dealerValue >= 3 && dealerValue <= 6 ? 'Double' : 'Hit';
+            if (playerValue === 9) return (dealerValue >= 3 && dealerValue <= 6) ? 'Double' : 'Hit';
             
             return 'Hit';
         }
@@ -259,14 +272,18 @@
             cardEl.className += suitColor;
 
             cardEl.innerHTML = `
-                <div class="card-corner">
-                    <span class="card-value">${card.rank}</span>
-                    <span class="card-suit">${card.suit}</span>
+                <div class="card-corner top-left">
+                    <div>
+                        <span class="card-value">${card.rank}</span>
+                        <span class="card-suit">${card.suit}</span>
+                    </div>
                 </div>
                 <div class="card-suit-center">${card.suit}</div>
-                <div class="card-corner" style="transform: rotate(180deg);">
-                    <span class="card-value">${card.rank}</span>
-                    <span class="card-suit">${card.suit}</span>
+                <div class="card-corner bottom-right">
+                    <div>
+                        <span class="card-value">${card.rank}</span>
+                        <span class="card-suit">${card.suit}</span>
+                    </div>
                 </div>
             `;
             return cardEl;
