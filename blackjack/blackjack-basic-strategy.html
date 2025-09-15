@@ -47,7 +47,7 @@
                     <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
                 </div>
             </div>
-            <button class="md-hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
         </nav>
     </header>
 
@@ -76,7 +76,7 @@
                     <div>
                         <h2 id="bks-hard-title" class="text-2xl font-bold text-center mb-4">硬點 (Hard Totals)</h2>
                         <table class="w-full text-xs md:text-sm strategy-table">
-                            <thead><tr><th></th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr></thead>
+                            <thead><tr><th id="bks-dealer-card">玩家手牌</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr></thead>
                             <tbody>
                                 <tr><td>17-20</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td></tr>
                                 <tr><td>16</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
@@ -87,14 +87,14 @@
                                 <tr><td>11</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td></tr>
                                 <tr><td>10</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
                                 <tr><td>9</td><td class="cell-h">H</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td id="bks-dealer-card">5-8</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
+                                <tr><td>5-8</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
                             </tbody>
                         </table>
                     </div>
                     <div>
                         <h2 id="bks-soft-title" class="text-2xl font-bold text-center mb-4">軟點 (Soft Totals)</h2>
                         <table class="w-full text-xs md:text-sm strategy-table">
-                            <thead><tr><th></th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr></thead>
+                            <thead><tr><th id="bks-dealer-card-2">玩家手牌</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr></thead>
                             <tbody>
                                 <tr><td>A,9</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td></tr>
                                 <tr><td>A,8</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-d">D</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td></tr>
@@ -103,12 +103,12 @@
                                 <tr><td>A,5</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
                                 <tr><td>A,4</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
                                 <tr><td>A,3</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td id="bks-dealer-card-2">A,2</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
+                                <tr><td>A,2</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
                             </tbody>
                         </table>
                         <h2 id="bks-pairs-title" class="text-2xl font-bold text-center mb-4 mt-10">對子 (Pairs)</h2>
                         <table class="w-full text-xs md:text-sm strategy-table">
-                            <thead><tr><th></th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr></thead>
+                            <thead><tr><th id="bks-dealer-card-3">玩家手牌</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr></thead>
                             <tbody>
                                 <tr><td>A,A</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td></tr>
                                 <tr><td>10,10</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td></tr>
@@ -119,7 +119,7 @@
                                 <tr><td>5,5</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
                                 <tr><td>4,4</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
                                 <tr><td>3,3</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td id="bks-dealer-card-3">2,2</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
+                                <tr><td>2,2</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
                             </tbody>
                         </table>
                     </div>
