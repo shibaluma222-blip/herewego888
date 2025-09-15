@@ -1,8 +1,7 @@
 const languages = {
     en: {
         // --- Global (Navigation & Footer) ---
-        "nav-brand": "BUST THE CASINO",
-        "nav-games": "Games",
+        "nav-brand-text": "BUST THE CASINO",
         "nav-strategy": "Strategy",
         "nav-tools": "Tools",
         "nav-about": "About Us",
@@ -10,12 +9,12 @@ const languages = {
         "footer-disclaimer": "Please gamble responsibly. This website is for academic and entertainment purposes only.",
 
         // --- Home Page (index.html) ---
-        "hero-title-1": "STOP RELYING ON LUCK",
-        "hero-title-2": "BEAT THE CASINO WITH STRATEGY",
+        "hero-title-1": "MASTER THE TABLE",
+        "hero-title-2": "BUST THE CASINO",
         "hero-subtitle": "We provide data-driven game strategies, tutorials, and practical tools to make you a smarter player.",
         "hero-button": "Explore Game Strategies",
-        "games-title": "CHOOSE YOUR GAME",
-        "games-subtitle": "Start with the most popular games to master the core strategies.",
+        "strategy-title": "STRATEGY CENTER",
+        "strategy-subtitle": "Start with the most popular games to master the core strategies.",
         "blackjack-title": "Blackjack",
         "blackjack-desc": "Known as the most skill-based game in the casino. Learn basic strategy and card counting to minimize the house edge.",
         "baccarat-title": "Baccarat",
@@ -245,8 +244,7 @@ const languages = {
     },
     zh: {
         // --- Global (Navigation & Footer) ---
-        "nav-brand": "BUST THE CASINO",
-        "nav-games": "遊戲專區",
+        "nav-brand-text": "BUST THE CASINO",
         "nav-strategy": "策略中心",
         "nav-tools": "實戰工具",
         "nav-about": "關於我們",
@@ -254,12 +252,12 @@ const languages = {
         "footer-disclaimer": "請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。",
         
         // --- Home Page (index.html) ---
-        "hero-title-1": "唔再靠運氣",
-        "hero-title-2": "用策略戰勝賭場",
+        "hero-title-1": "掌控賭桌",
+        "hero-title-2": "擊潰賭場",
         "hero-subtitle": "我們提供基於數學和數據的遊戲策略、教學和實戰工具，讓你成為更精明的玩家。",
         "hero-button": "探索遊戲策略",
-        "games-title": "選擇你的遊戲",
-        "games-subtitle": "從最受歡迎的遊戲開始，掌握核心策略。",
+        "strategy-title": "策略中心",
+        "strategy-subtitle": "從最受歡迎的遊戲開始，掌握核心策略。",
         "blackjack-title": "21點",
         "blackjack-desc": "被公認為賭場中最能以技術取勝的遊戲。學習基本策略和算牌技巧，將莊家優勢降到最低。",
         "baccarat-title": "百家樂",
@@ -275,7 +273,7 @@ const languages = {
         "blackjack-basic-title": "基礎策略",
         "blackjack-basic-desc": "學習在任何情況下做出數學上的最佳決策，這是戰勝21點的第一步。",
         "blackjack-advanced-title": "進階技巧",
-        "blackjack-advanced-desc": "探索算牌的世界，了解如何利用剩餘牌的組合來獲取真正優勢。",
+        "blackjack-advanced-desc": "探索算牌の世界，了解如何利用剩餘牌的組合來獲取真正優勢。",
 
         // --- Baccarat Page (baccarat.html) ---
         "baccarat-page-title": "百家樂專區",
@@ -488,4 +486,3 @@ const languages = {
         "uths-trips-desc": "「旅程」注係一個獨立嘅邊注，佢只係賭你最終嘅五張牌能否組成三條或以上嘅牌型。呢個注嘅莊家優勢相對較高 (約3.5%)，類似買彩票。我哋嘅主要策略唔應該受到呢個邊注嘅影響。"
     }
 };
-
