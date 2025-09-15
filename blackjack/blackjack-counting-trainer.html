@@ -29,17 +29,29 @@
             border-radius: 8px;
             background-color: #f8f9fa;
             color: #212529;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 6px 20px rgba(0,0,0,0.19);
             position: absolute;
             user-select: none;
             transition: opacity 0.3s ease-out, transform 0.3s ease-out;
         }
         .card.red { color: var(--color-accent-red); }
-        .card-corner { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+        .card-corner { 
+            position: absolute;
+            width: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1;
+        }
+        .card-corner.top-left {
+            top: 8px;
+            left: 2px;
+        }
+        .card-corner.bottom-right {
+            bottom: 8px;
+            right: 2px;
+            transform: rotate(180deg);
+        }
         .card-value { font-size: 24px; font-weight: 700; }
         .card-suit { font-size: 20px; }
         .card-suit-center { font-size: 50px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.9; }
@@ -47,8 +59,12 @@
         .trainer-box {
             background-color: var(--color-bg-secondary);
             border: 1px solid var(--color-accent-blue);
-            padding: 1.5rem; /* 24px */
-            border-radius: 0.75rem; /* 12px */
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+        }
+        .card-enter {
+            opacity: 0;
+            transform: translateY(30px) scale(0.9);
         }
     </style>
 </head>
@@ -66,7 +82,7 @@
                 <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
                 <div id="language-selector" class="flex space-x-2">
                     <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
-                    <button data-lang-en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
+                    <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
                 </div>
             </div>
             <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
@@ -141,17 +157,14 @@
         const playingView = document.getElementById('playing-view');
         const answerView = document.getElementById('answer-view');
         const finishedView = document.getElementById('finished-view');
-
         const speedSlider = document.getElementById('speed-slider');
         const speedTitle = document.getElementById('speed-setting-title');
         const startButton = document.getElementById('start-button');
         const stopButton = document.getElementById('stop-button');
         const cardDisplayArea = document.getElementById('card-display-area');
-        
         const rcInput = document.getElementById('rc-input');
         const submitButton = document.getElementById('submit-button');
         const notsureButton = document.getElementById('notsure-button');
-
         const resultIcon = document.getElementById('result-icon');
         const resultFeedback = document.getElementById('result-feedback');
         const yourAnswerWas = document.getElementById('your-answer-was');
@@ -159,7 +172,7 @@
         const restartTrainerButton = document.getElementById('restart-trainer-button');
         const resetMenuButton = document.getElementById('reset-menu-button');
 
-        // --- Enums and Card data (same as strategy trainer) ---
+        // --- Enums and Card data ---
         const Suits = { SPADES: '♠', HEARTS: '♥', DIAMONDS: '♦', CLUBS: '♣' };
         const Ranks = { TWO: 2, THREE: 3, FOUR: 4, FIVE: 5, SIX: 6, SEVEN: 7, EIGHT: 8, NINE: 9, TEN: 10, JACK: 'J', QUEEN: 'Q', KING: 'K', ACE: 'A' };
 
@@ -179,8 +192,10 @@
         }
         
         function getCountValue(card) {
-            if (card.value >= 2 && card.value <= 6) return 1;
-            if (card.value >= 10) return -1;
+            const cardRank = card.rank;
+            const rankValue = Ranks[Object.keys(Ranks).find(key => Ranks[key] === cardRank)];
+            if (rankValue >= 2 && rankValue <= 6) return 1;
+            if (rankValue >= 10 || cardRank === 'A') return -1;
             return 0;
         }
 
@@ -191,14 +206,18 @@
             cardEl.className += suitColor;
 
             cardEl.innerHTML = `
-                <div class="card-corner">
-                    <span class="card-value">${card.rank}</span>
-                    <span class="card-suit">${card.suit}</span>
+                <div class="card-corner top-left">
+                    <div>
+                        <span class="card-value">${card.rank}</span>
+                        <span class="card-suit">${card.suit}</span>
+                    </div>
                 </div>
                 <div class="card-suit-center">${card.suit}</div>
-                <div class="card-corner" style="transform: rotate(180deg);">
-                    <span class="card-value">${card.rank}</span>
-                    <span class="card-suit">${card.suit}</span>
+                <div class="card-corner bottom-right">
+                     <div>
+                        <span class="card-value">${card.rank}</span>
+                        <span class="card-suit">${card.suit}</span>
+                    </div>
                 </div>
             `;
             return cardEl;
