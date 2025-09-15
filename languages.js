@@ -9,11 +9,11 @@ const languages = {
         "footer-disclaimer": "Please gamble responsibly. This website is for academic and entertainment purposes only.",
 
         // --- Home Page (index.html) ---
-        "hero-title-1": "MASTER THE TABLE",
-        "hero-title-2": "BUST THE CASINO",
+        "hero-title-1": "Master the table",
+        "hero-title-2": "Bust the casino",
         "hero-subtitle": "We provide data-driven game strategies, tutorials, and practical tools to make you a smarter player.",
         "hero-button": "Explore Game Strategies",
-        "strategy-title": "STRATEGY CENTER",
+        "strategy-title": "CHOOSE YOUR GAME",
         "strategy-subtitle": "Start with the most popular games to master the core strategies.",
         "blackjack-title": "Blackjack",
         "blackjack-desc": "Known as the most skill-based game in the casino. Learn basic strategy and card counting to minimize the house edge.",
@@ -32,9 +32,9 @@ const languages = {
         "blackjack-advanced-title": "Advanced Strategy",
         "blackjack-advanced-desc": "Explore the world of card counting and learn how to gain a real advantage over the house.",
         "blackjack-strategy-trainer-title": "Basic Strategy Trainer",
-        "blackjack-strategy-trainer-desc": "Internalize the basic strategy chart through hands-on simulation, enabling instant, optimal decisions at the table.",
+        "blackjack-strategy-trainer-desc": "Test and improve your decision-making skills with our interactive trainer. Practice makes perfect!",
         "blackjack-counting-trainer-title": "Card Counting Trainer",
-        "blackjack-counting-trainer-desc": "Train your focus and speed to accurately track the running count during a fast-paced game, mastering the shifts in advantage.",
+        "blackjack-counting-trainer-desc": "Train your ability to keep a running count with this fast-paced card dealing simulator.",
 
         // --- Baccarat Page (baccarat.html) ---
         "baccarat-page-title": "Baccarat Section",
@@ -129,6 +129,14 @@ const languages = {
         "bks-dealer-card": "Player's Hand",
         "bks-dealer-card-2": "Player's Hand",
         "bks-dealer-card-3": "Player's Hand",
+        "bks-surrender-title": "Surrender Strategy (Late Surrender)",
+        "bks-surrender-intro": "Not all tables offer surrender. If available, it's a strategy to forfeit half your bet on very unfavorable hands to minimize losses. The basic rules are:",
+        "bks-surrender-player-hand": "Your Hand",
+        "bks-surrender-dealer-hand": "Dealer's Upcard",
+        "bks-surrender-action": "Action",
+        "bks-surrender-hard16": "Hard 16",
+        "bks-surrender-hard15": "Hard 15",
+        "bks-surrender-action-surrender": "Surrender",
 
         // --- Baccarat Basic Strategy Page (baccarat-basic-strategy.html) ---
         "bcs-title": "Baccarat Basic Strategy",
@@ -244,7 +252,46 @@ const languages = {
         "uths-river-cond2": "A simple guideline: if your hand cannot beat a 'hidden pair' from the dealer (i.e., if the dealer pairs the lowest board card and you still lose), you should fold.",
         "uths-river-fold": "* All other hands should be folded without hesitation. Cut your losses.",
         "uths-trips-title": "A Note on the 'Trips' Bet",
-        "uths-trips-desc": "The 'Trips' bet is an independent side bet that pays out if your final five-card hand is Three of a Kind or better. This bet has a relatively high house edge (around 3.5%) and is similar to a lottery ticket. Our main game strategy should not be influenced by this side bet."
+        "uths-trips-desc": "The 'Trips' bet is an independent side bet that pays out if your final five-card hand is Three of a Kind or better. This bet has a relatively high house edge (around 3.5%) and is similar to a lottery ticket. Our main game strategy should not be influenced by this side bet.",
+
+        // --- Basic Strategy Trainer ---
+        "bst-title": "Basic Strategy Trainer",
+        "bst-streak": "Streak: {0}",
+        "bst-total": "Total: {0}",
+        "bst-dealer-hand": "Dealer",
+        "bst-player-hand": "Player",
+        "bst-question": "What's the correct move?",
+        "bst-hit": "Hit",
+        "bst-stand": "Stand",
+        "bst-double": "Double",
+        "bst-split": "Split",
+        "bst-start": "Start Training",
+        "bst-end": "End Training",
+        "bst-next": "Next Question",
+        "bst-correct-answer-is": "Correct answer is: {0}",
+        "bst-summary-title": "Training Summary",
+        "bst-summary-total": "Total Questions:",
+        "bst-summary-correct": "Correct Answers:",
+        "bst-summary-accuracy": "Accuracy:",
+        "bst-summary-streak": "Longest Streak:",
+        "bst-restart": "Restart",
+
+        // --- Counting Trainer ---
+        "counting-trainer-title": "Card Counting Trainer",
+        "counting-trainer-instructions": "Cards will be dealt quickly. Keep the running count in your head. You will be asked for the final count when the deck runs out.",
+        "speed-setting-title": "Speed: {0}s/card",
+        "start-button": "Start",
+        "stop-button": "Stop",
+        "final-rc-question": "What is the final running count?",
+        "enter-rc-placeholder": "Enter RC",
+        "submit-button": "Submit",
+        "not-sure-button": "Not Sure",
+        "correct-answer-feedback": "Correct!",
+        "incorrect-answer-feedback": "Incorrect!",
+        "your-answer-was": "Your answer: {0}",
+        "correct-rc-is": "Correct RC is: {0}",
+        "restart-button": "Restart",
+        "reset-to-menu-button": "Back to Menu"
     },
     zh: {
         // --- Global (Navigation & Footer) ---
@@ -260,7 +307,7 @@ const languages = {
         "hero-title-2": "擊潰賭場",
         "hero-subtitle": "我們提供基於數學和數據的遊戲策略、教學和實戰工具，讓你成為更精明的玩家。",
         "hero-button": "探索遊戲策略",
-        "strategy-title": "策略中心",
+        "strategy-title": "選擇你的遊戲",
         "strategy-subtitle": "從最受歡迎的遊戲開始，掌握核心策略。",
         "blackjack-title": "21點",
         "blackjack-desc": "被公認為賭場中最能以技術取勝的遊戲。學習基本策略和算牌技巧，將莊家優勢降到最低。",
@@ -279,9 +326,9 @@ const languages = {
         "blackjack-advanced-title": "進階技巧",
         "blackjack-advanced-desc": "探索算牌的世界，了解如何利用剩餘牌的組合來獲取真正優勢。",
         "blackjack-strategy-trainer-title": "基礎策略練習器",
-        "blackjack-strategy-trainer-desc": "透過實戰模擬，將基本策略表刻入腦中，面對任何牌局都能秒速反應。",
+        "blackjack-strategy-trainer-desc": "透過我們的互動練習器，測試並提升你的決策能力。熟能生巧！",
         "blackjack-counting-trainer-title": "算牌練習器",
-        "blackjack-counting-trainer-desc": "訓練你嘅專注力同速度，喺快速發牌嘅過程中準確追蹤流水數，掌握賭桌上嘅優勢變化。",
+        "blackjack-counting-trainer-desc": "利用這個快節奏的發牌模擬器，訓練你持續計算流水數的能力。",
 
         // --- Baccarat Page (baccarat.html) ---
         "baccarat-page-title": "百家樂專區",
@@ -374,8 +421,16 @@ const languages = {
         "bks-soft-title": "軟點 (Soft Totals)",
         "bks-pairs-title": "對子 (Pairs)",
         "bks-dealer-card": "玩家手牌",
-        "bks-dealer-card-2": "玩家手HSBCand",
+        "bks-dealer-card-2": "玩家手牌",
         "bks-dealer-card-3": "玩家手牌",
+        "bks-surrender-title": "投降策略 (Late Surrender)",
+        "bks-surrender-intro": "並非所有賭桌都提供投降選項。如果提供，這是一個可以讓你喺極不利情況下放棄一半賭注以減少損失嘅策略。基本規則如下：",
+        "bks-surrender-player-hand": "你的手牌",
+        "bks-surrender-dealer-hand": "莊家明牌",
+        "bks-surrender-action": "行動",
+        "bks-surrender-hard16": "硬16點",
+        "bks-surrender-hard15": "硬15點",
+        "bks-surrender-action-surrender": "投降",
 
         // --- Baccarat Basic Strategy Page (baccarat-basic-strategy.html) ---
         "bcs-title": "百家樂基礎策略",
@@ -491,7 +546,46 @@ const languages = {
         "uths-river-cond2": "一個簡單嘅判斷標準：如果你嘅牌細過莊家嘅「隱藏對子」(即係話，如果莊家對中公共牌嘅最細一張牌，而你都贏唔到)，就應該棄牌。",
         "uths-river-fold": "* 其他所有牌都應該果斷棄牌 (Fold)，輸少當贏。",
         "uths-trips-title": "關於「旅程 (Trips)」注",
-        "uths-trips-desc": "「旅程」注係一個獨立嘅邊注，佢只係賭你最終嘅五張牌能否組成三條或以上嘅牌型。呢個注嘅莊家優勢相對較高 (約3.5%)，類似買彩票。我哋嘅主要策略唔應該受到呢個邊注嘅影響。"
+        "uths-trips-desc": "「旅程」注係一個獨立嘅邊注，佢只係賭你最終嘅五張牌能否組成三條或以上嘅牌型。呢個注嘅莊家優勢相對較高 (約3.5%)，類似買彩票。我哋嘅主要策略唔應該受到呢個邊注嘅影響。",
+
+        // --- Basic Strategy Trainer ---
+        "bst-title": "基礎策略練習器",
+        "bst-streak": "連續答對: {0}",
+        "bst-total": "總題數: {0}",
+        "bst-dealer-hand": "莊家",
+        "bst-player-hand": "玩家",
+        "bst-question": "你應該點做？",
+        "bst-hit": "要牌",
+        "bst-stand": "停牌",
+        "bst-double": "加倍",
+        "bst-split": "分牌",
+        "bst-start": "開始練習",
+        "bst-end": "結束練習",
+        "bst-next": "下一題",
+        "bst-correct-answer-is": "正確答案係: {0}",
+        "bst-summary-title": "練習總結",
+        "bst-summary-total": "總題數:",
+        "bst-summary-correct": "答對題數:",
+        "bst-summary-accuracy": "準確率:",
+        "bst-summary-streak": "最長連續答對:",
+        "bst-restart": "重新開始",
+
+        // --- Counting Trainer ---
+        "counting-trainer-title": "算牌練習器",
+        "counting-trainer-instructions": "卡牌會快速出現，請在心中默數流水數(Running Count)。練習結束後，系統會要求你輸入最終結果。",
+        "speed-setting-title": "速度設定: {0}秒/張",
+        "start-button": "開始練習",
+        "stop-button": "停止",
+        "final-rc-question": "最終嘅流水數係幾多？",
+        "enter-rc-placeholder": "輸入RC",
+        "submit-button": "提交",
+        "not-sure-button": "唔肯定",
+        "correct-answer-feedback": "正確!",
+        "incorrect-answer-feedback": "答錯了",
+        "your-answer-was": "你嘅答案: {0}",
+        "correct-rc-is": "正確流水數: {0}",
+        "restart-button": "重新練習",
+        "reset-to-menu-button": "返回選單"
     }
 };
 
