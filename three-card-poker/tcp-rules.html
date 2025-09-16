@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三張撲克規則 - Bust the Casino</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --color-bg-primary: #1A1D24;
+            --color-bg-secondary: #2C323A;
+            --color-text-primary: #EAEAEA;
+            --color-text-secondary: #a0aec0;
+            --color-accent-blue: #4A90E2;
+            --color-accent-gold: #F1C40F;
+        }
+        body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
+        .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
+        .content-card { background-color: var(--color-bg-secondary); }
+        .rules-table td, .rules-table th { padding: 0.75rem; text-align: left; border-bottom: 1px solid #4A5568; }
+        .rules-table th { font-weight: 600; color: var(--color-text-primary); }
+        .rules-table tbody tr:last-child td { border-bottom: none; }
+        #nav-brand-text { color: var(--color-accent-gold); }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Header -->
+    <header class="sticky-nav border-b border-gray-700/50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="../index.html" class="flex items-center space-x-3">
+                <img src="../assets/images/logo.png" alt="Bust the Casino Logo" style="height: 74px;">
+                <span id="nav-brand-text" class="text-2xl font-black font-heading tracking-wider">BUST THE CASINO</span>
+            </a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
+                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
+                <div id="language-selector" class="flex space-x-2">
+                    <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
+                    <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
+                </div>
+            </div>
+            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-4xl mx-auto">
+            <a href="three-card-poker.html" id="back-to-tcp" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回三張撲克專區</a>
+            <h1 class="text-3xl md:text-4xl font-black text-center">三張撲克規則與玩法</h1>
+            
+            <div class="mt-12 space-y-10">
+                 <!-- Hand Rankings -->
+                <div class="p-8 rounded-lg content-card">
+                    <h2 class="text-2xl font-bold">牌型大小 (Hand Rankings)</h2>
+                    <p class="mt-2 mb-6" style="color: var(--color-text-secondary);">
+                       三張撲克的牌型大小與傳統德州撲克略有不同，因為只有三張牌，順子比同花更難組成。牌型由大到細排列如下：
+                    </p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm rules-table">
+                            <thead>
+                                <tr><th>排名</th><th>牌型</th><th>例子</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1</td><td>同花順 (Straight Flush)</td><td>Q♠ J♠ 10♠</td></tr>
+                                <tr><td>2</td><td>三條 (Three of a Kind)</td><td>K♠ K♥ K♦</td></tr>
+                                <tr><td>3</td><td>順子 (Straight)</td><td>7♠ 6♥ 5♦</td></tr>
+                                <tr><td>4</td><td>同花 (Flush)</td><td>A♦ 9♦ 2♦</td></tr>
+                                <tr><td>5</td><td>對子 (Pair)</td><td>J♠ J♥ 8♣</td></tr>
+                                <tr><td>6</td><td>高牌 (High Card)</td><td>A♠ Q♥ 9♦</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Game Flow -->
+                <div class="p-8 rounded-lg content-card">
+                    <h2 class="text-2xl font-bold">遊戲流程與派彩</h2>
+                    <div class="mt-4 space-y-6" style="color:var(--color-text-secondary)">
+                        <div>
+                            <h3 class="text-lg font-semibold" style="color:var(--color-accent-gold)">1. 開始下注 (Ante & Pair Plus)</h3>
+                            <p class="mt-1 text-sm">遊戲開始前，你必須在「底注 (Ante)」區下注。你也可以選擇性地在「對子+ (Pair Plus)」區下注，「對子+」是獨立的邊注，只賭你自己的手牌。</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold" style="color:var(--color-accent-gold)">2. 派牌及決策 (Deal & Decision)</h3>
+                            <p class="mt-1 text-sm">你和莊家會各自收到三張牌（莊家牌面朝下）。看完你自己的牌後，你必須做出決定：<br>
+                                • <b>加注 (Play):</b> 如果你覺得你的牌不錯，可以選擇「加注」。你需要再下一个與底注等額的注碼。 <br>
+                                • <b>棄牌 (Fold):</b> 如果你覺得你的牌太差，可以選擇「棄牌」，你會輸掉你的底注。如果你下了「對子+」，這個注也會一併輸掉。</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold" style="color:var(--color-accent-gold)">3. 開牌比大小 (Showdown)</h3>
+                            <p class="mt-1 text-sm">你決定加注後，莊家會開牌。雙方比較牌型大小，定出勝負。這裡有一個關鍵規則：<br>
+                            <b>莊家「夠格」(Qualify):</b> 莊家的手牌必須至少是 <b>Q高牌 (Queen-High)</b> 或更好，才算「夠格」。</p>
+                        </div>
+                         <div>
+                            <h3 class="text-lg font-semibold" style="color:var(--color-accent-gold)">4. 派彩結算 (Payouts)</h3>
+                            <ul class="list-disc list-inside text-sm mt-2 space-y-2">
+                                <li><b>若莊家唔夠格：</b>你的「底注」贏1賠1，「加注」會被退還 (Push)。</li>
+                                <li><b>若莊家夠格，而你的牌較大：</b>你的「底注」和「加注」都贏1賠1。</li>
+                                <li><b>若莊家夠格，而莊家的牌較大：</b>你的「底注」和「加注」都會輸掉。</li>
+                                <li><b>若莊家夠格，而雙方平手：</b>「底注」和「加注」都會被退還。</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold" style="color:var(--color-accent-gold)">底注獎金 (Ante Bonus) & 對子+ (Pair Plus)</h3>
+                             <p class="mt-1 text-sm">這兩個是獨立的獎金，就算你最後輸給莊家，只要你自己的牌夠靚，一樣有錢收！</p>
+                            <ul class="list-disc list-inside text-sm mt-2 space-y-2">
+                                <li><b>底注獎金：</b>如果你拿到順子、三條或同花順，你的「底注」會獲得額外獎金（通常1至5倍）， независимо от того, выиграли вы или проиграли дилеру.</li>
+                                <li><b>對子+：</b>如果你在「對子+」區下了注，只要你的手牌是對子或更好，就會根據賠率表獲得派彩，賠率通常由1賠1（對子）到40賠1（同花順）不等。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 mt-12 border-t border-gray-800">
+        <div class="container mx-auto text-center text-sm" style="color: var(--color-text-secondary);">
+            <p id="footer-copyright">&copy; 2025 Bust the Casino. 版權所有。</p>
+            <p id="footer-disclaimer" class="mt-2">請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。</p>
+        </div>
+    </footer>
+
+    <script src="../languages.js"></script>
+    <script src="../app.js"></script>
+</body>
+</html>
