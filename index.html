@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bust the Casino - 策略戰勝賭場</title>
+    <link rel="icon" type="image/png" href="/assets/images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,7 +25,6 @@
         .font-heading { font-family: var(--font-heading); }
         .font-body { font-family: var(--font-body); }
         .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
-        /* --- NEW CSS RULE --- */
         #nav-brand-text { color: var(--color-accent-gold); }
     </style>
 </head>
@@ -62,7 +62,7 @@
                     我們提供基於數學和數據的遊戲策略、教學和實戰工具，讓你成為更精明的玩家。
                 </p>
                 <a id="hero-button" href="#strategy" class="mt-10 inline-block text-gray-900 font-bold py-4 px-10 rounded-lg text-lg transition duration-300 ease-in-out transform hover:scale-105" style="background-color: var(--color-accent-gold);">
-                    探索策略
+                    探索遊戲策略
                 </a>
             </div>
         </section>
@@ -70,11 +70,11 @@
         <!-- Strategy Section -->
         <section id="strategy" class="py-20 px-6" style="background-color: var(--color-bg-secondary);">
             <div class="container mx-auto">
-                <h2 id="strategy-title" class="text-3xl md:text-4xl font-black text-center uppercase">策略中心</h2>
+                <h2 id="strategy-title" class="text-3xl md:text-4xl font-black text-center uppercase">選擇你的遊戲</h2>
                 <p id="strategy-subtitle" class="mt-4 text-center max-w-2xl mx-auto" style="color: var(--color-text-secondary);">
                     從最受歡迎的遊戲開始，掌握核心策略。
                 </p>
-                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
                     <!-- Blackjack Card -->
                     <a href="blackjack/blackjack.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-primary);">
                         <h3 id="blackjack-title" class="text-2xl font-bold">21點</h3>
@@ -94,6 +94,13 @@
                         <h3 id="uth-title" class="text-2xl font-bold">Ultimate Texas Hold'em</h3>
                         <p id="uth-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
                             結合德州撲克的技巧與賭場對戰的刺激感，學習根據你的底牌和公共牌，作出最佳的加注或棄牌決定。
+                        </p>
+                    </a>
+                     <!-- Three Card Poker Card -->
+                    <a href="three-card-poker/three-card-poker.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-primary);">
+                        <h3 id="tcp-title" class="text-2xl font-bold">Three Card Poker</h3>
+                        <p id="tcp-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
+                            規則簡單、節奏快速，是賭場裡最受歡迎的撲克變體之一。學習Q-6-4法則，輕鬆做出最佳決策。
                         </p>
                     </a>
                 </div>
