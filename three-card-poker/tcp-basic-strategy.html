@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三張撲克基礎策略 - Bust the Casino</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --color-bg-primary: #1A1D24;
+            --color-bg-secondary: #2C323A;
+            --color-text-primary: #EAEAEA;
+            --color-text-secondary: #a0aec0;
+            --color-accent-blue: #4A90E2;
+            --color-accent-gold: #F1C40F;
+        }
+        body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
+        .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
+        .content-card { background-color: var(--color-bg-secondary); }
+        #nav-brand-text { color: var(--color-accent-gold); }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Header -->
+    <header class="sticky-nav border-b border-gray-700/50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="../index.html" class="flex items-center space-x-3">
+                <img src="../assets/images/logo.png" alt="Bust the Casino Logo" style="height: 74px;">
+                <span id="nav-brand-text" class="text-2xl font-black font-heading tracking-wider">BUST THE CASINO</span>
+            </a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
+                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
+                <div id="language-selector" class="flex space-x-2">
+                    <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
+                    <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
+                </div>
+            </div>
+            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-4xl mx-auto">
+            <a href="three-card-poker.html" id="back-to-tcp" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回三張撲克專區</a>
+            <h1 class="text-3xl md:text-4xl font-black text-center">三張撲克基礎策略</h1>
+            <p class="mt-4 text-center max-w-3xl mx-auto" style="color: var(--color-text-secondary);">
+                三張撲克的最佳策略非常簡單，容易記憶，而且能有效地將莊家優勢降到最低。
+            </p>
+
+            <div class="mt-12 space-y-10">
+                <!-- Main Strategy Rule -->
+                <div class="p-8 rounded-lg content-card text-center">
+                    <h2 class="text-2xl font-bold">核心策略：Q-6-4 法則</h2>
+                    <p class="mt-4 text-3xl font-bold" style="color:var(--color-accent-gold)">
+                        加注 (Play) ：當你的牌是 Q - 6 - 4 或更好時
+                    </p>
+                    <p class="mt-2 text-3xl font-bold" style="color:var(--color-accent-red);">
+                        棄牌 (Fold) ：當你的牌比 Q - 6 - 4 差時
+                    </p>
+                    <p class="mt-6" style="color: var(--color-text-secondary);">
+                       這就是全部的策略了！你只需要記住 **Q-6-4** 這個分界線。任何對子、同花、順子或三條都遠遠好過這個標準，所以你肯定會加注。這個法則主要用來幫助你決定如何處理那些雜牌 (高牌)。
+                    </p>
+                </div>
+
+                <!-- How to Compare -->
+                <div class="p-8 rounded-lg content-card">
+                    <h2 class="text-2xl font-bold">如何比較你的牌與 Q-6-4？</h2>
+                    <p class="mt-2" style="color: var(--color-text-secondary);">
+                       比較方法是從你最大的牌開始，逐張比較：
+                    </p>
+                    <ol class="list-decimal list-inside mt-4 space-y-2">
+                        <li><b>比較最大的牌：</b>如果你的最大一張牌比 Q 大 (例如 K 或 A)，就直接加注。如果比 Q 小，就直接棄牌。</li>
+                        <li><b>如果最大的牌是 Q：</b>你需要看第二大的牌。如果第二張牌比 6 大 (例如 7 或以上)，就加注。如果比 6 小，就棄牌。</li>
+                        <li><b>如果第二大的牌是 6：</b>你需要看最小的牌。如果最小的牌比 4 大或等於 4，就加注。否則，就棄牌。</li>
+                    </ol>
+
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div class="p-4 rounded-md bg-green-900/50">
+                            <h4 class="font-bold text-lg text-green-400">應該加注 (Play) 的例子：</h4>
+                            <ul class="list-disc list-inside mt-2">
+                               <li><b>K</b>-3-2 (最大牌 K > Q)</li>
+                               <li><b>Q</b>-<b>7</b>-2 (最大牌是 Q, 第二大牌 7 > 6)</li>
+                               <li><b>Q</b>-<b>6</b>-<b>5</b> (最大牌是 Q, 第二大牌是 6, 第三大牌 5 > 4)</li>
+                            </ul>
+                        </div>
+                         <div class="p-4 rounded-md bg-red-900/50">
+                            <h4 class="font-bold text-lg text-red-400">應該棄牌 (Fold) 的例子：</h4>
+                            <ul class="list-disc list-inside mt-2">
+                               <li><b>J</b>-10-8 (最大牌 J < Q)</li>
+                               <li><b>Q</b>-<b>5</b>-4 (最大牌是 Q, 第二大牌 5 < 6)</li>
+                               <li><b>Q</b>-<b>6</b>-<b>3</b> (最大牌是 Q, 第二大牌是 6, 第三大牌 3 < 4)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Pair Plus Bet -->
+                <div class="p-8 rounded-lg content-card">
+                    <h2 class="text-2xl font-bold">關於「對子+ (Pair Plus)」邊注</h2>
+                     <p class="mt-2" style="color: var(--color-text-secondary);">
+                       「對子+」是一個獨立的邊注，它只賭你自己的三張牌能否組成一個對子或更好的牌型。這個賭注的輸贏與莊家的牌完全無關。雖然這個邊注的賠率很吸引人，但它的莊家優勢通常比主遊戲高（約 2.3% 到 7.3%，視乎賠率表而定）。從純數學策略的角度來看，長期玩「對子+」是不利的。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 mt-12 border-t border-gray-800">
+        <div class="container mx-auto text-center text-sm" style="color: var(--color-text-secondary);">
+            <p id="footer-copyright">&copy; 2025 Bust the Casino. 版權所有。</p>
+            <p id="footer-disclaimer" class="mt-2">請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。</p>
+        </div>
+    </footer>
+
+    <script src="../languages.js"></script>
+    <script src="../app.js"></script>
+</body>
+</html>
