@@ -21,6 +21,8 @@ const languages = {
         "baccarat-desc": "A fast-paced and simple game beloved by many players. Understand the math behind Player, Banker, and Tie bets to make the most informed decisions.",
         "uth-title": "Ultimate Texas Hold'em",
         "uth-desc": "Combines the skill of Texas Hold'em with the thrill of casino play. Learn to make optimal raise or fold decisions based on your hole cards and the community cards.",
+        "tcp-title": "Three Card Poker",
+        "tcp-desc": "Simple rules and a fast pace make this one of the most popular poker variants in the casino. Learn the Q-6-4 rule to easily make the best decisions.",
 
         // --- Blackjack Page (blackjack.html) ---
         "blackjack-page-title": "Blackjack Section",
@@ -53,6 +55,16 @@ const languages = {
         "uth-rules-desc": "Learn the game flow, different betting stages, and the all-important poker hand rankings.",
         "uth-basic-title": "Basic Strategy",
         "uth-basic-desc": "Analyze your starting hands and learn when to make the 4x, 2x, or fold decision before and after the flop.",
+        
+        // --- Three Card Poker (tcp) Page ---
+        "tcp-page-title": "Three Card Poker",
+        "tcp-page-subtitle": "Fast, simple, and fun. Learn the basic strategy to know when to raise and when to fold.",
+        "tcp-rules-title": "Rules & How to Play",
+        "tcp-rules-desc": "Learn the game flow, hand rankings, and various betting options like Ante, Play, and Pair Plus.",
+        "tcp-basic-title": "Basic Strategy",
+        "tcp-basic-desc": "The strategy is simple: Raise with Queen-6-4 or better. Learn how to apply this simple rule to every hand.",
+        "back-to-tcp": "&larr; Back to Three Card Poker Section",
+
 
         // --- Blackjack Rules Page (blackjack-rules.html) ---
         "back-to-blackjack": "&larr; Back to Blackjack Section",
@@ -126,9 +138,8 @@ const languages = {
         "bks-hard-title": "Hard Totals",
         "bks-soft-title": "Soft Totals",
         "bks-pairs-title": "Pairs",
-        "bks-dealer-card": "Player's Hand",
-        "bks-dealer-card-2": "Player's Hand",
-        "bks-dealer-card-3": "Player's Hand",
+        "bks-table-player-hand": "Player's Hand",
+        "bks-table-dealer-upcard": "Dealer's Upcard",
         "bks-surrender-title": "Surrender Strategy (Late Surrender)",
         "bks-surrender-intro": "Not all tables offer surrender. If available, it's a strategy to forfeit half your bet on very unfavorable hands to minimize losses. The basic rules are:",
         "bks-surrender-player-hand": "Your Hand",
@@ -315,6 +326,8 @@ const languages = {
         "baccarat-desc": "節奏明快、規則簡單，深受亞洲玩家喜愛。了解莊、閒、和背後的數學，做出最有利的投注決策。",
         "uth-title": "Ultimate Texas Hold'em",
         "uth-desc": "結合德州撲克的技巧與賭場對戰的刺激感，學習根據你的底牌和公共牌，作出最佳的加注或棄牌決定。",
+        "tcp-title": "三張撲克",
+        "tcp-desc": "規則簡單、節奏快速，是賭場裡最受歡迎的撲克變體之一。學習Q-6-4法則，輕鬆做出最佳決策。",
 
         // --- Blackjack Page (blackjack.html) ---
         "blackjack-page-title": "21點專區",
@@ -347,6 +360,15 @@ const languages = {
         "uth-rules-desc": "學習遊戲流程、不同階段的下注選項，以及最重要的德州撲克牌型大小。",
         "uth-basic-title": "基礎策略",
         "uth-basic-desc": "分析你的起手牌，學習在翻牌前、翻牌後何時應該下4倍、2倍或棄牌。",
+        
+        // --- Three Card Poker (tcp) Page ---
+        "tcp-page-title": "三張撲克",
+        "tcp-page-subtitle": "快速、簡單、刺激。學習基礎策略，知道何時加注、何時棄牌。",
+        "tcp-rules-title": "規則與玩法",
+        "tcp-rules-desc": "學習遊戲流程、三張牌牌型大小，以及底注、加注和對子+等不同的投注選項。",
+        "tcp-basic-title": "基礎策略",
+        "tcp-basic-desc": "策略非常簡單：只在牌力為 Q-6-4 或更好時才加注。學習如何將這條簡單規則應用到每一手牌。",
+        "back-to-tcp": "&larr; 返回三張撲克專區",
 
         // --- Blackjack Rules Page (blackjack-rules.html) ---
         "back-to-blackjack": "&larr; 返回21點專區",
@@ -420,9 +442,8 @@ const languages = {
         "bks-hard-title": "硬點 (Hard Totals)",
         "bks-soft-title": "軟點 (Soft Totals)",
         "bks-pairs-title": "對子 (Pairs)",
-        "bks-dealer-card": "玩家手牌",
-        "bks-dealer-card-2": "玩家手牌",
-        "bks-dealer-card-3": "玩家手牌",
+        "bks-table-player-hand": "玩家手牌",
+        "bks-table-dealer-upcard": "莊家明牌",
         "bks-surrender-title": "投降策略 (Late Surrender)",
         "bks-surrender-intro": "並非所有賭桌都提供投降選項。如果提供，這是一個可以讓你喺極不利情況下放棄一半賭注以減少損失嘅策略。基本規則如下：",
         "bks-surrender-player-hand": "你的手牌",
