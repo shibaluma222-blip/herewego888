@@ -230,7 +230,7 @@
                 if (pRank === 'A' || pRank === 8) return 'Split';
                 if (pRank === 10 || pRank === 'J' || pRank === 'Q' || pRank === 'K') return 'Stand';
                 if (pRank === 9) {
-                    if ([7, 10, 'A'].includes(dealerCard.rank)) return 'Stand';
+                    if ([7, 10, 11].includes(dealerValue)) return 'Stand'; // Note: A's value is 11
                     return 'Split';
                 }
                 if (pRank === 7) return dealerValue <= 7 ? 'Split' : 'Hit';
@@ -240,17 +240,38 @@
                 if (pRank === 3 || pRank === 2) return dealerValue <= 7 ? 'Split' : 'Hit';
             }
 
+            // BUG FIX 1: Corrected Soft Hand Logic to match strategy chart
             if (isPlayerSoft) {
-                if (playerValue >= 19) return 'Stand';
+                // A,9 (Soft 20) or better should always stand.
+                if (playerValue >= 20) {
+                    return 'Stand';
+                }
+                // A,8 (Soft 19)
+                if (playerValue === 19) {
+                    // Double vs 6, otherwise Stand (matches chart)
+                    return dealerValue === 6 ? 'Double' : 'Stand';
+                }
+                // A,7 (Soft 18)
                 if (playerValue === 18) {
-                    if (dealerValue >= 2 && dealerValue <= 6) return 'Double';
-                    if (dealerValue >= 7 && dealerValue <= 8) return 'Stand';
+                    if (dealerValue >= 3 && dealerValue <= 6) return 'Double';
+                    if (dealerValue === 2 || dealerValue === 7 || dealerValue === 8) return 'Stand';
                     return 'Hit';
                 }
-                if (playerValue === 17) return (dealerValue >= 3 && dealerValue <= 6) ? 'Double' : 'Hit';
-                if (playerValue === 16 || playerValue === 15) return (dealerValue >= 4 && dealerValue <= 6) ? 'Double' : 'Hit';
-                if (playerValue === 14 || playerValue === 13) return (dealerValue >= 5 && dealerValue <= 6) ? 'Double' : 'Hit';
+                // A,6 (Soft 17)
+                if (playerValue === 17) {
+                    return (dealerValue >= 3 && dealerValue <= 6) ? 'Double' : 'Hit';
+                }
+                // A,4 or A,5 (Soft 15/16)
+                if (playerValue === 15 || playerValue === 16) {
+                    return (dealerValue >= 4 && dealerValue <= 6) ? 'Double' : 'Hit';
+                }
+                // A,2 or A,3 (Soft 13/14)
+                if (playerValue === 13 || playerValue === 14) {
+                    return (dealerValue >= 5 && dealerValue <= 6) ? 'Double' : 'Hit';
+                }
+                return 'Hit';
             }
+
 
             // Hard Totals
             if (playerValue >= 17) return 'Stand';
@@ -442,4 +463,3 @@
     </script>
 </body>
 </html>
-
