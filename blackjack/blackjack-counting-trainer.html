@@ -191,13 +191,21 @@
             return { rank, suit, value };
         }
         
+        // BUG FIX 2: Corrected the card counting logic
         function getCountValue(card) {
-            const cardRank = card.rank;
-            const rankValue = Ranks[Object.keys(Ranks).find(key => Ranks[key] === cardRank)];
-            if (rankValue >= 2 && rankValue <= 6) return 1;
-            if (rankValue >= 10 || cardRank === 'A') return -1;
+            const rank = card.rank;
+            // Low cards (2-6) are +1
+            if (typeof rank === 'number' && rank >= 2 && rank <= 6) {
+                return 1;
+            }
+            // High cards (10, J, Q, K, A) are -1
+            if (rank === 10 || rank === 'J' || rank === 'Q' || rank === 'K' || rank === 'A') {
+                return -1;
+            }
+            // Neutral cards (7, 8, 9) are 0
             return 0;
         }
+
 
         function createCardElement(card) {
             const cardEl = document.createElement('div');
@@ -214,7 +222,7 @@
                 </div>
                 <div class="card-suit-center">${card.suit}</div>
                 <div class="card-corner bottom-right">
-                     <div>
+                    <div>
                         <span class="card-value">${card.rank}</span>
                         <span class="card-suit">${card.suit}</span>
                     </div>
@@ -319,4 +327,3 @@
     </script>
 </body>
 </html>
-
