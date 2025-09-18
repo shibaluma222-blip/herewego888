@@ -103,7 +103,7 @@
                 </svg>
                 <p id="counting-trainer-instructions" class="text-lg mb-8" style="color: var(--color-text-secondary);">卡牌會快速出現，請在心中默數流水數(Running Count)。練習結束後，系統會要求你輸入最終結果。</p>
                 <div class="p-4 rounded-lg mb-8" style="background-color: var(--color-bg-primary);">
-                    <label for="speed-slider" id="speed-setting-title" class="block mb-2">速度設定: 1.5秒/張</label>
+                    <label for="speed-slider" id="speed-setting-title" class="block mb-2"></label>
                     <input type="range" id="speed-slider" min="0.5" max="3.0" value="1.5" step="0.1" class="w-full">
                 </div>
                 <button id="start-button" class="w-full p-4 rounded-lg font-bold text-xl text-white" style="background-color: var(--color-accent-blue);">開始練習</button>
@@ -181,6 +181,7 @@
         let runningCount = 0;
         let timer;
         let currentCardEl = null;
+        let deck = [];
 
         // --- Card Creation and Logic ---
         function createCard(rank, suit) {
@@ -191,21 +192,29 @@
             return { rank, suit, value };
         }
         
-        // BUG FIX 2: Corrected the card counting logic
-        function getCountValue(card) {
-            const rank = card.rank;
-            // Low cards (2-6) are +1
-            if (typeof rank === 'number' && rank >= 2 && rank <= 6) {
-                return 1;
+        function createDeck() {
+            const suits = Object.values(Suits);
+            const ranks = Object.values(Ranks);
+            let newDeck = [];
+            for (const suit of suits) {
+                for (const rank of ranks) {
+                    newDeck.push(createCard(rank, suit));
+                }
             }
-            // High cards (10, J, Q, K, A) are -1
-            if (rank === 10 || rank === 'J' || rank === 'Q' || rank === 'K' || rank === 'A') {
-                return -1;
+            // Shuffle the deck
+            for (let i = newDeck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newDeck[i], newDeck[j]] = [newDeck[j], newDeck[i]];
             }
-            // Neutral cards (7, 8, 9) are 0
-            return 0;
+            return newDeck;
         }
 
+        function getCountValue(card) {
+            const rank = card.rank;
+            if (typeof rank === 'number' && rank >= 2 && rank <= 6) return 1;
+            if (rank === 10 || rank === 'J' || rank === 'Q' || rank === 'K' || rank === 'A') return -1;
+            return 0;
+        }
 
         function createCardElement(card) {
             const cardEl = document.createElement('div');
@@ -241,17 +250,31 @@
         }
 
         function dealNextCard() {
-            // Remove old card
-            if (currentCardEl) {
-                currentCardEl.style.opacity = '0';
-                currentCardEl.style.transform = 'translate(-50%, -50%) scale(0.8)';
-                setTimeout(() => currentCardEl.remove(), 300);
+            if (deck.length === 0) {
+                stopTrainer();
+                return;
+            }
+
+            // Capture the card to be removed in a local constant to avoid closure issues
+            const cardToRemove = currentCardEl;
+
+            // Animate out the old card if it exists
+            if (cardToRemove) {
+                cardToRemove.style.opacity = '0';
+                cardToRemove.style.transform = 'translate(-50%, -50%) scale(0.8)';
+                setTimeout(() => {
+                    if (cardToRemove.parentNode) {
+                        cardToRemove.parentNode.removeChild(cardToRemove);
+                    }
+                }, 300); // Remove from DOM after transition
             }
             
-            // Create and add new card
-            const rank = Object.values(Ranks)[Math.floor(Math.random() * 13)];
-            const suit = Object.values(Suits)[Math.floor(Math.random() * 4)];
-            const newCard = createCard(rank, suit);
+            // Get the next card from the deck
+            const newCard = deck.pop();
+            if (!newCard) { // Safety check
+                stopTrainer();
+                return;
+            }
             runningCount += getCountValue(newCard);
             
             const newCardEl = createCardElement(newCard);
@@ -261,20 +284,22 @@
             newCardEl.style.left = '50%';
             cardDisplayArea.appendChild(newCardEl);
 
-            // Animate in
+            // Animate in the new card
             setTimeout(() => {
                 newCardEl.style.opacity = '1';
                 newCardEl.style.transform = 'translate(-50%, -50%) scale(1)';
-            }, 50);
+            }, 50); // A small delay to ensure the element is in the DOM before animating
 
+            // Update the global reference to the current card
             currentCardEl = newCardEl;
         }
 
         // --- Game Flow ---
         function startTrainer() {
             runningCount = 0;
+            deck = createDeck();
             showView(playingView);
-            dealNextCard();
+            dealNextCard(); // Deal the first card immediately
             timer = setInterval(dealNextCard, speed * 1000);
         }
 
@@ -309,13 +334,26 @@
 
         function resetToMenu() {
             rcInput.value = '';
+            cardDisplayArea.innerHTML = ''; // Clear any leftover cards
+            currentCardEl = null;
+            clearInterval(timer);
             showView(readyView);
+        }
+
+        function updateSpeedLabel() {
+            const lang = localStorage.getItem('language') || 'zh';
+            const key = "speed-setting-title";
+            let template = (lang === 'zh') ? "速度設定: {0}秒/張" : "Speed: {0}s/card";
+            if (typeof languages !== 'undefined' && languages[lang] && languages[lang][key]) {
+                 template = languages[lang][key];
+            }
+            speedTitle.textContent = template.replace('{0}', speed.toFixed(1));
         }
 
         // --- Event Listeners ---
         speedSlider.addEventListener('input', (e) => {
             speed = parseFloat(e.target.value);
-            speedTitle.textContent = `速度設定: ${speed.toFixed(1)}秒/張`;
+            updateSpeedLabel();
         });
         startButton.addEventListener('click', startTrainer);
         stopButton.addEventListener('click', stopTrainer);
@@ -324,6 +362,14 @@
         restartTrainerButton.addEventListener('click', startTrainer);
         resetMenuButton.addEventListener('click', resetToMenu);
 
+        function initializeView() {
+            speedSlider.value = speed;
+            updateSpeedLabel();
+            showView(readyView);
+        }
+        initializeView();
+
     </script>
 </body>
 </html>
+
