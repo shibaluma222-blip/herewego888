@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bust the Casino - 策略戰勝賭場</title>
-    <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+    <title>Bust the Casino - 您的專業博弈策略夥伴</title>
+    <meta name="description" content="提供專業的21點、百家樂、德州撲克等賭場遊戲策略、算牌技巧和實戰工具，助您在賭場中獲得優勢。">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,15 +21,26 @@
             --color-accent-gold: #F1C40F;
         }
         body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
-        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
-        .font-heading { font-family: var(--font-heading); }
-        .font-body { font-family: var(--font-body); }
+        h1, h2, h3 { font-family: var(--font-heading); font-weight: 900; letter-spacing: -0.025em; }
         .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
+        .hero-text-shadow { text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7); }
+        .game-card { 
+            background-color: var(--color-bg-secondary); 
+            border-radius: 0.75rem; 
+            overflow: hidden; 
+            transition: transform 0.3s, box-shadow 0.3s; 
+            border: 1px solid transparent; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 180px; /* Ensure cards have a consistent height */
+        }
+        .game-card:hover { transform: translateY(-8px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--color-accent-blue); }
         #nav-brand-text { color: var(--color-accent-gold); }
     </style>
 </head>
 <body class="antialiased">
-    <!-- Header / Navigation -->
+    <!-- Header -->
     <header class="sticky-nav border-b border-gray-700/50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="index.html" class="flex items-center space-x-3">
@@ -38,7 +49,21 @@
             </a>
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
-                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                
+                <!-- Tools Dropdown -->
+                <div class="relative">
+                    <button id="nav-tools-toggle" class="text-gray-300 hover:text-white transition duration-300 flex items-center">
+                        <span id="nav-tools">實戰工具</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="nav-tools-dropdown" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="blackjack/blackjack-basic-strategy.html" id="dropdown-bj-strategy-chart" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="blackjack/blackjack-strategy-trainer.html" id="dropdown-bj-trainer" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點策略練習</a>
+                        <a href="blackjack/blackjack-counting-trainer.html" id="dropdown-bj-counter" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點算牌練習</a>
+                        <a href="金錢卦.html" id="dropdown-money-div" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
+
                 <a href="#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
                 <div id="language-selector" class="flex space-x-2">
                     <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
@@ -52,73 +77,74 @@
     <!-- Main Content -->
     <main>
         <!-- Hero Section -->
-        <section class="text-center py-20 md:py-32 px-6">
-            <div class="container mx-auto">
-                <h1 class="text-4xl md:text-6xl font-black uppercase tracking-wider">
-                    <span id="hero-title-1" class="block" style="color: var(--color-accent-gold);">掌控賭桌</span>
-                    <span id="hero-title-2" class="block mt-2">擊潰賭場</span>
-                </h1>
-                <p id="hero-subtitle" class="mt-6 text-lg max-w-2xl mx-auto" style="color: var(--color-text-secondary);">
-                    我們提供基於數學和數據的遊戲策略、教學和實戰工具，讓你成為更精明的玩家。
-                </p>
-                <a id="hero-button" href="#strategy" class="mt-10 inline-block text-gray-900 font-bold py-4 px-10 rounded-lg text-lg transition duration-300 ease-in-out transform hover:scale-105" style="background-color: var(--color-accent-gold);">
-                    探索遊戲策略
-                </a>
+        <section class="relative h-[60vh] min-h-[400px] flex items-center justify-center text-center text-white bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1541300580552-39c8c937146d?q=80&w=2070&auto=format&fit=crop');">
+            <div class="absolute inset-0 bg-black/60"></div>
+            <div class="relative z-10 px-4">
+                <h1 id="hero-title" class="text-5xl md:text-7xl font-black hero-text-shadow">擊潰賭場 優勢盡握</h1>
+                <p id="hero-subtitle" class="mt-4 text-lg md:text-2xl max-w-2xl mx-auto" style="color: var(--color-text-secondary);">以數據為矛，策略為盾。我們提供最專業的博弈分析與工具。</p>
+                <a href="#strategy" id="hero-cta" class="mt-8 inline-block px-8 py-4 text-lg font-bold rounded-lg transition-transform transform hover:scale-105" style="background-color: var(--color-accent-blue); color: var(--color-text-primary);">探索策略</a>
             </div>
         </section>
 
         <!-- Strategy Section -->
-        <section id="strategy" class="py-20 px-6" style="background-color: var(--color-bg-secondary);">
-            <div class="container mx-auto">
-                <h2 id="strategy-title" class="text-3xl md:text-4xl font-black text-center uppercase">選擇你的遊戲</h2>
-                <p id="strategy-subtitle" class="mt-4 text-center max-w-2xl mx-auto" style="color: var(--color-text-secondary);">
-                    從最受歡迎的遊戲開始，掌握核心策略。
-                </p>
-                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+        <section id="strategy" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 id="strategy-title" class="text-4xl md:text-5xl font-black">策略中心</h2>
+                    <p id="strategy-description" class="mt-4 text-lg" style="color: var(--color-text-secondary);">無論您是新手還是資深玩家，這裡都有您需要的致勝秘笈。掌握核心策略，提升您的賭場優勢。</p>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <!-- Blackjack Card -->
-                    <a href="blackjack/blackjack.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-primary);">
-                        <h3 id="blackjack-title" class="text-2xl font-bold">21點</h3>
-                        <p id="blackjack-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
-                            被公認為賭場中最能以技術取勝的遊戲。學習基本策略和算牌技巧，將莊家優勢降到最低。
-                        </p>
+                    <a href="blackjack/blackjack.html" class="game-card">
+                        <div class="p-6 text-center">
+                            <h3 id="game-title-bj" class="text-2xl">21點 (Blackjack)</h3>
+                            <p id="game-desc-bj" class="mt-2" style="color: var(--color-text-secondary);">學習基礎策略、進階算牌技巧，將賭場優勢降至最低。</p>
+                        </div>
                     </a>
                     <!-- Baccarat Card -->
-                    <a href="baccarat/baccarat.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-primary);">
-                        <h3 id="baccarat-title" class="text-2xl font-bold">百家樂</h3>
-                        <p id="baccarat-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
-                            節奏明快、規則簡單，深受亞洲玩家喜愛。了解莊、閒、和背後的數學，做出最有利的投注決策。
-                        </p>
+                    <a href="baccarat/baccarat.html" class="game-card">
+                        <div class="p-6 text-center">
+                            <h3 id="game-title-baccarat" class="text-2xl">百家樂 (Baccarat)</h3>
+                            <p id="game-desc-baccarat" class="mt-2" style="color: var(--color-text-secondary);">探索莊閒之間的規律，學習路單分析與投注策略。</p>
+                        </div>
                     </a>
                     <!-- UTH Card -->
-                    <a href="uth/uth.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-primary);">
-                        <h3 id="uth-title" class="text-2xl font-bold">Ultimate Texas Hold'em</h3>
-                        <p id="uth-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
-                            結合德州撲克的技巧與賭場對戰的刺激感，學習根據你的底牌和公共牌，作出最佳的加注或棄牌決定。
-                        </p>
+                    <a href="uth/uth.html" class="game-card">
+                       <div class="p-6 text-center">
+                           <h3 id="game-title-uth" class="text-2xl">德州撲克 (Ultimate Texas Hold'em)</h3>
+                           <p id="game-desc-uth" class="mt-2" style="color: var(--color-text-secondary);">不僅僅是運氣，更是心理與策略的較量。學習如何讀牌與下注。</p>
+                       </div>
                     </a>
-                     <!-- Three Card Poker Card -->
-                    <a href="three-card-poker/three-card-poker.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-primary);">
-                        <h3 id="tcp-title" class="text-2xl font-bold">Three Card Poker</h3>
-                        <p id="tcp-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
-                            規則簡單、節奏快速，是賭場裡最受歡迎的撲克變體之一。學習Q-6-4法則，輕鬆做出最佳決策。
-                        </p>
+                    <!-- Three Card Poker Card -->
+                    <a href="three-card-poker/three-card-poker.html" class="game-card">
+                       <div class="p-6 text-center">
+                           <h3 id="game-title-tcp" class="text-2xl">三張牌撲克 (Three Card Poker)</h3>
+                           <p id="game-desc-tcp" class="mt-2" style="color: var(--color-text-secondary);">快節奏、易上手嘅撲克變體。學習最佳策略，最大化你嘅勝算。</p>
+                       </div>
                     </a>
                 </div>
             </div>
         </section>
-        
-        <!-- Placeholder Sections -->
-        <section id="about" class="py-20 px-6"><div class="container mx-auto text-center"><h2 class="text-3xl font-black">關於我們 (即將推出)</h2></div></section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20" style="background-color: var(--color-bg-secondary);">
+            <div class="container mx-auto px-6 text-center max-w-3xl">
+                <img src="assets/images/logo.png" alt="Bust the Casino Logo" class="h-24 mx-auto mb-6">
+                <h2 id="about-title" class="text-4xl md:text-5xl font-black">關於我們</h2>
+                <p id="about-desc" class="mt-6 text-lg leading-relaxed" style="color: var(--color-text-secondary);">Bust the Casino 由一群數據分析師與資深博弈玩家組成。我們致力於揭開賭場遊戲背後的數學原理，將複雜的概率轉化為清晰易懂的策略。我們的使命是為玩家提供最精準的資訊和最實用的工具，讓您不再單純依賴運氣，而是以知識和技巧取勝。我們相信，真正的贏家，是那些懂得如何管理風險、運用策略的智者。</p>
+            </div>
+        </section>
+
     </main>
 
     <!-- Footer -->
-    <footer class="py-8 mt-12 border-t border-gray-800">
+    <footer class="py-8 border-t border-gray-800">
         <div class="container mx-auto text-center text-sm" style="color: var(--color-text-secondary);">
             <p id="footer-copyright">&copy; 2025 Bust the Casino. 版權所有。</p>
             <p id="footer-disclaimer" class="mt-2">請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。</p>
         </div>
     </footer>
-
+    
     <script src="languages.js"></script>
     <script src="app.js"></script>
 </body>
