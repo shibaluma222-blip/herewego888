@@ -1,96 +1,177 @@
-// --- Language Switching ---
-const languageSelector = document.getElementById('language-selector');
-
-const setLanguage = (lang) => {
-    localStorage.setItem('language', lang);
-    updateTextContent(lang);
-};
-
-const updateTextContent = (lang) => {
-    if (!window.languages || !window.languages[lang]) {
-        console.warn(`Language pack for '${lang}' not found.`);
-        return;
-    }
-    const langPack = window.languages[lang];
-    Object.keys(langPack).forEach(key => {
-        const element = document.getElementById(key);
-        if (element) {
-            // Handle specific cases like input placeholders or button text
-            if (element.tagName === 'INPUT' && element.placeholder) {
-                element.placeholder = langPack[key];
-            } else if (key === 'speed-setting-title' && document.getElementById('speed-slider')) {
-                // Special handler for counting trainer speed label
-                const speed = parseFloat(document.getElementById('speed-slider').value);
-                element.textContent = langPack[key].replace('{0}', speed.toFixed(1));
-            }
-            else {
-                element.innerHTML = langPack[key]; // Using innerHTML to support potential HTML tags in translations
-            }
+<!DOCTYPE html>
+<html lang="zh-Hant" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bust the Casino - 您的專業博弈策略夥伴</title>
+    <meta name="description" content="提供專業的21點、百家樂、德州撲克等賭場遊戲策略、算牌技巧和實戰工具，助您在賭場中獲得優勢。">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --color-bg-primary: #1A1D24;
+            --color-bg-secondary: #2C323A;
+            --color-text-primary: #EAEAEA;
+            --color-text-secondary: #a0aec0;
+            --color-accent-blue: #4A90E2;
+            --color-accent-gold: #F1C40F;
         }
-        // Also update mobile menu elements if they exist
-        const mobileElement = document.getElementById(`mobile-${key}`);
-        if (mobileElement) {
-            mobileElement.innerHTML = langPack[key];
+        body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
+        h1, h2, h3 { font-family: var(--font-heading); font-weight: 900; letter-spacing: -0.025em; }
+        .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
+        .hero-text-shadow { text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7); }
+        .game-card { 
+            background-color: var(--color-bg-secondary); 
+            border-radius: 0.75rem; 
+            overflow: hidden; 
+            transition: transform 0.3s, box-shadow 0.3s; 
+            border: 1px solid transparent; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 180px; /* Ensure cards have a consistent height */
         }
-    });
-    // Update active button style
-    document.querySelectorAll('#language-selector button').forEach(btn => {
-        btn.classList.toggle('ring-2', btn.dataset.lang === lang);
-        btn.classList.toggle('ring-yellow-400', btn.dataset.lang === lang);
-    });
-};
+        .game-card:hover { transform: translateY(-8px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--color-accent-blue); }
+        #nav-brand-text { color: var(--color-accent-gold); }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Header -->
+    <header class="sticky-nav border-b border-gray-700/50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3">
+                <img src="assets/images/logo.png" alt="Bust the Casino Logo" style="height: 74px;">
+                <span id="nav-brand-text" class="text-2xl font-black font-heading tracking-wider">BUST THE CASINO</span>
+            </a>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
+                
+                <div class="relative">
+                    <button id="nav-tools-toggle" class="text-gray-300 hover:text-white transition duration-300 flex items-center">
+                        <span id="nav-tools">實戰工具</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="nav-tools-dropdown" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="blackjack/blackjack-basic-strategy.html" id="dropdown-bj-strategy-chart" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="blackjack/blackjack-strategy-trainer.html" id="dropdown-bj-trainer" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點策略練習</a>
+                        <a href="blackjack/blackjack-counting-trainer.html" id="dropdown-bj-counter" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點算牌練習</a>
+                        <a href="金錢卦.html" id="dropdown-money-div" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
 
-if (languageSelector) {
-    languageSelector.addEventListener('click', (e) => {
-        const button = e.target.closest('button');
-        if (button && button.dataset.lang) {
-            setLanguage(button.dataset.lang);
-        }
-    });
-}
+                <a href="#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
+                <div id="language-selector" class="flex space-x-2">
+                    <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
+                    <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+        </nav>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#strategy" id="mobile-nav-strategy" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">策略中心</a>
+                
+                <div>
+                    <button id="mobile-nav-tools-toggle" class="w-full text-left text-gray-300 hover:bg-gray-700 hover:text-white flex justify-between items-center px-3 py-2 rounded-md text-base font-medium">
+                        <span id="mobile-nav-tools">實戰工具</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-nav-tools-dropdown" class="pl-4 mt-1 space-y-1 hidden">
+                        <a href="blackjack/blackjack-basic-strategy.html" id="mobile-dropdown-bj-strategy-chart" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="blackjack/blackjack-strategy-trainer.html" id="mobile-dropdown-bj-trainer" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點策略練習</a>
+                        <a href="blackjack/blackjack-counting-trainer.html" id="mobile-dropdown-bj-counter" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點算牌練習</a>
+                        <a href="金錢卦.html" id="mobile-dropdown-money-div" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
 
+                <a href="#about" id="mobile-nav-about" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">關於我們</a>
+            </div>
+        </div>
+    </header>
 
-// Load language on initial page load
-document.addEventListener('DOMContentLoaded', () => {
-    const savedLang = localStorage.getItem('language') || 'zh';
-    setLanguage(savedLang);
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="relative h-[60vh] min-h-[400px] flex items-center justify-center text-center text-white bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1541300580552-39c8c937146d?q=80&w=2070&auto=format&fit=crop');">
+            <div class="absolute inset-0 bg-black/60"></div>
+            <div class="relative z-10 px-4">
+                <h1 id="hero-title" class="text-5xl md:text-7xl font-black hero-text-shadow">擊潰賭場 優勢盡握</h1>
+                <p id="hero-subtitle" class="mt-4 text-lg md:text-2xl max-w-2xl mx-auto" style="color: var(--color-text-secondary);">以數據為矛，策略為盾。我們提供最專業的博弈分析與工具。</p>
+                <a href="#strategy" id="hero-cta" class="mt-8 inline-block px-8 py-4 text-lg font-bold rounded-lg transition-transform transform hover:scale-105" style="background-color: var(--color-accent-blue); color: var(--color-text-primary);">探索策略</a>
+            </div>
+        </section>
 
-    // --- Desktop Dropdown Menu Logic ---
-    const toolsToggle = document.getElementById('nav-tools-toggle');
-    const toolsDropdown = document.getElementById('nav-tools-dropdown');
+        <!-- Strategy Section -->
+        <section id="strategy" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 id="strategy-title" class="text-4xl md:text-5xl font-black">策略中心</h2>
+                    <p id="strategy-description" class="mt-4 text-lg" style="color: var(--color-text-secondary);">無論您是新手還是資深玩家，這裡都有您需要的致勝秘笈。掌握核心策略，提升您的賭場優勢。</p>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Blackjack Card -->
+                    <a href="blackjack/blackjack.html" class="game-card">
+                        <div class="p-6 text-center">
+                            <h3 id="game-title-bj" class="text-2xl">21點 (Blackjack)</h3>
+                            <p id="game-desc-bj" class="mt-2" style="color: var(--color-text-secondary);">學習基礎策略、進階算牌技巧，將賭場優勢降至最低。</p>
+                        </div>
+                    </a>
+                    <!-- Baccarat Card -->
+                    <a href="baccarat/baccarat.html" class="game-card">
+                        <div class="p-6 text-center">
+                            <h3 id="game-title-baccarat" class="text-2xl">百家樂 (Baccarat)</h3>
+                            <p id="game-desc-baccarat" class="mt-2" style="color: var(--color-text-secondary);">探索莊閒之間的規律，學習路單分析與投注策略。</p>
+                        </div>
+                    </a>
+                    <!-- UTH Card -->
+                    <a href="uth/uth.html" class="game-card">
+                       <div class="p-6 text-center">
+                           <h3 id="game-title-uth" class="text-2xl">德州撲克 (Ultimate Texas Hold'em)</h3>
+                           <p id="game-desc-uth" class="mt-2" style="color: var(--color-text-secondary);">不僅僅是運氣，更是心理與策略的較量。學習如何讀牌與下注。</p>
+                       </div>
+                    </a>
+                    <!-- Three Card Poker Card -->
+                    <a href="three-card-poker/three-card-poker.html" class="game-card">
+                       <div class="p-6 text-center">
+                           <h3 id="game-title-tcp" class="text-2xl">三張牌撲克 (Three Card Poker)</h3>
+                           <p id="game-desc-tcp" class="mt-2" style="color: var(--color-text-secondary);">快節奏、易上手嘅撲克變體。學習最佳策略，最大化你嘅勝算。</p>
+                       </div>
+                    </a>
+                </div>
+            </div>
+        </section>
 
-    if (toolsToggle && toolsDropdown) {
-        toolsToggle.addEventListener('click', (event) => {
-            event.stopPropagation(); 
-            toolsDropdown.classList.toggle('hidden');
-        });
+        <!-- About Section -->
+        <section id="about" class="py-20" style="background-color: var(--color-bg-secondary);">
+            <div class="container mx-auto px-6 text-center max-w-3xl">
+                <img src="assets/images/logo.png" alt="Bust the Casino Logo" class="h-24 mx-auto mb-6">
+                <h2 id="about-title" class="text-4xl md:text-5xl font-black">關於我們</h2>
+                <p id="about-desc" class="mt-6 text-lg leading-relaxed" style="color: var(--color-text-secondary);">Bust the Casino 由一群數據分析師與資深博弈玩家組成。我們致力於揭開賭場遊戲背後的數學原理，將複雜的概率轉化為清晰易懂的策略。我們的使命是為玩家提供最精準的資訊和最實用的工具，讓您不再單純依賴運氣，而是以知識和技巧取勝。我們相信，真正的贏家，是那些懂得如何管理風險、運用策略的智者。</p>
+            </div>
+        </section>
 
-        window.addEventListener('click', (event) => {
-            if (!toolsDropdown.classList.contains('hidden') && !toolsToggle.contains(event.target)) {
-                toolsDropdown.classList.add('hidden');
-            }
-        });
-    }
+    </main>
 
-    // --- Mobile Menu Logic ---
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
+    <!-- Footer -->
+    <footer class="py-8 border-t border-gray-800">
+        <div class="container mx-auto text-center text-sm" style="color: var(--color-text-secondary);">
+            <p id="footer-copyright">&copy; 2025 Bust the Casino. 版權所有。</p>
+            <p id="footer-disclaimer" class="mt-2">請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。</p>
+        </div>
+    </footer>
     
-    if (mobileMenuButton && mobileMenu) {
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-    }
-
-    const mobileToolsToggle = document.getElementById('mobile-nav-tools-toggle');
-    const mobileToolsDropdown = document.getElementById('mobile-nav-tools-dropdown');
-
-    if (mobileToolsToggle && mobileToolsDropdown) {
-        mobileToolsToggle.addEventListener('click', (event) => {
-            event.stopPropagation();
-            mobileToolsDropdown.classList.toggle('hidden');
-        });
-    }
-
-});
+    <script src="languages.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
 
