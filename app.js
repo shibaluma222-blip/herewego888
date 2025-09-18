@@ -27,6 +27,11 @@ const updateTextContent = (lang) => {
                 element.innerHTML = langPack[key]; // Using innerHTML to support potential HTML tags in translations
             }
         }
+        // Also update mobile menu elements if they exist
+        const mobileElement = document.getElementById(`mobile-${key}`);
+        if (mobileElement) {
+            mobileElement.innerHTML = langPack[key];
+        }
     });
     // Update active button style
     document.querySelectorAll('#language-selector button').forEach(btn => {
@@ -35,33 +40,57 @@ const updateTextContent = (lang) => {
     });
 };
 
-languageSelector.addEventListener('click', (e) => {
-    const button = e.target.closest('button');
-    if (button && button.dataset.lang) {
-        setLanguage(button.dataset.lang);
-    }
-});
+if (languageSelector) {
+    languageSelector.addEventListener('click', (e) => {
+        const button = e.target.closest('button');
+        if (button && button.dataset.lang) {
+            setLanguage(button.dataset.lang);
+        }
+    });
+}
+
 
 // Load language on initial page load
 document.addEventListener('DOMContentLoaded', () => {
     const savedLang = localStorage.getItem('language') || 'zh';
     setLanguage(savedLang);
 
-    // --- Dropdown Menu Logic ---
+    // --- Desktop Dropdown Menu Logic ---
     const toolsToggle = document.getElementById('nav-tools-toggle');
     const toolsDropdown = document.getElementById('nav-tools-dropdown');
 
     if (toolsToggle && toolsDropdown) {
         toolsToggle.addEventListener('click', (event) => {
-            event.stopPropagation(); // Prevent the window click listener from firing immediately
+            event.stopPropagation(); 
             toolsDropdown.classList.toggle('hidden');
         });
 
-        // Close dropdown if clicking outside
         window.addEventListener('click', (event) => {
             if (!toolsDropdown.classList.contains('hidden') && !toolsToggle.contains(event.target)) {
                 toolsDropdown.classList.add('hidden');
             }
         });
     }
+
+    // --- Mobile Menu Logic ---
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+
+    const mobileToolsToggle = document.getElementById('mobile-nav-tools-toggle');
+    const mobileToolsDropdown = document.getElementById('mobile-nav-tools-dropdown');
+
+    if (mobileToolsToggle && mobileToolsDropdown) {
+        mobileToolsToggle.addEventListener('click', (event) => {
+            event.stopPropagation();
+            mobileToolsDropdown.classList.toggle('hidden');
+        });
+    }
+
 });
+
