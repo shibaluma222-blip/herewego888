@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>21點算牌練習器 - Bust the Casino</title>
+    <meta name="description" content="使用Hi-Lo算牌法，透過這個互動工具練習快速準確地計算流水數(Running Count)。可自訂出牌速度，提升您的算牌技巧。">
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,58 +20,57 @@
             --color-text-secondary: #a0aec0;
             --color-accent-blue: #4A90E2;
             --color-accent-gold: #F1C40F;
-            --color-accent-green: #2ECC71;
-            --color-accent-red: #E53E3E;
+            --color-correct: #2ECC71;
+            --color-incorrect: #E53E3E;
         }
         body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
+        h1, h2, h3 { font-family: var(--font-heading); font-weight: 900; letter-spacing: -0.025em; }
         .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
-        .card {
-            width: 100px;
-            height: 150px;
-            border-radius: 8px;
-            background-color: #f8f9fa;
-            color: #212529;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 6px 20px rgba(0,0,0,0.19);
-            position: absolute;
-            user-select: none;
-            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-        }
-        .card.red { color: var(--color-accent-red); }
-        .card-corner { 
-            position: absolute;
-            width: 30px;
+        .content-box { background-color: var(--color-bg-secondary); border-radius: 0.75rem; padding: 2rem; }
+        .card-display-area {
+            min-height: 250px; /* Increased height */
+            background-color: #1a202c;
+            border-radius: 0.5rem;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            line-height: 1;
         }
-        .card-corner.top-left {
-            top: 8px;
-            left: 2px;
+        .card {
+            background-color: white; color: black; border-radius: 0.5rem;
+            width: 120px; height: 168px; /* Slightly larger cards */
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            font-size: 3rem; font-weight: bold;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+            position: relative;
+            animation: fadeIn 0.3s ease-in-out;
         }
-        .card-corner.bottom-right {
-            bottom: 8px;
-            right: 2px;
-            transform: rotate(180deg);
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .card .suit { font-size: 2.5rem; }
+        .card.red { color: #D90429; }
+        .action-button {
+            background-color: var(--color-accent-blue); color: white;
+            padding: 0.75rem 1.5rem; border-radius: 0.5rem;
+            font-weight: bold; text-transform: uppercase;
+            transition: background-color 0.3s, transform 0.2s;
+            cursor: pointer;
         }
-        .card-value { font-size: 24px; font-weight: 700; }
-        .card-suit { font-size: 20px; }
-        .card-suit-center { font-size: 50px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.9; }
+        .action-button:hover { background-color: #357ABD; transform: translateY(-2px); }
+        .action-button:disabled { background-color: #4A5568; cursor: not-allowed; }
+        .form-input {
+            background-color: #1A1D24;
+            border: 2px solid #4A5568;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: var(--color-text-primary);
+            text-align: center;
+            font-size: 1.5rem;
+            width: 100px;
+        }
         #nav-brand-text { color: var(--color-accent-gold); }
-        .trainer-box {
-            background-color: var(--color-bg-secondary);
-            border: 1px solid var(--color-accent-blue);
-            padding: 1.5rem;
-            border-radius: 0.75rem;
-        }
-        .card-enter {
-            opacity: 0;
-            transform: translateY(30px) scale(0.9);
-        }
     </style>
 </head>
 <body class="antialiased">
-     <!-- Header -->
+    <!-- Header -->
     <header class="sticky-nav border-b border-gray-700/50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="../index.html" class="flex items-center space-x-3">
@@ -78,66 +79,74 @@
             </a>
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
-                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                <div class="relative">
+                    <button id="nav-tools-toggle" class="text-gray-300 hover:text-white transition duration-300 flex items-center">
+                        <span id="nav-tools">實戰工具</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="nav-tools-dropdown" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="blackjack-basic-strategy.html" id="dropdown-bj-strategy-chart" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="blackjack-strategy-trainer.html" id="dropdown-bj-trainer" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點策略練習</a>
+                        <a href="blackjack-counting-trainer.html" id="dropdown-bj-counter" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="dropdown-money-div" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
                 <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
                 <div id="language-selector" class="flex space-x-2">
                     <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
                     <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
                 </div>
             </div>
-            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
         </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="../index.html#strategy" id="mobile-nav-strategy" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">策略中心</a>
+                <div>
+                    <button id="mobile-nav-tools-toggle" class="w-full text-left text-gray-300 hover:bg-gray-700 hover:text-white flex justify-between items-center px-3 py-2 rounded-md text-base font-medium">
+                        <span id="mobile-nav-tools">實戰工具</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-nav-tools-dropdown" class="pl-4 mt-1 space-y-1 hidden">
+                        <a href="blackjack-basic-strategy.html" id="mobile-dropdown-bj-strategy-chart" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="blackjack-strategy-trainer.html" id="mobile-dropdown-bj-trainer" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點策略練習</a>
+                        <a href="blackjack-counting-trainer.html" id="mobile-dropdown-bj-counter" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="mobile-dropdown-money-div" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
+                <a href="../index.html#about" id="mobile-nav-about" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">關於我們</a>
+            </div>
+        </div>
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <main class="container mx-auto px-6 py-12">
         <a href="blackjack.html" id="back-to-blackjack" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回21點專區</a>
-        <div id="trainer-container" class="max-w-md mx-auto text-center trainer-box">
-            
-            <!-- Ready View -->
-            <div id="ready-view">
-                <h1 id="counting-trainer-title" class="text-3xl md:text-4xl font-black mb-4">算牌練習器</h1>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mx-auto text-gray-400 my-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 4v16m8-8H4" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 12H9" />
-                </svg>
-                <p id="counting-trainer-instructions" class="text-lg mb-8" style="color: var(--color-text-secondary);">卡牌會快速出現，請在心中默數流水數(Running Count)。練習結束後，系統會要求你輸入最終結果。</p>
-                <div class="p-4 rounded-lg mb-8" style="background-color: var(--color-bg-primary);">
-                    <label for="speed-slider" id="speed-setting-title" class="block mb-2"></label>
-                    <input type="range" id="speed-slider" min="0.5" max="3.0" value="1.5" step="0.1" class="w-full">
-                </div>
-                <button id="start-button" class="w-full p-4 rounded-lg font-bold text-xl text-white" style="background-color: var(--color-accent-blue);">開始練習</button>
-            </div>
+        <div class="content-box max-w-2xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-black text-center">21點算牌練習器</h1>
+            <p class="text-center my-4" style="color: var(--color-text-secondary);">使用 Hi-Lo 算牌法練習計算流水數 (Running Count)。</p>
 
-            <!-- Playing View -->
-            <div id="playing-view" class="hidden">
-                <div id="card-display-area" class="relative w-full h-[166px] mb-8">
-                    <!-- Cards will be injected here by JS. Height is card height (150) + hover offset (10) + buffer(6) -->
-                </div>
-                <button id="stop-button" class="w-full p-4 rounded-lg font-bold text-xl text-white" style="background-color: var(--color-accent-red);">停止</button>
+            <div class="my-8 space-y-4 text-center">
+                <label for="speed-slider" id="speed-label" class="block text-lg">出牌速度: 1.5 秒</label>
+                <input type="range" id="speed-slider" min="0.5" max="3" value="1.5" step="0.1" class="w-64">
             </div>
             
-            <!-- Awaiting Answer View -->
-            <div id="answer-view" class="hidden">
-                <h2 id="final-rc-question" class="text-2xl font-bold mb-4">最終嘅流水數係幾多？</h2>
-                <input type="number" id="rc-input" class="w-full p-4 text-center text-4xl font-bold rounded-lg text-white bg-gray-900 border-2 border-gray-600 focus:border-blue-500 focus:outline-none">
-                <div class="grid grid-cols-2 gap-4 mt-6">
-                    <button id="submit-button" class="w-full p-4 rounded-lg font-bold text-lg text-white" style="background-color: var(--color-accent-blue);">提交</button>
-                    <button id="notsure-button" class="w-full p-4 rounded-lg font-bold text-lg text-white" style="background-color: #6b7280;">唔肯定</button>
-                </div>
+            <div id="card-display-area" class="card-display-area my-8">
+                <!-- Card will be displayed here -->
+            </div>
+            
+            <div class="flex justify-center my-6 gap-x-4">
+                <button id="start-counting-button" class="action-button">開始</button>
+                <button id="stop-counting-button" class="action-button" disabled>停止</button>
+            </div>
+            
+            <div id="result-area" class="text-center mt-8" style="display: none;">
+                <h3 id="enter-count-label" class="text-xl font-bold mb-4">請輸入最終流水數:</h3>
+                <input type="number" id="count-input" class="form-input">
+                <button id="submit-count-button" class="action-button ml-4">提交</button>
+                <p id="final-result" class="text-2xl font-bold mt-4 h-8"></p>
             </div>
 
-            <!-- Finished View -->
-            <div id="finished-view" class="hidden">
-                <div id="result-icon"></div>
-                <h2 id="result-feedback" class="text-3xl font-bold my-4"></h2>
-                <p id="your-answer-was" class="text-lg" style="color: var(--color-text-secondary);"></p>
-                <p id="correct-rc-is" class="text-2xl font-bold mt-2" style="color: var(--color-accent-gold);"></p>
-                <div class="grid grid-cols-2 gap-4 mt-8">
-                    <button id="restart-trainer-button" class="w-full p-4 rounded-lg font-bold text-lg text-white" style="background-color: var(--color-accent-blue);">重新練習</button>
-                    <button id="reset-menu-button" class="w-full p-4 rounded-lg font-bold text-lg text-white" style="background-color: #6b7280;">返回選單</button>
-                </div>
-            </div>
         </div>
     </main>
 
@@ -152,222 +161,157 @@
     <script src="../languages.js"></script>
     <script src="../app.js"></script>
     <script>
-        // --- DOM Elements ---
-        const readyView = document.getElementById('ready-view');
-        const playingView = document.getElementById('playing-view');
-        const answerView = document.getElementById('answer-view');
-        const finishedView = document.getElementById('finished-view');
+        const suits = ['♥', '♦', '♣', '♠'];
+        const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+        
         const speedSlider = document.getElementById('speed-slider');
-        const speedTitle = document.getElementById('speed-setting-title');
-        const startButton = document.getElementById('start-button');
-        const stopButton = document.getElementById('stop-button');
+        const speedLabel = document.getElementById('speed-label');
+        const startButton = document.getElementById('start-counting-button');
+        const stopButton = document.getElementById('stop-counting-button');
         const cardDisplayArea = document.getElementById('card-display-area');
-        const rcInput = document.getElementById('rc-input');
-        const submitButton = document.getElementById('submit-button');
-        const notsureButton = document.getElementById('notsure-button');
-        const resultIcon = document.getElementById('result-icon');
-        const resultFeedback = document.getElementById('result-feedback');
-        const yourAnswerWas = document.getElementById('your-answer-was');
-        const correctRcIs = document.getElementById('correct-rc-is');
-        const restartTrainerButton = document.getElementById('restart-trainer-button');
-        const resetMenuButton = document.getElementById('reset-menu-button');
+        const resultArea = document.getElementById('result-area');
+        const countInput = document.getElementById('count-input');
+        const submitButton = document.getElementById('submit-count-button');
+        const finalResult = document.getElementById('final-result');
 
-        // --- Enums and Card data ---
-        const Suits = { SPADES: '♠', HEARTS: '♥', DIAMONDS: '♦', CLUBS: '♣' };
-        const Ranks = { TWO: 2, THREE: 3, FOUR: 4, FIVE: 5, SIX: 6, SEVEN: 7, EIGHT: 8, NINE: 9, TEN: 10, JACK: 'J', QUEEN: 'Q', KING: 'K', ACE: 'A' };
-
-        // --- Game State ---
-        let speed = 1.5;
+        let deck = [];
         let runningCount = 0;
         let timer;
-        let currentCardEl = null;
-        let deck = [];
-
-        // --- Card Creation and Logic ---
-        function createCard(rank, suit) {
-            let value;
-            if (['J', 'Q', 'K'].includes(rank)) value = 10;
-            else if (rank === 'A') value = 11;
-            else value = rank;
-            return { rank, suit, value };
-        }
+        let isRunning = false;
         
         function createDeck() {
-            const suits = Object.values(Suits);
-            const ranks = Object.values(Ranks);
             let newDeck = [];
             for (const suit of suits) {
-                for (const rank of ranks) {
-                    newDeck.push(createCard(rank, suit));
+                for (const value of values) {
+                    newDeck.push({ suit, value });
                 }
-            }
-            // Shuffle the deck
-            for (let i = newDeck.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [newDeck[i], newDeck[j]] = [newDeck[j], newDeck[i]];
             }
             return newDeck;
         }
 
+        function shuffleDeck(deckToShuffle) {
+            for (let i = deckToShuffle.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deckToShuffle[i], deckToShuffle[j]] = [deckToShuffle[j], deckToShuffle[i]];
+            }
+        }
+        
         function getCountValue(card) {
-            const rank = card.rank;
-            if (typeof rank === 'number' && rank >= 2 && rank <= 6) return 1;
-            if (rank === 10 || rank === 'J' || rank === 'Q' || rank === 'K' || rank === 'A') return -1;
+            const value = card.value;
+            if (['10', 'J', 'Q', 'K', 'A'].includes(value)) {
+                return -1;
+            } else if (['2', '3', '4', '5', '6'].includes(value)) {
+                return 1;
+            }
             return 0;
         }
 
         function createCardElement(card) {
             const cardEl = document.createElement('div');
             cardEl.className = 'card';
-            const suitColor = ['♥', '♦'].includes(card.suit) ? ' red' : '';
-            cardEl.className += suitColor;
+            if (['♥', '♦'].includes(card.suit)) {
+                cardEl.classList.add('red');
+            }
 
-            cardEl.innerHTML = `
-                <div class="card-corner top-left">
-                    <div>
-                        <span class="card-value">${card.rank}</span>
-                        <span class="card-suit">${card.suit}</span>
-                    </div>
-                </div>
-                <div class="card-suit-center">${card.suit}</div>
-                <div class="card-corner bottom-right">
-                    <div>
-                        <span class="card-value">${card.rank}</span>
-                        <span class="card-suit">${card.suit}</span>
-                    </div>
-                </div>
-            `;
+            const valueSpan = document.createElement('span');
+            valueSpan.textContent = card.value;
+
+            const suitSpan = document.createElement('span');
+            suitSpan.className = 'suit';
+            suitSpan.textContent = card.suit;
+            
+            cardEl.appendChild(valueSpan);
+            cardEl.appendChild(suitSpan);
             return cardEl;
-        }
-
-        // --- UI Control ---
-        function showView(view) {
-            readyView.style.display = 'none';
-            playingView.style.display = 'none';
-            answerView.style.display = 'none';
-            finishedView.style.display = 'none';
-            view.style.display = 'block';
         }
 
         function dealNextCard() {
             if (deck.length === 0) {
-                stopTrainer();
+                stopCounting();
                 return;
             }
 
-            // Capture the card to be removed in a local constant to avoid closure issues
-            const cardToRemove = currentCardEl;
-
-            // Animate out the old card if it exists
-            if (cardToRemove) {
-                cardToRemove.style.opacity = '0';
-                cardToRemove.style.transform = 'translate(-50%, -50%) scale(0.8)';
-                setTimeout(() => {
-                    if (cardToRemove.parentNode) {
-                        cardToRemove.parentNode.removeChild(cardToRemove);
-                    }
-                }, 300); // Remove from DOM after transition
+            const card = deck.pop();
+            runningCount += getCountValue(card);
+            
+            const newCardEl = createCardElement(card);
+            
+            if (cardDisplayArea.firstChild) {
+                cardDisplayArea.replaceChild(newCardEl, cardDisplayArea.firstChild);
+            } else {
+                cardDisplayArea.appendChild(newCardEl);
             }
-            
-            // Get the next card from the deck
-            const newCard = deck.pop();
-            if (!newCard) { // Safety check
-                stopTrainer();
-                return;
-            }
-            runningCount += getCountValue(newCard);
-            
-            const newCardEl = createCardElement(newCard);
-            newCardEl.style.opacity = '0';
-            newCardEl.style.transform = 'translate(-50%, -50%) scale(0.8)';
-            newCardEl.style.top = '50%';
-            newCardEl.style.left = '50%';
-            cardDisplayArea.appendChild(newCardEl);
-
-            // Animate in the new card
-            setTimeout(() => {
-                newCardEl.style.opacity = '1';
-                newCardEl.style.transform = 'translate(-50%, -50%) scale(1)';
-            }, 50); // A small delay to ensure the element is in the DOM before animating
-
-            // Update the global reference to the current card
-            currentCardEl = newCardEl;
-        }
-
-        // --- Game Flow ---
-        function startTrainer() {
-            runningCount = 0;
-            deck = createDeck();
-            showView(playingView);
-            dealNextCard(); // Deal the first card immediately
-            timer = setInterval(dealNextCard, speed * 1000);
-        }
-
-        function stopTrainer() {
-            clearInterval(timer);
-            showView(answerView);
-            rcInput.focus();
-        }
-
-        function submitAnswer() {
-            const userAnswer = parseInt(rcInput.value, 10);
-            const isCorrect = userAnswer === runningCount;
-            
-            resultIcon.innerHTML = isCorrect
-                ? `<svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mx-auto text-green-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>`
-                : `<svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mx-auto text-red-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>`;
-
-            resultFeedback.textContent = isCorrect ? "正確!" : "答錯了";
-            yourAnswerWas.textContent = `你嘅答案: ${rcInput.value}`;
-            correctRcIs.textContent = `正確流水數: ${runningCount}`;
-            yourAnswerWas.style.display = 'block';
-            showView(finishedView);
         }
         
-        function revealAnswer() {
-             resultIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mx-auto text-blue-400" viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z" /><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.022 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" /></svg>`;
-             resultFeedback.textContent = "";
-             yourAnswerWas.style.display = 'none';
-             correctRcIs.textContent = `正確流水數: ${runningCount}`;
-             showView(finishedView);
+        function startCounting() {
+            if (isRunning) return;
+            isRunning = true;
+            
+            deck = createDeck();
+            shuffleDeck(deck);
+            runningCount = 0;
+
+            cardDisplayArea.innerHTML = '';
+            resultArea.style.display = 'none';
+            finalResult.textContent = '';
+            countInput.value = '';
+            
+            startButton.disabled = true;
+            stopButton.disabled = false;
+            speedSlider.disabled = true;
+
+            const speed = parseFloat(speedSlider.value) * 1000;
+            dealNextCard();
+            timer = setInterval(dealNextCard, speed);
         }
 
-        function resetToMenu() {
-            rcInput.value = '';
-            cardDisplayArea.innerHTML = ''; // Clear any leftover cards
-            currentCardEl = null;
+        function stopCounting() {
+            if (!isRunning) return;
+            isRunning = false;
+            
             clearInterval(timer);
-            showView(readyView);
+            cardDisplayArea.innerHTML = `<span class="text-2xl font-bold" style="color: var(--color-accent-gold);">練習結束</span>`;
+            
+            startButton.disabled = false;
+            stopButton.disabled = true;
+            speedSlider.disabled = false;
+            
+            resultArea.style.display = 'block';
         }
 
-        function updateSpeedLabel() {
-            const lang = localStorage.getItem('language') || 'zh';
-            const key = "speed-setting-title";
-            let template = (lang === 'zh') ? "速度設定: {0}秒/張" : "Speed: {0}s/card";
-            if (typeof languages !== 'undefined' && languages[lang] && languages[lang][key]) {
-                 template = languages[lang][key];
+        function checkResult() {
+            const userAnswer = parseInt(countInput.value);
+            if (isNaN(userAnswer)) return;
+
+            if (userAnswer === runningCount) {
+                finalResult.textContent = `正確！流水數是 ${runningCount}。`;
+                finalResult.style.color = 'var(--color-correct)';
+            } else {
+                finalResult.textContent = `錯誤。正確的流水數是 ${runningCount}。`;
+                finalResult.style.color = 'var(--color-incorrect)';
             }
-            speedTitle.textContent = template.replace('{0}', speed.toFixed(1));
         }
-
-        // --- Event Listeners ---
-        speedSlider.addEventListener('input', (e) => {
-            speed = parseFloat(e.target.value);
-            updateSpeedLabel();
+        
+        speedSlider.addEventListener('input', () => {
+             const currentLang = document.documentElement.lang;
+             const template = (translations[currentLang] && translations[currentLang].speedLabel) ? translations[currentLang].speedLabel : '出牌速度: {0} 秒';
+             speedLabel.textContent = template.replace('{0}', parseFloat(speedSlider.value).toFixed(1));
         });
-        startButton.addEventListener('click', startTrainer);
-        stopButton.addEventListener('click', stopTrainer);
-        submitButton.addEventListener('click', submitAnswer);
-        notsureButton.addEventListener('click', revealAnswer);
-        restartTrainerButton.addEventListener('click', startTrainer);
-        resetMenuButton.addEventListener('click', resetToMenu);
 
-        function initializeView() {
-            speedSlider.value = speed;
-            updateSpeedLabel();
-            showView(readyView);
-        }
-        initializeView();
+        startButton.addEventListener('click', startCounting);
+        stopButton.addEventListener('click', stopCounting);
+        submitButton.addEventListener('click', checkResult);
+        countInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                checkResult();
+            }
+        });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentLang = document.documentElement.lang || 'zh';
+            const template = (translations[currentLang] && translations[currentLang].speedLabel) ? translations[currentLang].speedLabel : '出牌速度: {0} 秒';
+            speedLabel.textContent = template.replace('{0}', parseFloat(speedSlider.value).toFixed(1));
+        });
 
     </script>
 </body>
