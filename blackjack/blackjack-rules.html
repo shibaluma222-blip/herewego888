@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>21點規則與玩法 - Bust the Casino</title>
+    <title>21點遊戲規則 - Bust the Casino</title>
+    <meta name="description" content="詳細解釋21點(Blackjack)的遊戲目標、牌值計算、玩家選項（要牌、停牌、加倍、分牌）以及莊家規則。">
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,9 +22,11 @@
             --color-accent-gold: #F1C40F;
         }
         body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
-        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
+        h1, h2, h3 { font-family: var(--font-heading); font-weight: 900; letter-spacing: -0.025em; }
         .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
-        .content-card { background-color: var(--color-bg-secondary); }
+        .content-box { background-color: var(--color-bg-secondary); border-radius: 0.75rem; padding: 2rem; }
+        .content-box h2 { color: var(--color-accent-gold); }
+        .content-box li { margin-bottom: 0.5rem; }
         #nav-brand-text { color: var(--color-accent-gold); }
     </style>
 </head>
@@ -34,65 +38,110 @@
                 <img src="../assets/images/logo.png" alt="Bust the Casino Logo" style="height: 74px;">
                 <span id="nav-brand-text" class="text-2xl font-black font-heading tracking-wider">BUST THE CASINO</span>
             </a>
+            
+            <!-- Desktop Menu -->
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
-                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                
+                <div class="relative">
+                    <button id="nav-tools-toggle" class="text-gray-300 hover:text-white transition duration-300 flex items-center">
+                        <span id="nav-tools">實戰工具</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="nav-tools-dropdown" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="blackjack-basic-strategy.html" id="dropdown-bj-strategy-chart" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="blackjack-strategy-trainer.html" id="dropdown-bj-trainer" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點策略練習</a>
+                        <a href="blackjack-counting-trainer.html" id="dropdown-bj-counter" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="dropdown-money-div" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
+
                 <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
                 <div id="language-selector" class="flex space-x-2">
                     <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
                     <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
                 </div>
             </div>
-            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
         </nav>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="../index.html#strategy" id="mobile-nav-strategy" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">策略中心</a>
+                
+                <div>
+                    <button id="mobile-nav-tools-toggle" class="w-full text-left text-gray-300 hover:bg-gray-700 hover:text-white flex justify-between items-center px-3 py-2 rounded-md text-base font-medium">
+                        <span id="mobile-nav-tools">實戰工具</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-nav-tools-dropdown" class="pl-4 mt-1 space-y-1 hidden">
+                        <a href="blackjack-basic-strategy.html" id="mobile-dropdown-bj-strategy-chart" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="blackjack-strategy-trainer.html" id="mobile-dropdown-bj-trainer" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點策略練習</a>
+                        <a href="blackjack-counting-trainer.html" id="mobile-dropdown-bj-counter" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="mobile-dropdown-money-div" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
+
+                <a href="../index.html#about" id="mobile-nav-about" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">關於我們</a>
+            </div>
+        </div>
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="max-w-4xl mx-auto">
-            <!-- *** UPDATED BUTTON POSITION *** -->
-            <a href="blackjack.html" id="back-to-blackjack" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回21點專區</a>
-            <div class="content-card p-8 md:p-10 rounded-lg">
-                <h1 id="bkr-title" class="text-3xl md:text-4xl font-black text-center mb-8">規則與玩法</h1>
-                <div class="space-y-8">
-                    <div>
-                        <h2 id="bkr-obj-title" class="text-2xl font-bold">遊戲目標</h2>
-                        <p id="bkr-obj-desc" class="mt-2" style="color: var(--color-text-secondary);">21點的目標非常簡單：在你的手牌點數總和不超過21點的情況下，盡可能地接近21點，並擊敗莊家的手牌。如果你一開始的兩張牌點數總和剛好是21點（一張A牌和一張10點牌），這就是 "Blackjack"，你會立即獲勝並獲得更高的賠率。</p>
-                    </div>
-                    <div>
-                        <h2 id="bkr-card-title" class="text-2xl font-bold">牌值計算</h2>
-                        <ul id="bkr-card-list" class="mt-2 space-y-2 list-disc list-inside" style="color: var(--color-text-secondary);">
-                            <li id="bkr-card-1"><b>數字牌 (2-10):</b> 牌值與其數字相同。</li>
-                            <li id="bkr-card-2"><b>公仔牌 (J, Q, K):</b> 每張牌值均為10點。</li>
-                            <li id="bkr-card-3"><b>A牌 (Ace):</b> 最特別的牌，牌值可以算作1點或11點，視乎哪種對玩家更有利。例如，(A, 8) 總和是19點。(A, 5, 8) 總和是14點 (A算作1點，否則會爆牌)。</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h2 id="bkr-actions-title" class="text-2xl font-bold">玩家的選擇</h2>
-                        <div class="mt-4 space-y-4">
-                            <div class="p-4 rounded-md" style="background-color: var(--color-bg-primary);">
-                                <h3 id="bkr-hit-title" class="font-bold text-lg" style="color:var(--color-accent-gold);">要牌 (Hit):</h3>
-                                <p id="bkr-hit-desc" class="text-sm" style="color: var(--color-text-secondary);">要求莊家再給你一張牌。你可以持續要牌，直到你決定停牌或你的點數超過21點（爆牌）。</p>
-                            </div>
-                            <div class="p-4 rounded-md" style="background-color: var(--color-bg-primary);">
-                                <h3 id="bkr-stand-title" class="font-bold text-lg" style="color:var(--color-accent-gold);">停牌 (Stand):</h3>
-                                <p id="bkr-stand-desc" class="text-sm" style="color: var(--color-text-secondary);">對你目前的手牌感到滿意，不再要牌。輪到莊家行動。</p>
-                            </div>
-                            <div class="p-4 rounded-md" style="background-color: var(--color-bg-primary);">
-                                <h3 id="bkr-double-title" class="font-bold text-lg" style="color:var(--color-accent-gold);">加倍 (Double Down):</h3>
-                                <p id="bkr-double-desc" class="text-sm" style="color: var(--color-text-secondary);">在你拿到最初兩張牌後，你可以選擇將你的賭注加倍。但加倍後，你只能再拿一張牌，之後就必須停牌。這是一個在高勝率時增加盈利的關鍵策略。</p>
-                            </div>
-                            <div class="p-4 rounded-md" style="background-color: var(--color-bg-primary);">
-                                <h3 id="bkr-split-title" class="font-bold text-lg" style="color:var(--color-accent-gold);">分牌 (Split):</h3>
-                                <p id="bkr-split-desc" class="text-sm" style="color: var(--color-text-secondary);">如果你最初兩張牌的點數相同（例如兩張8或兩張K），你可以選擇分牌。你需要下一個與原賭注相等的注碼，然後這兩張牌會被分成兩手獨立的牌，你會為每一手牌單獨要牌或停牌。</p>
-                            </div>
-                        </div>
-                    </div>
-                     <div>
-                        <h2 id="bkr-dealer-title" class="text-2xl font-bold">莊家的規則</h2>
-                        <p id="bkr-dealer-desc" class="mt-2" style="color: var(--color-text-secondary);">莊家的行動沒有任何自由度，必須嚴格遵守賭場規則。通常規則是：莊家在總點數為16點或以下時必須要牌；在總點數為17點或以上時（包括軟17，即包含一張A牌的17點）必須停牌。</p>
-                    </div>
-                </div>
+    <main class="container mx-auto px-6 py-12">
+        <a href="blackjack.html" id="back-to-blackjack" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回21點專區</a>
+        <div class="content-box max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-black mb-8 text-center">21點遊戲規則</h1>
+
+            <div class="space-y-8 text-lg leading-relaxed" style="color: var(--color-text-secondary);">
+                <section>
+                    <h2 class="text-3xl font-bold mb-4">遊戲目標</h2>
+                    <p>21點的目標非常簡單：在不超過21點的情況下，盡可能地接近21點，並打敗莊家。如果您的手牌點數超過21點，就稱為「爆煲」(Bust)，您會立即輸掉該局的賭注。</p>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold mb-4">卡牌點數</h2>
+                    <ul class="list-disc list-inside">
+                        <li><strong>數字牌 (2-10):</strong> 點數與牌面數字相同。</li>
+                        <li><strong>公仔牌 (J, Q, K):</strong> 每張計為10點。</li>
+                        <li><strong>Ace (A):</strong> 可計為1點或11點，以對玩家最有利的方式計算。有Ace的牌稱為「軟牌」(Soft Hand)，因為其點數靈活多變。</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold mb-4">遊戲流程</h2>
+                    <ol class="list-decimal list-inside space-y-2">
+                        <li><strong>下注:</strong> 玩家在發牌前於指定區域下注。</li>
+                        <li><strong>發牌:</strong> 莊家會發給每位玩家和自己兩張牌。玩家的兩張牌通常是牌面朝上，莊家則是一張牌面朝上（明牌）、一張牌面朝下（暗牌）。</li>
+                        <li><strong>玩家決策:</strong> 從莊家左邊的玩家開始，輪流作決策。</li>
+                        <li><strong>莊家行動:</strong> 所有玩家完成決策後，莊家揭開暗牌，並根據固定規則補牌。</li>
+                        <li><strong>結算:</strong> 比較玩家與莊家的手牌點數，決定勝負。</li>
+                    </ol>
+                </section>
+                
+                <section>
+                    <h2 class="text-3xl font-bold mb-4">玩家選項</h2>
+                     <ul class="list-disc list-inside">
+                        <li><strong>要牌 (Hit):</strong> 再要一張牌。只要未爆煲，您可以要任意數量的牌。</li>
+                        <li><strong>停牌 (Stand):</strong> 對自己的手牌滿意，不再要牌。</li>
+                        <li><strong>加倍 (Double Down):</strong> 將原始賭注加倍，但之後只能再要一張牌。通常在您認為下一張牌有很大機會讓您贏得牌局時使用。</li>
+                        <li><strong>分牌 (Split):</strong> 如果您最初兩張牌點數相同（例如一對8或一對K），您可以選擇分牌。您必須下一個與原始賭注相等的注碼，將兩張牌分成兩手獨立的牌來玩。</li>
+                        <li><strong>保險 (Insurance):</strong> 如果莊家的明牌是Ace，您可以選擇買保險，賭注是原始賭注的一半。如果莊家有Blackjack，您會贏得保險注的2倍。這通常不是一個有利可圖的選擇。</li>
+                    </ul>
+                </section>
+
+                 <section>
+                    <h2 class="text-3xl font-bold mb-4">莊家規則</h2>
+                    <p>莊家沒有選擇權，必須遵循賭場的固定規則：</p>
+                    <ul class="list-disc list-inside">
+                        <li>手牌點數為16點或以下時，<strong>必須</strong>要牌。</li>
+                        <li>手牌點數為17點或以上時，<strong>必須</strong>停牌。</li>
+                        <li>部分賭場規定，莊家在軟17點（例如 A+6）時也必須要牌。</li>
+                    </ul>
+                </section>
             </div>
         </div>
     </main>
@@ -109,4 +158,3 @@
     <script src="../app.js"></script>
 </body>
 </html>
-
