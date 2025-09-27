@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>21點進階技巧 - Bust the Casino</title>
+    <title>21點進階策略 - 算牌技巧 - Bust the Casino</title>
+    <meta name="description" content="深入學習21點進階策略，重點介紹最流行的高低算牌法(Hi-Lo System)，包括如何計算流水數(Running Count)和真數(True Count)，以及如何根據真數調整下注策略。">
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,9 +22,11 @@
             --color-accent-gold: #F1C40F;
         }
         body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
-        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
+        h1, h2, h3 { font-family: var(--font-heading); font-weight: 900; letter-spacing: -0.025em; }
         .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
-        .content-card { background-color: var(--color-bg-secondary); }
+        .content-box { background-color: var(--color-bg-secondary); border-radius: 0.75rem; padding: 2rem; }
+        .content-box h2 { color: var(--color-accent-gold); }
+        .content-box strong { color: var(--color-accent-gold); }
         #nav-brand-text { color: var(--color-accent-gold); }
     </style>
 </head>
@@ -34,114 +38,114 @@
                 <img src="../assets/images/logo.png" alt="Bust the Casino Logo" style="height: 74px;">
                 <span id="nav-brand-text" class="text-2xl font-black font-heading tracking-wider">BUST THE CASINO</span>
             </a>
+            
+            <!-- Desktop Menu -->
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
-                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                
+                <div class="relative">
+                    <button id="nav-tools-toggle" class="text-gray-300 hover:text-white transition duration-300 flex items-center">
+                        <span id="nav-tools">實戰工具</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="nav-tools-dropdown" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="blackjack-basic-strategy.html" id="dropdown-bj-strategy-chart" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="blackjack-strategy-trainer.html" id="dropdown-bj-trainer" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點策略練習</a>
+                        <a href="blackjack-counting-trainer.html" id="dropdown-bj-counter" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="dropdown-money-div" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
+
                 <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
                 <div id="language-selector" class="flex space-x-2">
                     <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
                     <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
                 </div>
             </div>
-            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
         </nav>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="../index.html#strategy" id="mobile-nav-strategy" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">策略中心</a>
+                
+                <div>
+                    <button id="mobile-nav-tools-toggle" class="w-full text-left text-gray-300 hover:bg-gray-700 hover:text-white flex justify-between items-center px-3 py-2 rounded-md text-base font-medium">
+                        <span id="mobile-nav-tools">實戰工具</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-nav-tools-dropdown" class="pl-4 mt-1 space-y-1 hidden">
+                        <a href="blackjack-basic-strategy.html" id="mobile-dropdown-bj-strategy-chart" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="blackjack-strategy-trainer.html" id="mobile-dropdown-bj-trainer" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點策略練習</a>
+                        <a href="blackjack-counting-trainer.html" id="mobile-dropdown-bj-counter" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="mobile-dropdown-money-div" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
+
+                <a href="../index.html#about" id="mobile-nav-about" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">關於我們</a>
+            </div>
+        </div>
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="max-w-4xl mx-auto">
-             <!-- *** UPDATED BUTTON POSITION *** -->
-            <a href="blackjack.html" id="back-to-blackjack" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回21點專區</a>
-            <h1 id="bka-title" class="text-3xl md:text-4xl font-black text-center">進階技巧：算牌入門 (Hi-Lo System)</h1>
-            <p id="bka-intro" class="mt-4 text-center max-w-3xl mx-auto" style="color: var(--color-text-secondary);">
-                算牌並非電影中嘅超能力記憶，而係一套追蹤牌堆中大牌與細牌比例嘅系統。當牌堆中剩下嘅大牌（10, J, Q, K, A）比例較高時，對玩家極為有利，因為出現Blackjack嘅機率大增。Hi-Lo係最流行、最易上手嘅算牌系統。
-            </p>
+    <main class="container mx-auto px-6 py-12">
+        <a href="blackjack.html" id="back-to-blackjack" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回21點專區</a>
+        <div class="content-box max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-black mb-8 text-center">進階策略：算牌技巧</h1>
 
-            <div class="mt-12 space-y-10">
-                <!-- Step 1: Card Values -->
-                <div class="p-8 rounded-lg content-card">
-                    <h2 id="bka-step1-title" class="text-2xl font-bold">第一步：賦予牌值 (Assigning Values)</h2>
-                    <p id="bka-step1-desc" class="mt-2" style="color: var(--color-text-secondary);">
-                        Hi-Lo系統將所有牌分為三類，並賦予簡單嘅數值。你嘅目標唔係記住每一張出過嘅牌，而係記住一個持續累加嘅數字。
-                    </p>
-                    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            <div class="space-y-8 text-lg leading-relaxed" style="color: var(--color-text-secondary);">
+                <section>
+                    <h2 class="text-3xl font-bold mb-4">什麼是算牌？</h2>
+                    <p>算牌是一種在21點中追蹤已發出牌張的技巧，藉此判斷牌靴中剩餘牌張的成分，以評估對玩家或莊家是否有利。當牌靴中剩下較多大牌（10, J, Q, K, A）時，對玩家有利；反之，剩下較多小牌時，對莊家有利。</p>
+                    <p class="mt-2"><strong>重要提示：</strong>算牌並非賭博必勝法，而是一種能讓玩家在長期遊戲中獲得微弱數學優勢的策略。它需要大量的練習和專注力，並且在賭場中是不受歡迎的行為。</p>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold mb-4">高低算牌法 (Hi-Lo System)</h2>
+                    <p>Hi-Lo系統是最流行和最簡單的算牌方法之一，它將每張牌賦予一個值：</p>
+                    <ul class="list-disc list-inside mt-4 bg-gray-800 p-4 rounded-lg">
+                        <li><strong>大牌 (10, J, Q, K, A):</strong> 計為 <strong>-1</strong></li>
+                        <li><strong>中性牌 (7, 8, 9):</strong> 計為 <strong>0</strong></li>
+                        <li><strong>小牌 (2, 3, 4, 5, 6):</strong> 計為 <strong>+1</strong></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold mb-4">如何算牌</h2>
+                    <div class="space-y-4">
                         <div>
-                            <span class="value-tag value-plus">+1</span>
-                            <p id="bka-step1-low" class="mt-3 font-semibold">低牌 (2, 3, 4, 5, 6)</p>
+                            <h3 class="text-2xl font-bold mb-2" style="color: var(--color-text-primary);">1. 流水數 (Running Count)</h3>
+                            <p>從牌靴剛洗好時開始，將計數設為0。每當您看到一張牌發出時，就根據Hi-Lo系統在心中加上或減去對應的值。這個持續累加的數字就是「流水數」。</p>
+                            <p class="mt-2">例如：第一手牌發出了 3, K, 8, A, 5。流水數為 (+1) + (-1) + (0) + (-1) + (+1) = 0。</p>
                         </div>
                         <div>
-                            <span class="value-tag value-zero">0</span>
-                            <p id="bka-step1-neutral" class="mt-3 font-semibold">中性牌 (7, 8, 9)</p>
+                            <h3 class="text-2xl font-bold mb-2" style="color: var(--color-text-primary);">2. 真數 (True Count)</h3>
+                            <p>流水數只告訴您已發出牌張的相對價值，但並未考慮牌靴中還剩下多少副牌。為了得到更精確的優勢評估，我們需要計算「真數」。</p>
+                            <p class="mt-2"><strong>計算公式：</strong> 真數 = 流水數 / 剩餘牌靴副數（估計值）</p>
+                            <p class="mt-2">例如：如果流水數是 +10，而您估計牌靴中還剩下2副牌，那麼真數就是 +10 / 2 = +5。</p>
+                            <p class="mt-2">真數才是您調整下注和策略的最終依據。真數越高，代表對玩家的優勢越大。</p>
                         </div>
-                        <div>
-                            <span class="value-tag value-minus">-1</span>
-                            <p id="bka-step1-high" class="mt-3 font-semibold">高牌 (10, J, Q, K, A)</p>
+                         <div>
+                            <h3 class="text-2xl font-bold mb-2" style="color: var(--color-text-primary);">3. 根據真數調整下注</h3>
+                            <p>算牌的核心在於利用優勢時加大注碼。您可以設定一個下注單位，並根據真數來決定下多少個單位。</p>
+                            <p class="mt-2">一個常見的策略是：</p>
+                            <ul class="list-disc list-inside">
+                                <li><strong>真數 ≤ +1:</strong> 下最低注（1個單位）。</li>
+                                <li><strong>真數 = +2:</strong> 下2個單位。</li>
+                                <li><strong>真數 = +3:</strong> 下4個單位。</li>
+                                <li><strong>真數 ≥ +4:</strong> 下8個單位（或您的最大注）。</li>
+                            </ul>
+                            <p class="mt-2">這個下注策略可以根據個人風險承受能力調整，但核心原則不變：<strong>牌好時下大注，牌差時下小注。</strong></p>
                         </div>
                     </div>
-                </div>
-
-                <!-- Step 2: Running Count -->
-                <div class="p-8 rounded-lg content-card">
-                    <h2 id="bka-step2-title" class="text-2xl font-bold">第二步：計算流水數 (Running Count)</h2>
-                    <p id="bka-step2-desc" class="mt-2" style="color: var(--color-text-secondary);">
-                        從一副新牌（或一靴新牌）開始，流水數為0。每一張牌發出後，你根據上面嘅牌值喺腦中進行加減。
-                    </p>
-                    <p id="bka-step2-example" class="mt-4 p-4 rounded-md text-sm" style="background-color: var(--color-bg-primary);">
-                        <b>例子:</b> 第一輪發出嘅牌係 10, 3, K, 8, A, 5。你嘅心算過程應該係：<br>
-                        10(-1), 3(+1), K(-1), 8(0), A(-1), 5(+1) → <span class="font-bold text-lg" style="color:var(--color-accent-gold);">-1 + 1 - 1 + 0 - 1 + 1 = -1</span>。<br>
-                        所以，第一輪結束後，流水數係 <span class="font-bold">-1</span>。你只需要記住呢個最終數字，然後喺下一輪繼續累加。
-                    </p>
-                    <p id="bka-step2-goal" class="mt-4" style="color: var(--color-text-secondary);">
-                        一個正數嘅流水數 (e.g., +5) 代表目前為止出過嘅細牌比大牌多，牌堆對玩家有利。相反，一個負數則代表牌堆對莊家有利。
-                    </p>
-                </div>
-
-                <!-- Step 3: True Count -->
-                <div class="p-8 rounded-lg content-card">
-                    <h2 id="bka-step3-title" class="text-2xl font-bold">第三步：換算真數 (True Count) - 核心關鍵</h2>
-                    <p id="bka-step3-desc" class="mt-2" style="color: var(--color-text-secondary);">
-                        流水數本身有誤導性。喺剩餘6副牌時，+5嘅流水數意義不大；但如果只剩1副牌，+5就代表優勢極大。因此，我哋需要將流水數標準化，得出「真數」。
-                    </p>
-                    <div class="mt-4 text-center p-4 rounded-md" style="background-color: var(--color-bg-primary);">
-                        <p id="bka-step3-formula" class="text-lg font-mono">真數 (True Count) = 流水數 (Running Count) / 剩餘牌副數 (Decks Remaining)</p>
-                    </div>
-                     <p id="bka-step3-example" class="mt-4" style="color: var(--color-text-secondary);">
-                        <b>例子:</b> 你嘅流水數係+10，而賭桌上用嘅係6副牌，你估計大約仲剩4副牌未發。咁你嘅真數就係：<br>
-                        <span class="font-bold text-lg" style="color:var(--color-accent-gold);">+10 / 4 = +2.5</span>。真數先至係你調整注碼嘅真正依據。估算剩餘牌副數需要大量練習。
-                    </p>
-                </div>
-
-                <!-- Step 4: Bet Spreading -->
-                <div class="p-8 rounded-lg content-card">
-                    <h2 id="bka-step4-title" class="text-2xl font-bold">第四步：調整注碼 (Bet Spreading)</h2>
-                    <p id="bka-step4-desc" class="mt-2" style="color: var(--color-text-secondary);">
-                        算牌嘅最終目的就係喺你擁有優勢嘅時候下大注，冇優勢嘅時候下細注或離場。你應該預先設定好你嘅投注單位同策略。
-                    </p>
-                    <table class="w-full mt-4 text-center">
-                        <thead>
-                            <tr class="border-b border-gray-600">
-                                <th id="bka-table-tc" class="py-2">真數 (True Count)</th>
-                                <th id="bka-table-bet" class="py-2">建議注碼 (Bet)</th>
-                                <th id="bka-table-advantage" class="py-2">玩家優勢 (Player Edge)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td class="py-2">1 或以下</td><td id="bka-bet1" class="py-2">1 個單位 (最低注)</td><td class="py-2">~ -0.5% (莊家優勢)</td></tr>
-                            <tr><td class="py-2">+2</td><td id="bka-bet2" class="py-2">2 個單位</td><td class="py-2">~ +1%</td></tr>
-                            <tr><td class="py-2">+3</td><td id="bka-bet3" class="py-2">4 個單位</td><td class="py-2">~ +1.5%</td></tr>
-                            <tr><td class="py-2">+4</td><td id="bka-bet4" class="py-2">8 個單位</td><td class="py-2">~ +2%</td></tr>
-                            <tr><td class="py-2">+5 或以上</td><td id="bka-bet5" class="py-2">10-12 個單位</td><td class="py-2">~ +2.5% 或以上</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                 <!-- Disclaimer -->
-                <div class="mt-12 text-center p-4 rounded-lg border border-red-500/50" style="background-color: rgba(229, 62, 62, 0.1);">
-                    <h3 id="bka-disclaimer-title" class="font-bold text-lg text-red-400">重要警告</h3>
-                    <p id="bka-disclaimer-desc" class="mt-2 text-sm" style="color: var(--color-text-secondary);">
-                        算牌極具挑戰性，需要大量練習才能在嘈雜嘅賭場環境中保持準確。同時，賭場會主動尋找並驅逐算牌客。本教學僅供學術研究，切勿輕易嘗試，風險自負。
-                    </p>
-                </div>
+                </section>
+                <section>
+                     <h2 class="text-3xl font-bold mb-4">實戰練習</h2>
+                     <p>理論很簡單，但實戰中要快速、準確地算牌並不容易。您需要練習在不被賭場發現的情況下，一邊玩牌一邊在心中默默記數。我們強烈建議您使用我們的<a href="blackjack-counting-trainer.html" class="underline" style="color: var(--color-accent-blue);">算牌練習器</a>來磨練您的技巧，直到它成為您的第二天性。</p>
+                </section>
             </div>
         </div>
     </main>
@@ -153,9 +157,8 @@
             <p id="footer-disclaimer" class="mt-2">請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。</p>
         </div>
     </footer>
-
+    
     <script src="../languages.js"></script>
     <script src="../app.js"></script>
 </body>
 </html>
-
