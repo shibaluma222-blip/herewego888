@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>21點基礎策略 - Bust the Casino</title>
+    <title>21點基礎策略表 - Bust the Casino</title>
+    <meta name="description" content="提供完整且易於理解的21點基礎策略圖表，包括硬牌(Hard Totals)、軟牌(Soft Totals)、對子(Pairs)和投降(Surrender)在面對莊家不同明牌時的最佳應對策略。">
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,144 +20,231 @@
             --color-text-secondary: #a0aec0;
             --color-accent-blue: #4A90E2;
             --color-accent-gold: #F1C40F;
+            --color-hit: #E53E3E;
+            --color-stand: #F1C40F;
+            --color-double: #2ECC71;
+            --color-split: #4A90E2;
+            --color-surrender: #8B5CF6;
         }
         body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
-        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
+        h1, h2, h3 { font-family: var(--font-heading); font-weight: 900; letter-spacing: -0.025em; }
         .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
-        .strategy-table td, .strategy-table th { padding: 0.75rem 0.5rem; text-align: center; border: 1px solid #4A5568; }
-        .cell-h { background-color: #E53E3E; }
-        .cell-s { background-color: #F1C40F; color: #1A1D24; }
-        .cell-d { background-color: #2ECC71; color: #1A1D24; }
-        .cell-p { background-color: #4A90E2; }
-        .cell-sr { background-color: #A0AEC0; color: #1A1D24; }
+        .content-box { background-color: var(--color-bg-secondary); border-radius: 0.75rem; padding: 2rem; }
+        .strategy-table { width: 100%; border-collapse: collapse; text-align: center; }
+        .strategy-table th, .strategy-table td { border: 1px solid #4A5568; padding: 0.75rem; }
+        .strategy-table th { background-color: #1A1D24; }
+        .strategy-table td:first-child { background-color: #1A1D24; font-weight: bold; }
+        .cell-H { background-color: var(--color-hit); color: white; }
+        .cell-S { background-color: var(--color-stand); color: #1A1D24; }
+        .cell-D { background-color: var(--color-double); color: #1A1D24; }
+        .cell-P { background-color: var(--color-split); color: white; }
+        .cell-R { background-color: var(--color-surrender); color: white; }
         #nav-brand-text { color: var(--color-accent-gold); }
     </style>
 </head>
 <body class="antialiased">
+    <!-- Header -->
     <header class="sticky-nav border-b border-gray-700/50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="../index.html" class="flex items-center space-x-3">
                 <img src="../assets/images/logo.png" alt="Bust the Casino Logo" style="height: 74px;">
                 <span id="nav-brand-text" class="text-2xl font-black font-heading tracking-wider">BUST THE CASINO</span>
             </a>
+            
+            <!-- Desktop Menu -->
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
-                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                
+                <div class="relative">
+                    <button id="nav-tools-toggle" class="text-gray-300 hover:text-white transition duration-300 flex items-center">
+                        <span id="nav-tools">實戰工具</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="nav-tools-dropdown" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="blackjack-basic-strategy.html" id="dropdown-bj-strategy-chart" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="blackjack-strategy-trainer.html" id="dropdown-bj-trainer" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點策略練習</a>
+                        <a href="blackjack-counting-trainer.html" id="dropdown-bj-counter" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="dropdown-money-div" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
+
                 <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
                 <div id="language-selector" class="flex space-x-2">
                     <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
                     <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
                 </div>
             </div>
-            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
         </nav>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="../index.html#strategy" id="mobile-nav-strategy" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">策略中心</a>
+                
+                <div>
+                    <button id="mobile-nav-tools-toggle" class="w-full text-left text-gray-300 hover:bg-gray-700 hover:text-white flex justify-between items-center px-3 py-2 rounded-md text-base font-medium">
+                        <span id="mobile-nav-tools">實戰工具</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-nav-tools-dropdown" class="pl-4 mt-1 space-y-1 hidden">
+                        <a href="blackjack-basic-strategy.html" id="mobile-dropdown-bj-strategy-chart" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="blackjack-strategy-trainer.html" id="mobile-dropdown-bj-trainer" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點策略練習</a>
+                        <a href="blackjack-counting-trainer.html" id="mobile-dropdown-bj-counter" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="mobile-dropdown-money-div" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
+
+                <a href="../index.html#about" id="mobile-nav-about" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">關於我們</a>
+            </div>
+        </div>
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="max-w-7xl mx-auto">
-            <a href="blackjack.html" id="back-to-blackjack" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回21點專區</a>
-            <h1 id="bks-title" class="text-3xl md:text-4xl font-black text-center">21點基礎策略</h1>
-            <p id="bks-intro" class="mt-4 text-center max-w-3xl mx-auto" style="color: var(--color-text-secondary);">
-                基礎策略是戰勝21點的基石。它基於數學概率，告訴你在任何情況下（你的手牌 vs 莊家明牌）應該做出哪個決定（要牌、停牌、加倍、分牌）才能最大化你的長期回報率。嚴格遵守此表，可以將莊家優勢降至約0.5%。
-            </p>
+    <main class="container mx-auto px-6 py-12">
+        <a href="blackjack.html" id="back-to-blackjack" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回21點專區</a>
+        <div class="content-box max-w-6xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-black mb-8 text-center">21點基礎策略表</h1>
+            <p class="text-center mb-8" style="color: var(--color-text-secondary);">這是經過數學計算得出的最佳決策表，長期使用能將賭場優勢降至最低。請根據您的手牌類型（硬牌、軟牌、對子）和莊家的明牌來查詢對應的行動。</p>
 
-            <div class="mt-12 bg-gray-800/50 p-6 rounded-lg">
-                <h3 id="bks-legend-title" class="text-xl font-bold text-center mb-4">圖例</h3>
-                <div class="flex justify-center flex-wrap gap-x-6 gap-y-2 text-sm">
-                    <span class="flex items-center"><div class="w-4 h-4 rounded-full cell-h mr-2"></div><span id="bks-legend-h">H = 要牌</span></span>
-                    <span class="flex items-center"><div class="w-4 h-4 rounded-full cell-s mr-2"></div><span id="bks-legend-s">S = 停牌</span></span>
-                    <span class="flex items-center"><div class="w-4 h-4 rounded-full cell-d mr-2"></div><span id="bks-legend-d">D = 加倍</span></span>
-                    <span class="flex items-center"><div class="w-4 h-4 rounded-full cell-p mr-2"></div><span id="bks-legend-p">P = 分牌</span></span>
-                    <span class="flex items-center"><div class="w-4 h-4 rounded-full cell-sr mr-2"></div><span id="bks-legend-sur">SR = 投降</span></span>
-                </div>
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <span class="px-4 py-1 rounded font-bold cell-S">S = 停牌 (Stand)</span>
+                <span class="px-4 py-1 rounded font-bold cell-H">H = 要牌 (Hit)</span>
+                <span class="px-4 py-1 rounded font-bold cell-D">D = 加倍 (Double)</span>
+                <span class="px-4 py-1 rounded font-bold cell-P">P = 分牌 (Split)</span>
+                <span class="px-4 py-1 rounded font-bold cell-R">R = 投降 (Surrender)</span>
             </div>
 
-            <div class="mt-10 overflow-x-auto">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                    <div>
-                        <h2 id="bks-hard-title" class="text-2xl font-bold text-center mb-4">硬點 (Hard Totals)</h2>
-                        <table class="w-full text-xs md:text-sm strategy-table">
-                            <thead><tr><th id="bks-dealer-card">玩家手牌</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr></thead>
+            <!-- Strategy Tables -->
+            <div class="space-y-12">
+                <!-- Hard Totals -->
+                <section>
+                    <h2 class="text-3xl font-bold mb-4 text-center">硬牌 (Hard Totals)</h2>
+                    <div class="overflow-x-auto">
+                        <table class="strategy-table">
+                            <thead>
+                                <tr>
+                                    <th>玩家</th>
+                                    <th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th>
+                                </tr>
+                            </thead>
                             <tbody>
-                                <tr><td>17-20</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td></tr>
-                                <tr><td>16</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td>15</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td>14</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td>13</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td>12</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td>11</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td></tr>
-                                <tr><td>10</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td>9</td><td class="cell-h">H</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td>5-8</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
+                                <tr>
+                                    <td>17-21</td>
+                                    <td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td>
+                                </tr>
+                                <tr><td>16</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                                <tr><td>15</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                                <tr><td>14</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                                <tr><td>13</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                                <tr><td>12</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                                <tr><td>11</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-H">H</td></tr>
+                                <tr><td>10</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                                <tr><td>9</td><td class="cell-H">H</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                                <tr>
+                                    <td>5-8</td>
+                                    <td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div>
-                        <h2 id="bks-soft-title" class="text-2xl font-bold text-center mb-4">軟點 (Soft Totals)</h2>
-                        <table class="w-full text-xs md:text-sm strategy-table">
-                            <thead><tr><th id="bks-dealer-card-2">玩家手牌</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr></thead>
+                </section>
+
+                <!-- Soft Totals -->
+                <section>
+                    <h2 class="text-3xl font-bold mb-4 text-center">軟牌 (Soft Totals)</h2>
+                     <div class="overflow-x-auto">
+                        <table class="strategy-table">
+                           <thead>
+                                <tr>
+                                    <th>玩家</th>
+                                    <th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th>
+                                </tr>
+                            </thead>
                             <tbody>
-                                <tr><td>A,9</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td></tr>
-                                <tr><td>A,8</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-d">D</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td></tr>
-                                <tr><td>A,7</td><td class="cell-s">S</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td>A,6</td><td class="cell-h">H</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td>A,5</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td>A,4</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td>A,3</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td>A,2</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                            </tbody>
-                        </table>
-                        <h2 id="bks-pairs-title" class="text-2xl font-bold text-center mb-4 mt-10">對子 (Pairs)</h2>
-                        <table class="w-full text-xs md:text-sm strategy-table">
-                            <thead><tr><th id="bks-dealer-card-3">玩家手牌</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr></thead>
-                            <tbody>
-                                <tr><td>A,A</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td></tr>
-                                <tr><td>10,10</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td><td class="cell-s">S</td></tr>
-                                <tr><td>9,9</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-s">S</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-s">S</td><td class="cell-s">S</td></tr>
-                                <tr><td>8,8</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td></tr>
-                                <tr><td>7,7</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td>6,6</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td>5,5</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-d">D</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td>4,4</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td>3,3</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
-                                <tr><td>2,2</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-p">P</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td><td class="cell-h">H</td></tr>
+                                <tr>
+                                    <td>A,9</td>
+                                    <td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td>
+                                </tr>
+                                <tr><td>A,8</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-D">D</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td></tr>
+                                <tr><td>A,7</td><td class="cell-S">S</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                                <tr><td>A,6</td><td class="cell-H">H</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                                <tr><td>A,5</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                                <tr><td>A,4</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                                <tr><td>A,3</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                                <tr><td>A,2</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </div>
+                </section>
 
-            <div class="mt-12">
-                <h2 id="bks-surrender-title" class="text-2xl font-bold text-center mb-4">投降策略 (Late Surrender)</h2>
-                <p id="bks-surrender-intro" class="text-center max-w-3xl mx-auto text-sm" style="color: var(--color-text-secondary);">
-                    並非所有賭桌都提供投降選項。如果提供，這是一個可以讓你喺極不利情況下放棄一半賭注以減少損失嘅策略。基本規則如下：
-                </p>
-                <div class="mt-6 max-w-lg mx-auto overflow-x-auto">
-                    <table class="w-full text-sm strategy-table">
-                        <thead>
-                            <tr>
-                                <th id="bks-surrender-player-hand">你的手牌</th>
-                                <th id="bks-surrender-dealer-hand">莊家明牌</th>
-                                <th id="bks-surrender-action">行動</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td id="bks-surrender-hard16">硬16點</td>
-                                <td>9, 10, A</td>
-                                <td id="bks-surrender-action-surrender" class="cell-sr font-bold">投降</td>
-                            </tr>
-                            <tr>
-                                <td id="bks-surrender-hard15">硬15點</td>
-                                <td>10</td>
-                                <td class="cell-sr font-bold">投降</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                <!-- Pairs -->
+                <section>
+                    <h2 class="text-3xl font-bold mb-4 text-center">對子 (Pairs)</h2>
+                    <div class="overflow-x-auto">
+                        <table class="strategy-table">
+                            <thead>
+                                <tr>
+                                    <th>玩家</th>
+                                    <th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>A,A</td>
+                                    <td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td>
+                                </tr>
+                                <tr>
+                                    <td>10,10</td>
+                                    <td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td><td class="cell-S">S</td>
+                                </tr>
+                                <tr><td>9,9</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-S">S</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-S">S</td><td class="cell-S">S</td></tr>
+                                <tr>
+                                    <td>8,8</td>
+                                    <td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td>
+                                </tr>
+                                <tr><td>7,7</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                                <tr><td>6,6</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                                <tr><td>5,5</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-D">D</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                                <tr><td>4,4</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                                <tr><td>3,3</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                                <tr><td>2,2</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-P">P</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td><td class="cell-H">H</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
 
+                <!-- Surrender -->
+                <section>
+                    <h2 class="text-3xl font-bold mb-4 text-center">投降 (Surrender)</h2>
+                    <p class="text-center mb-4 max-w-3xl mx-auto" style="color: var(--color-text-secondary);">
+                        如果賭場規則允許投降（通常在發完首兩張牌後），以下決策應優先於硬牌策略。投降能讓您在極不利的情況下，只損失一半的賭注。
+                    </p>
+                    <div class="overflow-x-auto max-w-3xl mx-auto">
+                        <table class="strategy-table">
+                            <thead>
+                                <tr>
+                                    <th>玩家</th>
+                                    <th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>16</td>
+                                    <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="cell-R">R</td><td class="cell-R">R</td><td class="cell-R">R</td>
+                                </tr>
+                                <tr>
+                                    <td>15</td>
+                                    <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="cell-R">R</td><td>—</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="text-center mt-4 text-sm" style="color: var(--color-text-secondary);">"—" 代表此情況不建議投降，請參考上面的硬牌策略表作出決定。</p>
+                    </div>
+                </section>
+            </div>
         </div>
     </main>
 
