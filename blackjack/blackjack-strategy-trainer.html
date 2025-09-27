@@ -74,6 +74,7 @@
                 <img src="../assets/images/logo.png" alt="Bust the Casino Logo" style="height: 74px;">
                 <span id="nav-brand-text" class="text-2xl font-black font-heading tracking-wider">BUST THE CASINO</span>
             </a>
+            
             <!-- Desktop Menu -->
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
@@ -425,6 +426,12 @@
             }
 
             // Render control button
+            const canDouble = state.playerHand.length === 2;
+            const canSplit = state.playerHand.length === 2 && state.playerHand[0].rank === state.playerHand[1].rank;
+            document.querySelector('[data-action="Double"]').disabled = !canDouble;
+            document.querySelector('[data-action="Split"]').disabled = !canSplit;
+
+
             actionButtonsContainer.style.pointerEvents = state.trainerState === TrainerState.ASKING ? 'auto' : 'none';
             actionButtonsContainer.style.opacity = state.trainerState === TrainerState.ASKING ? '1' : '0.5';
 
@@ -491,11 +498,6 @@
         function checkAnswer(chosenAction) {
             if (state.trainerState !== TrainerState.ASKING) return;
             
-            // Disable Double/Split if not applicable, but still check the correct action.
-            // For example, if player has 3 cards and correct action is Double, player can't choose it.
-            // But if they choose Hit, it might still be the next best thing.
-            // For simplicity, we just check against the one single best action from the chart.
-            
             state.totalQuestions++;
 
             if (chosenAction === state.correctAnswer) {
@@ -546,3 +548,4 @@
     </script>
 </body>
 </html>
+
