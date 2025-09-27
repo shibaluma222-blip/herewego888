@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>21點策略中心 - Bust the Casino</title>
-    <meta name="description" content="專為21點(Blackjack)玩家設計，提供從遊戲規則、基礎策略、進階算牌技巧到實戰練習工具的全方位指南。">
+    <title>21點專區 - Bust the Casino</title>
+    <meta name="description" content="專為21點(Blackjack)玩家設立的策略中心，提供遊戲規則、基礎與進階策略、以及實用的策略和算牌練習工具。">
     <link rel="icon" type="image/png" href="../assets/images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,18 +24,8 @@
         body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
         h1, h2, h3 { font-family: var(--font-heading); font-weight: 900; letter-spacing: -0.025em; }
         .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
-        .game-card { 
-            background-color: var(--color-bg-secondary); 
-            border-radius: 0.75rem; 
-            overflow: hidden; 
-            transition: transform 0.3s, box-shadow 0.3s; 
-            border: 1px solid transparent; 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 180px;
-        }
-        .game-card:hover { transform: translateY(-8px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--color-accent-blue); }
+        .strategy-card { background-color: var(--color-bg-secondary); border: 1px solid #4A5568; border-radius: 0.75rem; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .strategy-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1); }
         #nav-brand-text { color: var(--color-accent-gold); }
     </style>
 </head>
@@ -100,57 +90,53 @@
     </header>
 
     <!-- Main Content -->
-    <main>
-        <!-- Section: Blackjack Hub -->
-        <section id="blackjack-hub" class="py-20">
-            <div class="container mx-auto px-6">
-                <div class="text-center max-w-3xl mx-auto">
-                    <h1 class="text-4xl md:text-5xl font-black">21點 (Blackjack) 策略中心</h1>
-                    <p class="mt-4 text-lg" style="color: var(--color-text-secondary);">由淺入深，全面掌握21點。從基本規則到高級算牌技巧，再到實戰演練，我們為您提供成為高手所需的一切資源。</p>
-                </div>
-                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Rules Card -->
-                    <a href="blackjack-rules.html" class="game-card">
-                        <div class="p-6 text-center">
-                            <h3 class="text-2xl">遊戲規則</h3>
-                            <p class="mt-2" style="color: var(--color-text-secondary);">學習21點的基礎玩法、牌值計算以及賭場中的特殊規則。</p>
-                        </div>
-                    </a>
-                    <!-- Basic Strategy Card -->
-                    <a href="blackjack-basic-strategy.html" class="game-card">
-                        <div class="p-6 text-center">
-                            <h3 class="text-2xl">基礎策略表</h3>
-                            <p class="mt-2" style="color: var(--color-text-secondary);">掌握經過數學驗證的最佳出牌策略，將賭場優勢降到最低。</p>
-                        </div>
-                    </a>
-                    <!-- Advanced Strategy Card -->
-                    <a href="blackjack-advanced-strategy.html" class="game-card">
-                        <div class="p-6 text-center">
-                            <h3 class="text-2xl">進階策略</h3>
-                            <p class="mt-2" style="color: var(--color-text-secondary);">學習算牌技巧（Hi-Lo系統）和其他高級戰術，獲得對賭場的長期優勢。</p>
-                        </div>
-                    </a>
-                    <!-- Strategy Trainer Card -->
-                    <a href="blackjack-strategy-trainer.html" class="game-card">
-                        <div class="p-6 text-center">
-                            <h3 class="text-2xl">策略練習器</h3>
-                            <p class="mt-2" style="color: var(--color-text-secondary);">通過我們的互動練習工具，將基礎策略內化為您的直覺反應。</p>
-                        </div>
-                    </a>
-                    <!-- Counting Trainer Card -->
-                    <a href="blackjack-counting-trainer.html" class="game-card">
-                        <div class="p-6 text-center">
-                            <h3 class="text-2xl">算牌練習器</h3>
-                            <p class="mt-2" style="color: var(--color-text-secondary);">訓練您在牌局中快速準確地追蹤流水數（Running Count）。</p>
-                        </div>
-                    </a>
-                </div>
+    <main class="container mx-auto px-6 py-12">
+        <section id="blackjack-hub">
+            <h1 class="text-4xl md:text-5xl font-black text-center mb-4">21點專區</h1>
+            <p class="text-center text-lg max-w-2xl mx-auto mb-12" style="color: var(--color-text-secondary);">由淺入深，掌握戰勝21點所需的一切知識與技巧。</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1: Rules -->
+                <a href="blackjack-rules.html" class="strategy-card block">
+                    <div class="p-6">
+                        <h3 id="bj-rules-title" class="text-2xl font-bold mb-2">遊戲規則</h3>
+                        <p id="bj-rules-desc" class="text-sm" style="color: var(--color-text-secondary);">從零開始，學習21點的目標、牌值計算及基本流程。</p>
+                    </div>
+                </a>
+                <!-- Card 2: Basic Strategy -->
+                <a href="blackjack-basic-strategy.html" class="strategy-card block">
+                    <div class="p-6">
+                        <h3 id="bj-basic-title" class="text-2xl font-bold mb-2">基礎策略</h3>
+                        <p id="bj-basic-desc" class="text-sm" style="color: var(--color-text-secondary);">查閱經數學驗證的最佳決策表，將賭場優勢降至最低。</p>
+                    </div>
+                </a>
+                <!-- Card 3: Advanced Strategy -->
+                <a href="blackjack-advanced-strategy.html" class="strategy-card block">
+                    <div class="p-6">
+                        <h3 id="bj-advanced-title" class="text-2xl font-bold mb-2">進階策略</h3>
+                        <p id="bj-advanced-desc" class="text-sm" style="color: var(--color-text-secondary);">學習算牌技巧，根據牌局變化調整策略，獲得數學優勢。</p>
+                    </div>
+                </a>
+                 <!-- Card 4: Strategy Trainer -->
+                 <a href="blackjack-strategy-trainer.html" class="strategy-card block">
+                    <div class="p-6">
+                        <h3 id="bj-trainer-title" class="text-2xl font-bold mb-2">策略練習器</h3>
+                        <p id="bj-trainer-desc" class="text-sm" style="color: var(--color-text-secondary);">通過互動練習，將基礎策略內化為您的第二天性。</p>
+                    </div>
+                </a>
+                <!-- Card 5: Counting Trainer -->
+                <a href="blackjack-counting-trainer.html" class="strategy-card block">
+                    <div class="p-6">
+                        <h3 id="bj-counting-trainer-title" class="text-2xl font-bold mb-2">算牌練習器</h3>
+                        <p id="bj-counting-trainer-desc" class="text-sm" style="color: var(--color-text-secondary);">使用Hi-Lo系統進行互動練習，快速提升您的算牌技巧與速度。</p>
+                    </div>
+                </a>
             </div>
         </section>
     </main>
 
     <!-- Footer -->
-    <footer class="py-8 border-t border-gray-800">
+    <footer class="py-8 mt-12 border-t border-gray-800">
         <div class="container mx-auto text-center text-sm" style="color: var(--color-text-secondary);">
             <p id="footer-copyright">&copy; 2025 Bust the Casino. 版權所有。</p>
             <p id="footer-disclaimer" class="mt-2">請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。</p>
@@ -161,3 +147,4 @@
     <script src="../app.js"></script>
 </body>
 </html>
+
