@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>百家樂基礎策略 - Bust the Casino</title>
+    <meta name="description" content="分析百家樂中投注莊家、閒家與和局的賭場優勢(House Edge)和賠率，提供基於數學的最佳基礎投注策略。">
     <link rel="icon" type="image/png" href="../assets/images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,15 +22,13 @@
             --color-accent-gold: #F1C40F;
         }
         body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
-        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
-        .stat-card {
-            background-color: var(--color-bg-secondary);
-            border-left: 4px solid var(--color-accent-blue);
-        }
-        .stat-card.best-bet {
-            border-left-color: var(--color-accent-gold);
-        }
+        h1, h2, h3 { font-family: var(--font-heading); font-weight: 900; letter-spacing: -0.025em; }
         .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
+        .content-box { background-color: var(--color-bg-secondary); border-radius: 0.75rem; padding: 2rem; }
+        .content-box h2 { color: var(--color-accent-gold); }
+        .strategy-table { width: 100%; border-collapse: collapse; text-align: center; }
+        .strategy-table th, .strategy-table td { border: 1px solid #4A5568; padding: 0.75rem; }
+        .strategy-table th { background-color: #1A1D24; }
         #nav-brand-text { color: var(--color-accent-gold); }
     </style>
 </head>
@@ -43,95 +42,105 @@
             </a>
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
-                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                <div class="relative">
+                    <button id="nav-tools-toggle" class="text-gray-300 hover:text-white transition duration-300 flex items-center">
+                        <span id="nav-tools">實戰工具</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="nav-tools-dropdown" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="../blackjack/blackjack-basic-strategy.html" id="dropdown-bj-strategy-chart" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="../blackjack/blackjack-strategy-trainer.html" id="dropdown-bj-trainer" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點策略練習</a>
+                        <a href="../blackjack/blackjack-counting-trainer.html" id="dropdown-bj-counter" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="dropdown-money-div" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
                 <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
                 <div id="language-selector" class="flex space-x-2">
                     <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
                     <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
                 </div>
             </div>
-            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
         </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="../index.html#strategy" id="mobile-nav-strategy" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">策略中心</a>
+                <div>
+                    <button id="mobile-nav-tools-toggle" class="w-full text-left text-gray-300 hover:bg-gray-700 hover:text-white flex justify-between items-center px-3 py-2 rounded-md text-base font-medium">
+                        <span id="mobile-nav-tools">實戰工具</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-nav-tools-dropdown" class="pl-4 mt-1 space-y-1 hidden">
+                        <a href="../blackjack/blackjack-basic-strategy.html" id="mobile-dropdown-bj-strategy-chart" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="../blackjack/blackjack-strategy-trainer.html" id="mobile-dropdown-bj-trainer" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點策略練習</a>
+                        <a href="../blackjack/blackjack-counting-trainer.html" id="mobile-dropdown-bj-counter" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="mobile-dropdown-money-div" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
+                <a href="../index.html#about" id="mobile-nav-about" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">關於我們</a>
+            </div>
+        </div>
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="max-w-4xl mx-auto">
-            <a href="baccarat.html" id="back-to-baccarat" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回百家樂專區</a>
-            <h1 id="bcs-title" class="text-3xl md:text-4xl font-black text-center">百家樂基礎策略</h1>
-            <p id="bcs-intro" class="mt-4 text-center max-w-3xl mx-auto" style="color: var(--color-text-secondary);">
-                百家樂的策略並非關於遊戲中的決策，而是關於下注前的選擇。與21點不同，一旦下注，遊戲過程就完全由規則決定。因此，唯一的策略就是選擇擁有最低莊家優勢的投注選項。
-            </p>
+    <main class="container mx-auto px-6 py-12">
+        <a href="baccarat.html" id="back-to-baccarat" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回百家樂專區</a>
+        <div class="content-box max-w-4xl mx-auto space-y-8">
+            <h1 class="text-4xl md:text-5xl font-black text-center">百家樂基礎策略</h1>
+            <p class="text-center" style="color: var(--color-text-secondary);">與21點不同，百家樂在牌局開始後沒有決策空間。唯一的策略在於下注時的選擇。以下是各投注選項的數學分析。</p>
 
-            <div class="mt-10 space-y-8">
-                <!-- Bet Analysis -->
-                <div>
-                    <h2 id="bcs-analysis-title" class="text-2xl font-bold mb-6">三大投注選項分析</h2>
-                    <div class="space-y-6">
-                        <!-- Banker Bet -->
-                        <div class="p-6 rounded-lg stat-card best-bet">
-                            <h3 id="bcs-banker-title" class="text-xl font-bold" style="color: var(--color-accent-gold);">1. 押莊家 (Banker Bet) - 最佳選擇</h3>
-                            <p id="bcs-banker-desc" class="mt-2" style="color: var(--color-text-secondary);">
-                                儘管押莊贏錢後會被抽取5%的佣金，但它依然是數學上最有利的選擇。因為根據發牌規則，莊家手牌的贏率略高於閒家。
-                            </p>
-                            <div class="mt-4 grid grid-cols-2 gap-4 text-center">
-                                <div>
-                                    <span id="bcs-banker-edge-label" class="text-sm block" style="color: var(--color-text-secondary);">莊家優勢 (House Edge)</span>
-                                    <span class="text-2xl font-bold">1.06%</span>
-                                </div>
-                                <div>
-                                    <span id="bcs-banker-win-label" class="text-sm block" style="color: var(--color-text-secondary);">勝率 (Win Rate)</span>
-                                    <span class="text-2xl font-bold">45.86%</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Player Bet -->
-                        <div class="p-6 rounded-lg stat-card">
-                            <h3 id="bcs-player-title" class="text-xl font-bold">2. 押閒家 (Player Bet)</h3>
-                            <p id="bcs-player-desc" class="mt-2" style="color: var(--color-text-secondary);">
-                                押閒家的莊家優勢也非常低，是一個僅次於押莊的好選擇。如果你不想每次都計算佣金，押閒家也是一個可以接受的策略。
-                            </p>
-                            <div class="mt-4 grid grid-cols-2 gap-4 text-center">
-                                <div>
-                                    <span id="bcs-player-edge-label" class="text-sm block" style="color: var(--color-text-secondary);">莊家優勢 (House Edge)</span>
-                                    <span class="text-2xl font-bold">1.24%</span>
-                                </div>
-                                <div>
-                                    <span id="bcs-player-win-label" class="text-sm block" style="color: var(--color-text-secondary);">勝率 (Win Rate)</span>
-                                    <span class="text-2xl font-bold">44.62%</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Tie Bet -->
-                        <div class="p-6 rounded-lg stat-card" style="border-left-color: #E53E3E;">
-                            <h3 id="bcs-tie-title" class="text-xl font-bold">3. 押和局 (Tie Bet) - 避免下注</h3>
-                            <p id="bcs-tie-desc" class="mt-2" style="color: var(--color-text-secondary);">
-                                雖然和局1賠8的賠率非常誘人，但其出現的機率極低，導致莊家優勢非常高。長期來看，押和局是虧損最快的投注方式。
-                            </p>
-                            <div class="mt-4 grid grid-cols-2 gap-4 text-center">
-                                <div>
-                                    <span id="bcs-tie-edge-label" class="text-sm block" style="color: var(--color-text-secondary);">莊家優勢 (House Edge)</span>
-                                    <span class="text-2xl font-bold text-red-400">> 14%</span>
-                                </div>
-                                <div>
-                                    <span id="bcs-tie-win-label" class="text-sm block" style="color: var(--color-text-secondary);">出現機率 (Occurrence)</span>
-                                    <span class="text-2xl font-bold">9.52%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <section>
+                <h2 class="text-3xl font-bold mb-4">賭場優勢與賠率</h2>
+                <p class="mb-4" style="color: var(--color-text-secondary);">賭場優勢（House Edge）代表賭場對玩家的長期數學優勢。這個數字越低，對玩家越有利。</p>
+                <div class="overflow-x-auto">
+                    <table class="strategy-table">
+                        <thead>
+                            <tr>
+                                <th>投注選項</th>
+                                <th>賠率</th>
+                                <th>賭場優勢</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-gray-700/50">
+                                <td class="font-bold">莊家 (Banker)</td>
+                                <td>1:0.95 (贏錢需付5%佣金)</td>
+                                <td class="font-bold text-green-400">1.06%</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">閒家 (Player)</td>
+                                <td>1:1</td>
+                                <td class="text-yellow-400">1.24%</td>
+                            </tr>
+                            <tr class="bg-gray-700/50">
+                                <td class="font-bold">和局 (Tie)</td>
+                                <td>1:8</td>
+                                <td class="text-red-400">14.36%</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-
-                <!-- Strategy Summary -->
-                <div class="mt-12 pt-8 border-t border-gray-700">
-                    <h2 id="bcs-summary-title" class="text-2xl font-bold text-center">結論：唯一嘅策略</h2>
-                    <p id="bcs-summary-desc" class="mt-4 text-center max-w-3xl mx-auto" style="color: var(--color-text-secondary);">
-                        百家樂嘅最佳策略非常簡單：**永遠都押莊家**。唔好被所謂嘅「路紙」或者直覺迷惑，數學證明咗押莊係你喺牌桌上可以做嘅最好決定。同時，**絕對要避免押和局**。
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-4">最佳策略</h2>
+                <div class="p-6 rounded-lg" style="background-color: #1A1D24;">
+                    <h3 class="text-2xl font-bold text-center mb-2" style="color: var(--color-accent-gold);">永遠投注「莊家」</h3>
+                    <p class="text-center" style="color: var(--color-text-secondary);">
+                        從數學上講，投注「莊家」是百家樂中最好的選擇。儘管贏錢時需要支付5%的佣金，但其 <strong>1.06%</strong> 的賭場優勢是所有選項中最低的。這意味著長期來看，投注莊家是虧損最少的玩法。
                     </p>
                 </div>
-            </div>
+            </section>
+
+            <section>
+                <h2 class="text-3xl font-bold mb-4">應避免的投注</h2>
+                 <div class="p-6 rounded-lg border border-red-500/50" >
+                    <h3 class="text-2xl font-bold text-center mb-2 text-red-400">絕對不要投注「和局」</h3>
+                    <p class="text-center" style="color: var(--color-text-secondary);">
+                        雖然「和局」提供高達1:8的賠率，但其賭場優勢也高達 <strong>14.36%</strong>，是賭場中最差的投注之一。投注和局無異於將錢送給賭場。
+                    </p>
+                </div>
+            </section>
         </div>
     </main>
 
@@ -142,9 +151,8 @@
             <p id="footer-disclaimer" class="mt-2">請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。</p>
         </div>
     </footer>
-
+    
     <script src="../languages.js"></script>
     <script src="../app.js"></script>
 </body>
 </html>
-
