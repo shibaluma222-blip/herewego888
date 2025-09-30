@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>百家樂專區 - Bust the Casino</title>
+    <meta name="description" content="專為百家樂(Baccarat)玩家設立的策略中心，提供遊戲規則、基礎策略以及實用的路單工具。">
     <link rel="icon" type="image/png" href="../assets/images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,67 +22,101 @@
             --color-accent-gold: #F1C40F;
         }
         body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
-        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
-        .font-heading { font-family: var(--font-heading); }
-        .font-body { font-family: var(--font-body); }
+        h1, h2, h3 { font-family: var(--font-heading); font-weight: 900; letter-spacing: -0.025em; }
         .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
+        .strategy-card { background-color: var(--color-bg-secondary); border: 1px solid #4A5568; border-radius: 0.75rem; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .strategy-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1); }
         #nav-brand-text { color: var(--color-accent-gold); }
     </style>
 </head>
 <body class="antialiased">
-    <!-- Header / Navigation -->
+    <!-- Header -->
     <header class="sticky-nav border-b border-gray-700/50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="../index.html" class="flex items-center space-x-3">
                 <img src="../assets/images/logo.png" alt="Bust the Casino Logo" style="height: 74px;">
                 <span id="nav-brand-text" class="text-2xl font-black font-heading tracking-wider">BUST THE CASINO</span>
             </a>
+            
+            <!-- Desktop Menu -->
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
-                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                
+                <div class="relative">
+                    <button id="nav-tools-toggle" class="text-gray-300 hover:text-white transition duration-300 flex items-center">
+                        <span id="nav-tools">實戰工具</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="nav-tools-dropdown" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="../blackjack/blackjack-basic-strategy.html" id="dropdown-bj-strategy-chart" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="../blackjack/blackjack-strategy-trainer.html" id="dropdown-bj-trainer" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點策略練習</a>
+                        <a href="../blackjack/blackjack-counting-trainer.html" id="dropdown-bj-counter" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="dropdown-money-div" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
+
                 <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
                 <div id="language-selector" class="flex space-x-2">
                     <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
                     <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
                 </div>
             </div>
-            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
         </nav>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="../index.html#strategy" id="mobile-nav-strategy" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">策略中心</a>
+                
+                <div>
+                    <button id="mobile-nav-tools-toggle" class="w-full text-left text-gray-300 hover:bg-gray-700 hover:text-white flex justify-between items-center px-3 py-2 rounded-md text-base font-medium">
+                        <span id="mobile-nav-tools">實戰工具</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-nav-tools-dropdown" class="pl-4 mt-1 space-y-1 hidden">
+                        <a href="../blackjack/blackjack-basic-strategy.html" id="mobile-dropdown-bj-strategy-chart" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="../blackjack/blackjack-strategy-trainer.html" id="mobile-dropdown-bj-trainer" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點策略練習</a>
+                        <a href="../blackjack/blackjack-counting-trainer.html" id="mobile-dropdown-bj-counter" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="mobile-dropdown-money-div" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
+
+                <a href="../index.html#about" id="mobile-nav-about" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">關於我們</a>
+            </div>
+        </div>
     </header>
 
     <!-- Main Content -->
-    <main>
-        <section class="text-center py-12 md:py-20 px-6" style="background-color: var(--color-bg-secondary);">
-            <div class="container mx-auto">
-                <h1 id="baccarat-page-title" class="text-4xl md:text-5xl font-black uppercase tracking-wider">百家樂專區</h1>
-                <p id="baccarat-page-subtitle" class="mt-4 text-lg max-w-2xl mx-auto" style="color: var(--color-text-secondary);">
-                    節奏明快，規則簡單。了解莊、閒、和背後的數學，做出最有利的投注決策。
-                </p>
-            </div>
-        </section>
+    <main class="container mx-auto px-6 py-12">
+        <section id="baccarat-hub">
+            <h1 class="text-4xl md:text-5xl font-black text-center mb-4">百家樂專區</h1>
+            <p class="text-center text-lg max-w-2xl mx-auto mb-12" style="color: var(--color-text-secondary);">學習百家樂的優雅與智慧，掌握這個經典賭場遊戲的精髓。</p>
 
-        <section id="baccarat-menu" class="py-20 px-6">
-            <div class="container mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                    <a href="baccarat-rules.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-secondary);">
-                        <h3 id="baccarat-rules-title" class="text-2xl font-bold">規則與玩法</h3>
-                        <p id="baccarat-rules-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
-                            從零開始，學習百家樂的派牌流程、補牌規則和不同下注選項。
-                        </p>
-                    </a>
-                    <a href="baccarat-basic-strategy.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-secondary);">
-                        <h3 id="baccarat-basic-title" class="text-2xl font-bold">基礎策略</h3>
-                        <p id="baccarat-basic-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
-                            分析莊、閒、和的真實賠率與賭場優勢，了解為何押莊是數學上的最佳選擇。
-                        </p>
-                    </a>
-                    <a href="baccarat-divination.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-secondary);">
-                        <h3 id="baccarat-divination-title" class="text-2xl font-bold">概率啟示工具</h3>
-                        <p id="baccarat-divination-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
-                            一個基於易經卦象的隨機模擬器，用來探索短期投注的概率波動性，僅供娛樂。
-                        </p>
-                    </a>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1: Rules -->
+                <a href="baccarat-rules.html" class="strategy-card block">
+                    <div class="p-6">
+                        <h3 id="baccarat-rules-title" class="text-2xl font-bold mb-2">遊戲規則</h3>
+                        <p id="baccarat-rules-desc" class="text-sm" style="color: var(--color-text-secondary);">了解百家樂的目標、點數計算、補牌規則及各種投注選項。</p>
+                    </div>
+                </a>
+                <!-- Card 2: Basic Strategy -->
+                <a href="baccarat-basic-strategy.html" class="strategy-card block">
+                    <div class="p-6">
+                        <h3 id="baccarat-strategy-title" class="text-2xl font-bold mb-2">基礎策略</h3>
+                        <p id="baccarat-strategy-desc" class="text-sm" style="color: var(--color-text-secondary);">分析不同投注的賭場優勢，學習最簡單有效的投注策略。</p>
+                    </div>
+                </a>
+                <!-- Card 3: Divination (Roadmap) -->
+                <a href="baccarat-divination.html" class="strategy-card block">
+                    <div class="p-6">
+                        <h3 id="baccarat-divination-title" class="text-2xl font-bold mb-2">百家樂占卜</h3>
+                        <p id="baccarat-divination-desc" class="text-sm" style="color: var(--color-text-secondary);">學習如何看懂「路單」，並利用這個工具來分析牌局趨勢。</p>
+                    </div>
+                </a>
             </div>
         </section>
     </main>
@@ -98,4 +133,3 @@
     <script src="../app.js"></script>
 </body>
 </html>
-
