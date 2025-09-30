@@ -72,24 +72,64 @@
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 flex-col">
     <!-- Header -->
-     <header class="sticky-nav border-b border-gray-700/50 w-full mb-auto">
+    <header class="sticky-nav border-b border-gray-700/50 w-full mb-auto">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="../index.html" class="flex items-center space-x-3">
                 <img src="../assets/images/logo.png" alt="Bust the Casino Logo" style="height: 74px;">
                 <span id="nav-brand-text" class="text-2xl font-black font-heading tracking-wider">BUST THE CASINO</span>
             </a>
+            
+            <!-- Desktop Menu -->
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
-                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                
+                <div class="relative">
+                    <button id="nav-tools-toggle" class="text-gray-300 hover:text-white transition duration-300 flex items-center">
+                        <span id="nav-tools">實戰工具</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="nav-tools-dropdown" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="../blackjack/blackjack-basic-strategy.html" id="dropdown-bj-strategy-chart" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="../blackjack/blackjack-strategy-trainer.html" id="dropdown-bj-trainer" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點策略練習</a>
+                        <a href="../blackjack/blackjack-counting-trainer.html" id="dropdown-bj-counter" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="dropdown-money-div" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
+
                 <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
                 <div id="language-selector" class="flex space-x-2">
                     <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
                     <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
                 </div>
             </div>
-            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
         </nav>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="../index.html#strategy" id="mobile-nav-strategy" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">策略中心</a>
+                
+                <div>
+                    <button id="mobile-nav-tools-toggle" class="w-full text-left text-gray-300 hover:bg-gray-700 hover:text-white flex justify-between items-center px-3 py-2 rounded-md text-base font-medium">
+                        <span id="mobile-nav-tools">實戰工具</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-nav-tools-dropdown" class="pl-4 mt-1 space-y-1 hidden">
+                        <a href="../blackjack/blackjack-basic-strategy.html" id="mobile-dropdown-bj-strategy-chart" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="../blackjack/blackjack-strategy-trainer.html" id="mobile-dropdown-bj-trainer" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點策略練習</a>
+                        <a href="../blackjack/blackjack-counting-trainer.html" id="mobile-dropdown-bj-counter" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="mobile-dropdown-money-div" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
+
+                <a href="../index.html#about" id="mobile-nav-about" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">關於我們</a>
+            </div>
+        </div>
     </header>
+    
     <div class="w-full max-w-md mx-auto text-center space-y-6 flex-grow flex flex-col justify-center">
         
         <header>
