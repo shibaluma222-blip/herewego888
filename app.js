@@ -1,96 +1,92 @@
-// --- Language Switching ---
-const languageSelector = document.getElementById('language-selector');
-
-const setLanguage = (lang) => {
-    localStorage.setItem('language', lang);
-    updateTextContent(lang);
-};
-
-const updateTextContent = (lang) => {
-    if (!window.languages || !window.languages[lang]) {
-        console.warn(`Language pack for '${lang}' not found.`);
-        return;
-    }
-    const langPack = window.languages[lang];
-    Object.keys(langPack).forEach(key => {
-        const element = document.getElementById(key);
-        if (element) {
-            // Handle specific cases like input placeholders or button text
-            if (element.tagName === 'INPUT' && element.placeholder) {
-                element.placeholder = langPack[key];
-            } else if (key === 'speed-setting-title' && document.getElementById('speed-slider')) {
-                // Special handler for counting trainer speed label
-                const speed = parseFloat(document.getElementById('speed-slider').value);
-                element.textContent = langPack[key].replace('{0}', speed.toFixed(1));
-            }
-            else {
-                element.innerHTML = langPack[key]; // Using innerHTML to support potential HTML tags in translations
-            }
-        }
-        // Also update mobile menu elements if they exist
-        const mobileElement = document.getElementById(`mobile-${key}`);
-        if (mobileElement) {
-            mobileElement.innerHTML = langPack[key];
-        }
-    });
-    // Update active button style
-    document.querySelectorAll('#language-selector button').forEach(btn => {
-        btn.classList.toggle('ring-2', btn.dataset.lang === lang);
-        btn.classList.toggle('ring-yellow-400', btn.dataset.lang === lang);
-    });
-};
-
-if (languageSelector) {
-    languageSelector.addEventListener('click', (e) => {
-        const button = e.target.closest('button');
-        if (button && button.dataset.lang) {
-            setLanguage(button.dataset.lang);
-        }
-    });
-}
-
-
-// Load language on initial page load
 document.addEventListener('DOMContentLoaded', () => {
-    const savedLang = localStorage.getItem('language') || 'zh';
-    setLanguage(savedLang);
 
-    // --- Desktop Dropdown Menu Logic ---
-    const toolsToggle = document.getElementById('nav-tools-toggle');
-    const toolsDropdown = document.getElementById('nav-tools-dropdown');
-
-    if (toolsToggle && toolsDropdown) {
-        toolsToggle.addEventListener('click', (event) => {
-            event.stopPropagation(); 
-            toolsDropdown.classList.toggle('hidden');
-        });
-
-        window.addEventListener('click', (event) => {
-            if (!toolsDropdown.classList.contains('hidden') && !toolsToggle.contains(event.target)) {
-                toolsDropdown.classList.add('hidden');
-            }
-        });
-    }
-
-    // --- Mobile Menu Logic ---
+    // --- Navigation ---
+    const navToolsToggle = document.getElementById('nav-tools-toggle');
+    const navToolsDropdown = document.getElementById('nav-tools-dropdown');
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
+    const mobileNavToolsToggle = document.getElementById('mobile-nav-tools-toggle');
+    const mobileNavToolsDropdown = document.getElementById('mobile-nav-tools-dropdown');
+
+    if (navToolsToggle) {
+        navToolsToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navToolsDropdown.classList.toggle('hidden');
+        });
+    }
     
-    if (mobileMenuButton && mobileMenu) {
+    if (mobileMenuButton) {
         mobileMenuButton.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
     }
 
-    const mobileToolsToggle = document.getElementById('mobile-nav-tools-toggle');
-    const mobileToolsDropdown = document.getElementById('mobile-nav-tools-dropdown');
-
-    if (mobileToolsToggle && mobileToolsDropdown) {
-        mobileToolsToggle.addEventListener('click', (event) => {
-            event.stopPropagation();
-            mobileToolsDropdown.classList.toggle('hidden');
+    if (mobileNavToolsToggle) {
+        mobileNavToolsToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mobileNavToolsDropdown.classList.toggle('hidden');
         });
     }
 
+    document.addEventListener('click', (e) => {
+        if (navToolsDropdown && !navToolsDropdown.classList.contains('hidden') && !navToolsToggle.contains(e.target)) {
+            navToolsDropdown.classList.add('hidden');
+        }
+    });
+
+    // --- Language Switcher ---
+    const languageSelectorDesktop = document.querySelector('.hidden.md\\:flex #language-selector');
+    const languageSelectorMobile = document.getElementById('mobile-menu'); // Assuming buttons are inside mobile menu, might need a more specific selector
+    let currentLang = localStorage.getItem('language') || 'zh';
+
+    const updateLanguageButtonStyles = () => {
+        const allButtons = document.querySelectorAll('[data-lang]');
+        allButtons.forEach(button => {
+            if (button.dataset.lang === currentLang) {
+                button.classList.remove('opacity-75');
+                button.classList.add('opacity-100', 'ring-2', 'ring-yellow-400');
+            } else {
+                button.classList.add('opacity-75');
+                button.classList.remove('opacity-100', 'ring-2', 'ring-yellow-400');
+            }
+        });
+    };
+    
+    const setLanguage = (lang) => {
+        if (!lang || !translations[lang]) return;
+
+        currentLang = lang;
+        localStorage.setItem('language', lang);
+        const translationData = translations[lang];
+
+        // Iterate over translation keys and update elements by ID
+        for (const key in translationData) {
+            const element = document.getElementById(key);
+            if (element) {
+                element.textContent = translationData[key];
+            }
+        }
+        
+        updateLanguageButtonStyles();
+    };
+
+    const handleLanguageChange = (e) => {
+        const langButton = e.target.closest('button[data-lang]');
+        if (langButton) {
+            const lang = langButton.dataset.lang;
+            setLanguage(lang);
+        }
+    };
+    
+    if(languageSelectorDesktop) {
+        languageSelectorDesktop.addEventListener('click', handleLanguageChange);
+    }
+    if(languageSelectorMobile) {
+        // This is a broader listener, but will work if buttons are added to mobile menu
+        // For a more robust solution, add a specific mobile language selector container
+    }
+
+    // Initial load
+    setLanguage(currentLang);
 });
 
