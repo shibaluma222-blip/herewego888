@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>三張撲克專區 - Bust the Casino</title>
+    <title>三張牌撲克專區 - Bust the Casino</title>
+    <meta name="description" content="三張牌撲克(Three Card Poker)策略中心，提供遊戲規則、Q-6-4基礎策略詳解，助您在快節奏的撲克遊戲中做出最佳決策。">
     <link rel="icon" type="image/png" href="../assets/images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,8 +22,12 @@
             --color-accent-gold: #F1C40F;
         }
         body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
-        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
+        h1, h2, h3 { font-family: var(--font-heading); letter-spacing: -0.025em; }
+        h1 { font-weight: 900; }
+        h2, h3 { font-weight: 700; }
         .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
+        .strategy-card { background-color: var(--color-bg-primary); border: 1px solid #4A5568; border-radius: 0.75rem; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .strategy-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
         #nav-brand-text { color: var(--color-accent-gold); }
     </style>
 </head>
@@ -36,41 +41,76 @@
             </a>
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
-                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                <div class="relative">
+                    <button id="nav-tools-toggle" class="text-gray-300 hover:text-white transition duration-300 flex items-center">
+                        <span id="nav-tools">實戰工具</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="nav-tools-dropdown" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="../blackjack/blackjack-basic-strategy.html" id="dropdown-bj-strategy-chart" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="../blackjack/blackjack-strategy-trainer.html" id="dropdown-bj-trainer" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點策略練習</a>
+                        <a href="../blackjack/blackjack-counting-trainer.html" id="dropdown-bj-counter" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="dropdown-money-div" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
                 <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
                 <div id="language-selector" class="flex space-x-2">
                     <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
                     <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
                 </div>
             </div>
-            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
         </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="../index.html#strategy" id="mobile-nav-strategy" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">策略中心</a>
+                <div>
+                    <button id="mobile-nav-tools-toggle" class="w-full text-left text-gray-300 hover:bg-gray-700 hover:text-white flex justify-between items-center px-3 py-2 rounded-md text-base font-medium">
+                        <span id="mobile-nav-tools">實戰工具</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-nav-tools-dropdown" class="pl-4 mt-1 space-y-1 hidden">
+                        <a href="../blackjack/blackjack-basic-strategy.html" id="mobile-dropdown-bj-strategy-chart" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="../blackjack/blackjack-strategy-trainer.html" id="mobile-dropdown-bj-trainer" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點策略練習</a>
+                        <a href="../blackjack/blackjack-counting-trainer.html" id="mobile-dropdown-bj-counter" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="mobile-dropdown-money-div" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
+                <a href="../index.html#about" id="mobile-nav-about" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">關於我們</a>
+            </div>
+        </div>
     </header>
 
     <!-- Main Content -->
     <main>
-        <section class="text-center py-12 md:py-20 px-6" style="background-color: var(--color-bg-secondary);">
-            <div class="container mx-auto">
-                <h1 id="tcp-page-title" class="text-4xl md:text-5xl font-black uppercase tracking-wider">三張撲克</h1>
-                <p id="tcp-page-subtitle" class="mt-4 text-lg max-w-2xl mx-auto" style="color: var(--color-text-secondary);">
-                    快速、簡單、刺激。學習基礎策略，知道何時加注、何時棄牌。
-                </p>
-            </div>
-        </section>
+        <!-- Hero Section -->
+        <div style="background-color: var(--color-bg-secondary);">
+            <section class="text-center py-20">
+                <div class="container mx-auto px-6">
+                    <h1 id="tcp-page-title" class="text-5xl md:text-6xl">三張牌撲克專區</h1>
+                    <p id="tcp-page-subtitle" class="mt-4 text-lg max-w-2xl mx-auto" style="color: var(--color-text-secondary);">
+                        節奏明快、簡單易學。只需一個簡單策略，即可輕鬆上手並享受遊戲。
+                    </p>
+                </div>
+            </section>
+        </div>
 
-        <section id="tcp-menu" class="py-20 px-6">
-            <div class="container mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-                    <a href="tcp-rules.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-secondary);">
-                        <h3 id="tcp-rules-title" class="text-2xl font-bold">規則與玩法</h3>
-                        <p id="tcp-rules-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
-                            學習遊戲流程、三張牌牌型大小，以及底注、加注和對子+等不同的投注選項。
+        <!-- Strategy Menu Section -->
+        <section class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    
+                    <a href="tcp-rules.html" class="strategy-card block p-8 text-center">
+                        <h3 id="tcp-rules-title" class="text-2xl mb-2">規則與玩法</h3>
+                        <p id="tcp-rules-desc" class="text-sm" style="color: var(--color-text-secondary);">
+                            了解底注(Ante)、加注(Play)和對子以上(Pair Plus)邊注的玩法與賠率。
                         </p>
                     </a>
-                    <a href="tcp-basic-strategy.html" class="block p-8 rounded-xl text-center transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl" style="background-color: var(--color-bg-secondary);">
-                        <h3 id="tcp-basic-title" class="text-2xl font-bold">基礎策略</h3>
-                        <p id="tcp-basic-desc" class="mt-3 text-sm font-body" style="color: var(--color-text-secondary);">
-                           策略非常簡單：只在牌力為 Q-6-4 或更好時才加注。學習如何將這條簡單規則應用到每一手牌。
+
+                    <a href="tcp-basic-strategy.html" class="strategy-card block p-8 text-center">
+                        <h3 id="tcp-strategy-title" class="text-2xl mb-2">基礎策略</h3>
+                        <p id="tcp-strategy-desc" class="text-sm" style="color: var(--color-text-secondary);">
+                            學習簡單而有效的 Q-6-4 策略，知道何時應該加注，何時應該棄牌。
                         </p>
                     </a>
                 </div>
@@ -85,8 +125,9 @@
             <p id="footer-disclaimer" class="mt-2">請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。</p>
         </div>
     </footer>
-
+    
     <script src="../languages.js"></script>
     <script src="../app.js"></script>
 </body>
 </html>
+
