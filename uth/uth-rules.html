@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UTH 規則與玩法 - Bust the Casino</title>
+    <title>UTH 規則 - Bust the Casino</title>
+    <meta name="description" content="詳細解釋 Ultimate Texas Hold'em (UTH) 的遊戲流程、盲注(Blind)與底注(Ante)、各階段的加注規則，以及 Trips 邊注的玩法。">
     <link rel="icon" type="image/png" href="../assets/images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,12 +22,11 @@
             --color-accent-gold: #F1C40F;
         }
         body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
-        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
+        h1, h2, h3 { font-family: var(--font-heading); letter-spacing: -0.025em; font-weight: 700;}
         .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
-        .content-card { background-color: var(--color-bg-secondary); }
-        .rules-table td, .rules-table th { padding: 0.75rem; text-align: left; border-bottom: 1px solid #4A5568; }
-        .rules-table th { font-weight: 600; color: var(--color-text-primary); }
-        .rules-table tbody tr:last-child td { border-bottom: none; }
+        .content-box { background-color: var(--color-bg-secondary); border-radius: 0.75rem; padding: 2rem; }
+        .content-box h2 { color: var(--color-accent-gold); font-weight: 900;}
+        .content-box li { margin-bottom: 0.5rem; }
         #nav-brand-text { color: var(--color-accent-gold); }
     </style>
 </head>
@@ -40,93 +40,99 @@
             </a>
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
-                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                <div class="relative">
+                    <button id="nav-tools-toggle" class="text-gray-300 hover:text-white transition duration-300 flex items-center">
+                        <span id="nav-tools">實戰工具</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="nav-tools-dropdown" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="../blackjack/blackjack-basic-strategy.html" id="dropdown-bj-strategy-chart" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="../blackjack/blackjack-strategy-trainer.html" id="dropdown-bj-trainer" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點策略練習</a>
+                        <a href="../blackjack/blackjack-counting-trainer.html" id="dropdown-bj-counter" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="dropdown-money-div" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
                 <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
                 <div id="language-selector" class="flex space-x-2">
                     <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
                     <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
                 </div>
             </div>
-            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
         </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="../index.html#strategy" id="mobile-nav-strategy" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">策略中心</a>
+                <div>
+                    <button id="mobile-nav-tools-toggle" class="w-full text-left text-gray-300 hover:bg-gray-700 hover:text-white flex justify-between items-center px-3 py-2 rounded-md text-base font-medium">
+                        <span id="mobile-nav-tools">實戰工具</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-nav-tools-dropdown" class="pl-4 mt-1 space-y-1 hidden">
+                        <a href="../blackjack/blackjack-basic-strategy.html" id="mobile-dropdown-bj-strategy-chart" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="../blackjack/blackjack-strategy-trainer.html" id="mobile-dropdown-bj-trainer" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點策略練習</a>
+                        <a href="../blackjack/blackjack-counting-trainer.html" id="mobile-dropdown-bj-counter" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="mobile-dropdown-money-div" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
+                <a href="../index.html#about" id="mobile-nav-about" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">關於我們</a>
+            </div>
+        </div>
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="max-w-4xl mx-auto">
-            <a href="uth.html" id="back-to-uth" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回UTH專區</a>
-            <h1 id="uthr-title" class="text-3xl md:text-4xl font-black text-center">UTH 規則與玩法</h1>
-            
-            <div class="mt-12 space-y-10">
-                <div class="p-8 rounded-lg content-card">
-                    <h2 id="uthr-obj-title" class="text-2xl font-bold">遊戲目標</h2>
-                    <p id="uthr-obj-desc" class="mt-2" style="color: var(--color-text-secondary);">
-                        Ultimate Texas Hold'em 嘅目標係用你手上嘅兩張底牌同五張公共牌，組合出最大嘅五張牌型，並擊敗莊家。與傳統德州撲克唔同，你係同莊家對決，而唔係其他玩家。
-                    </p>
-                </div>
+    <main class="container mx-auto px-6 py-12">
+        <a href="uth.html" id="back-to-uth" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回 UTH 專區</a>
+        <div class="content-box max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-black mb-8 text-center">UTH 遊戲規則</h1>
 
-                <div class="p-8 rounded-lg content-card">
-                    <h2 id="uthr-hands-title" class="text-2xl font-bold">撲克牌型大小</h2>
-                    <p id="uthr-hands-desc" class="mt-2 mb-6" style="color: var(--color-text-secondary);">
-                        牌型大小同傳統德州撲克完全一樣，由大到細排列如下：
-                    </p>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm rules-table">
-                            <thead>
-                                <tr><th id="uthr-table-rank">排名</th><th id="uthr-table-hand">牌型</th><th id="uthr-table-example">例子</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td id="uthr-rank-1">皇家同花順</td><td>A, K, Q, J, 10，全部同一花色</td><td>A♠ K♠ Q♠ J♠ 10♠</td></tr>
-                                <tr><td id="uthr-rank-2">同花順</td><td>五張連續數字且同一花色嘅牌</td><td>9♥ 8♥ 7♥ 6♥ 5♥</td></tr>
-                                <tr><td id="uthr-rank-3">四條 (鐵支)</td><td>四張相同數字嘅牌</td><td>7♠ 7♥ 7♦ 7♣ K♠</td></tr>
-                                <tr><td id="uthr-rank-4">葫蘆 (滿堂彩)</td><td>三張相同數字嘅牌，加一對</td><td>J♠ J♥ J♣ 8♦ 8♣</td></tr>
-                                <tr><td id="uthr-rank-5">同花 (花)</td><td>五張同一花色但唔連續嘅牌</td><td>A♦ K♦ 9♦ 6♦ 2♦</td></tr>
-                                <tr><td id="uthr-rank-6">順子</td><td>五張連續數字但唔同花色嘅牌</td><td>7♠ 6♥ 5♦ 4♣ 3♠</td></tr>
-                                <tr><td id="uthr-rank-7">三條</td><td>三張相同數字嘅牌</td><td>5♠ 5♥ 5♦ K♠ 2♣</td></tr>
-                                <tr><td id="uthr-rank-8">兩對</td><td>兩對唔同數字嘅牌</td><td>A♠ A♥ 8♦ 8♣ Q♠</td></tr>
-                                <tr><td id="uthr-rank-9">一對</td><td>一對相同數字嘅牌</td><td>K♠ K♥ 9♦ 6♣ 2♠</td></tr>
-                                <tr><td id="uthr-rank-10">高牌 (散牌)</td><td>以上牌型都冇，比較最大一張牌</td><td>A♠ Q♥ 9♦ 6♣ 2♠</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="space-y-8 text-lg leading-relaxed" style="color: var(--color-text-secondary);">
+                <section>
+                    <h2 class="text-3xl mb-4">遊戲目標</h2>
+                    <p>UTH 的目標與傳統德州撲克類似，是利用您的兩張底牌和五張公共牌，組成最強的五張牌組合，以打敗莊家。這是一個玩家與莊家對決的遊戲，與其他玩家無關。</p>
+                </section>
 
-                <div class="p-8 rounded-lg content-card">
-                    <h2 id="uthr-flow-title" class="text-2xl font-bold">遊戲流程與下注</h2>
-                    <div class="mt-4 space-y-6" style="color:var(--color-text-secondary)">
-                        <div>
-                            <h3 id="uthr-flow-1-title" class="text-lg font-semibold" style="color:var(--color-accent-gold)">1. 開始下注 (Ante & Blind)</h3>
-                            <p id="uthr-flow-1-desc" class="mt-1 text-sm">遊戲開始前，你必須下兩個等額嘅注碼：「盲注 (Blind)」同「底注 (Ante)」。例如，你喺盲注區下$10，就必須喺底注區下$10。你亦可以選擇性喺「旅程 (Trips)」獎賞區下注。</p>
-                        </div>
-                        <div>
-                            <h3 id="uthr-flow-2-title" class="text-lg font-semibold" style="color:var(--color-accent-gold)">2. 派牌 & 第一次下注 (Pre-Flop)</h3>
-                            <p id="uthr-flow-2-desc" class="mt-1 text-sm">你同莊家會各自收到兩張底牌（面朝下）。睇完你嘅底牌後，你有兩個選擇：<br>
-                                • <b>過牌 (Check):</b> 唔做任何事，等待睇公共牌。<br>
-                                • <b>加注 (Play Bet):</b> 喺「遊戲注 (Play)」區下一個等於你底注3倍或4倍嘅注碼。一旦加注，呢一局你就唔可以再加注。</p>
-                        </div>
-                        <div>
-                            <h3 id="uthr-flow-3-title" class="text-lg font-semibold" style="color:var(--color-accent-gold)">3. 翻牌 & 第二次下注 (The Flop)</h3>
-                            <p id="uthr-flow-3-desc" class="mt-1 text-sm">莊家會發出三張公共牌（面朝上）。如果你喺上一步選擇咗過牌，而家你有兩個新選擇：<br>
-                                • <b>過牌 (Check):</b> 再次過牌，等待睇之後嘅公共牌。<br>
-                                • <b>加注 (Play Bet):</b> 喺「遊戲注」區下一個等於你底注2倍嘅注碼。</p>
-                        </div>
-                         <div>
-                            <h3 id="uthr-flow-4-title" class="text-lg font-semibold" style="color:var(--color-accent-gold)">4. 轉牌與河牌 & 最後下注 (Turn & River)</h3>
-                            <p id="uthr-flow-4-desc" class="mt-1 text-sm">莊家會發出最後兩張公共牌。如果你之前兩次都選擇過牌，而家你只剩下兩個選擇：<br>
-                                • <b>棄牌 (Fold):</b> 你放棄呢一局，輸掉你嘅盲注同底注。<br>
-                                • <b>加注 (Play Bet):</b> 喺「遊戲注」區下一個等於你底注1倍嘅注碼。</p>
-                        </div>
-                        <div>
-                            <h3 id="uthr-flow-5-title" class="text-lg font-semibold" style="color:var(--color-accent-gold)">5. 開牌比大小 (Showdown) & 派彩</h3>
-                            <p id="uthr-flow-5-desc" class="mt-1 text-sm">雙方開牌，用各自嘅兩張底牌同五張公共牌組成最大嘅五張牌型比大小。<br>
-                                • <b>莊家「夠格」(Qualify):</b> 莊家至少要有一對或以上嘅牌型先算「夠格」。<br>
-                                • <b>盲注派彩:</b> 只有喺你贏咗，並且你嘅牌型係順子或以上時先會派彩（賠率視乎牌型大小）。如果牌型細過順子，盲注會退還 (Push)。<br>
-                                • <b>底注派彩:</b> 只有喺你贏咗，並且莊家夠格嘅情況下先會派彩 (1賠1)。如果莊家唔夠格，底注會退還。<br>
-                                • <b>遊戲注派彩:</b> 只要你贏咗就會派彩 (1賠1)。<br>
-                                • <b>旅程注派彩:</b> 只要你嘅最終牌型係三條或以上，不論輸贏都會根據賠率表派彩。</p>
-                        </div>
-                    </div>
-                </div>
+                <section>
+                    <h2 class="text-3xl mb-4">遊戲流程</h2>
+                    <ol class="list-decimal list-inside space-y-2">
+                        <li><strong>下注:</strong> 遊戲開始前，玩家必須下兩個等額的注碼：「盲注」(Blind) 和「底注」(Ante)。玩家也可以選擇下「三條」(Trips) 邊注。</li>
+                        <li><strong>發牌:</strong> 玩家和莊家各發兩張牌面朝下的底牌。</li>
+                        <li><strong>翻牌前決策 (Pre-Flop):</strong> 玩家看自己的底牌，有兩個選擇：
+                             <ul class="list-disc list-inside ml-6 mt-2">
+                                <li><strong>過牌 (Check):</strong> 不下注，等待公共牌發出。</li>
+                                <li><strong>加注 (Raise):</strong> 下一個「遊戲注」(Play)，金額可以是底注的 <strong>3倍或4倍</strong>。一旦加注，之後就不能再下注。</li>
+                            </ul>
+                        </li>
+                        <li><strong>翻牌 (Flop):</strong> 莊家發出三張公共牌。
+                             <ul class="list-disc list-inside ml-6 mt-2">
+                                <li>如果您在翻牌前已經加注，則此輪不做任何動作。</li>
+                                <li>如果您在翻牌前選擇了過牌，現在您有兩個新選擇：過牌，或加注<strong>2倍</strong>底注。</li>
+                            </ul>
+                        </li>
+                        <li><strong>轉牌與河牌 (Turn & River):</strong> 莊家一次性發出最後兩張公共牌。
+                             <ul class="list-disc list-inside ml-6 mt-2">
+                                <li>如果您在之前已經加注，則此輪不做任何動作。</li>
+                                <li>如果您到此輪仍然是過牌狀態，現在您必須做出最後決定：棄牌 (Fold)，輸掉盲注和底注；或加注<strong>1倍</strong>底注。</li>
+                            </ul>
+                        </li>
+                         <li><strong>結算:</strong> 玩家和莊家攤牌，用各自的底牌和五張公共牌組成最佳牌型。
+                            <ul class="list-disc list-inside ml-6 mt-2">
+                                <li><strong>莊家夠格:</strong> 莊家需要至少有一對 (Pair) 才算夠格。</li>
+                                <li>如果莊家不夠格，您的底注會被退回 (Push)，其他注碼（盲注和遊戲注）則根據輸贏結算。</li>
+                                <li>如果莊家夠格，則直接比較牌型大小，牌大者贏得所有注碼（盲注、底注、遊戲注）。如果平手，則所有注碼退回。</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </section>
+                
+                <section>
+                    <h2 class="text-3xl mb-4">注碼賠率</h2>
+                     <ul class="list-disc list-inside">
+                        <li><strong>底注 (Ante) 和 遊戲注 (Play):</strong> 如果您贏了，這兩個注碼都是 1 賠 1。</li>
+                        <li><strong>盲注 (Blind):</strong> 只有在您以順子或更好的牌型獲勝時，盲注才會得到賠付。賠率根據牌型大小而定（例如同花順 500:1，四條 10:1 等），如果只是以三條或以下牌型獲勝，盲注會被退回。</li>
+                        <li><strong>三條 (Trips):</strong> 這是一個邊注，只看您自己的最終五張牌組合，與莊家無關。只要您拿到三條或更好的牌型，就能獲得賠付，即使您最終輸給了莊家。</li>
+                     </ul>
+                </section>
             </div>
         </div>
     </main>
@@ -138,9 +144,8 @@
             <p id="footer-disclaimer" class="mt-2">請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。</p>
         </div>
     </footer>
-
+    
     <script src="../languages.js"></script>
     <script src="../app.js"></script>
 </body>
 </html>
-
