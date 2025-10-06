@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>三張撲克規則 - Bust the Casino</title>
+    <title>三張牌撲克規則 - Bust the Casino</title>
+    <meta name="description" content="詳細解釋三張牌撲克(Three Card Poker)的遊戲流程、牌型大小比較，以及底注(Ante)、加注(Play)和對子以上(Pair Plus)邊注的完整規則。">
     <link rel="icon" type="image/png" href="../assets/images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,12 +22,11 @@
             --color-accent-gold: #F1C40F;
         }
         body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
-        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
+        h1, h2, h3 { font-family: var(--font-heading); letter-spacing: -0.025em; font-weight: 700;}
         .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
-        .content-card { background-color: var(--color-bg-secondary); }
-        .rules-table td, .rules-table th { padding: 0.75rem; text-align: left; border-bottom: 1px solid #4A5568; }
-        .rules-table th { font-weight: 600; color: var(--color-text-primary); }
-        .rules-table tbody tr:last-child td { border-bottom: none; }
+        .content-box { background-color: var(--color-bg-secondary); border-radius: 0.75rem; padding: 2rem; }
+        .content-box h2 { color: var(--color-accent-gold); font-weight: 900;}
+        .content-box li { margin-bottom: 0.5rem; }
         #nav-brand-text { color: var(--color-accent-gold); }
     </style>
 </head>
@@ -40,85 +40,104 @@
             </a>
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
-                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                <div class="relative">
+                    <button id="nav-tools-toggle" class="text-gray-300 hover:text-white transition duration-300 flex items-center">
+                        <span id="nav-tools">實戰工具</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="nav-tools-dropdown" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="../blackjack/blackjack-basic-strategy.html" id="dropdown-bj-strategy-chart" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="../blackjack/blackjack-strategy-trainer.html" id="dropdown-bj-trainer" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點策略練習</a>
+                        <a href="../blackjack/blackjack-counting-trainer.html" id="dropdown-bj-counter" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="dropdown-money-div" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
                 <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
                 <div id="language-selector" class="flex space-x-2">
                     <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
                     <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
                 </div>
             </div>
-            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
         </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="../index.html#strategy" id="mobile-nav-strategy" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">策略中心</a>
+                <div>
+                    <button id="mobile-nav-tools-toggle" class="w-full text-left text-gray-300 hover:bg-gray-700 hover:text-white flex justify-between items-center px-3 py-2 rounded-md text-base font-medium">
+                        <span id="mobile-nav-tools">實戰工具</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-nav-tools-dropdown" class="pl-4 mt-1 space-y-1 hidden">
+                        <a href="../blackjack/blackjack-basic-strategy.html" id="mobile-dropdown-bj-strategy-chart" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="../blackjack/blackjack-strategy-trainer.html" id="mobile-dropdown-bj-trainer" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點策略練習</a>
+                        <a href="../blackjack/blackjack-counting-trainer.html" id="mobile-dropdown-bj-counter" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="mobile-dropdown-money-div" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
+                <a href="../index.html#about" id="mobile-nav-about" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">關於我們</a>
+            </div>
+        </div>
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="max-w-4xl mx-auto">
-            <a href="three-card-poker.html" id="back-to-tcp" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回三張撲克專區</a>
-            <h1 class="text-3xl md:text-4xl font-black text-center">三張撲克規則與玩法</h1>
-            
-            <div class="mt-12 space-y-10">
-                 <!-- Hand Rankings -->
-                <div class="p-8 rounded-lg content-card">
-                    <h2 class="text-2xl font-bold">牌型大小 (Hand Rankings)</h2>
-                    <p class="mt-2 mb-6" style="color: var(--color-text-secondary);">
-                       三張撲克的牌型大小與傳統德州撲克略有不同，因為只有三張牌，順子比同花更難組成。牌型由大到細排列如下：
-                    </p>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm rules-table">
-                            <thead>
-                                <tr><th>排名</th><th>牌型</th><th>例子</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>1</td><td>同花順 (Straight Flush)</td><td>Q♠ J♠ 10♠</td></tr>
-                                <tr><td>2</td><td>三條 (Three of a Kind)</td><td>K♠ K♥ K♦</td></tr>
-                                <tr><td>3</td><td>順子 (Straight)</td><td>7♠ 6♥ 5♦</td></tr>
-                                <tr><td>4</td><td>同花 (Flush)</td><td>A♦ 9♦ 2♦</td></tr>
-                                <tr><td>5</td><td>對子 (Pair)</td><td>J♠ J♥ 8♣</td></tr>
-                                <tr><td>6</td><td>高牌 (High Card)</td><td>A♠ Q♥ 9♦</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+    <main class="container mx-auto px-6 py-12">
+        <a href="three-card-poker.html" id="back-to-tcp" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回三張牌撲克專區</a>
+        <div class="content-box max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-black mb-8 text-center">三張牌撲克規則</h1>
 
-                <!-- Game Flow -->
-                <div class="p-8 rounded-lg content-card">
-                    <h2 class="text-2xl font-bold">遊戲流程與派彩</h2>
-                    <div class="mt-4 space-y-6" style="color:var(--color-text-secondary)">
-                        <div>
-                            <h3 class="text-lg font-semibold" style="color:var(--color-accent-gold)">1. 開始下注 (Ante & Pair Plus)</h3>
-                            <p class="mt-1 text-sm">遊戲開始前，你必須在「底注 (Ante)」區下注。你也可以選擇性地在「對子+ (Pair Plus)」區下注，「對子+」是獨立的邊注，只賭你自己的手牌。</p>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold" style="color:var(--color-accent-gold)">2. 派牌及決策 (Deal & Decision)</h3>
-                            <p class="mt-1 text-sm">你和莊家會各自收到三張牌（莊家牌面朝下）。看完你自己的牌後，你必須做出決定：<br>
-                                • <b>加注 (Play):</b> 如果你覺得你的牌不錯，可以選擇「加注」。你需要再下一个與底注等額的注碼。 <br>
-                                • <b>棄牌 (Fold):</b> 如果你覺得你的牌太差，可以選擇「棄牌」，你會輸掉你的底注。如果你下了「對子+」，這個注也會一併輸掉。</p>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold" style="color:var(--color-accent-gold)">3. 開牌比大小 (Showdown)</h3>
-                            <p class="mt-1 text-sm">你決定加注後，莊家會開牌。雙方比較牌型大小，定出勝負。這裡有一個關鍵規則：<br>
-                            <b>莊家「夠格」(Qualify):</b> 莊家的手牌必須至少是 <b>Q高牌 (Queen-High)</b> 或更好，才算「夠格」。</p>
-                        </div>
-                         <div>
-                            <h3 class="text-lg font-semibold" style="color:var(--color-accent-gold)">4. 派彩結算 (Payouts)</h3>
-                            <ul class="list-disc list-inside text-sm mt-2 space-y-2">
-                                <li><b>若莊家唔夠格：</b>你的「底注」贏1賠1，「加注」會被退還 (Push)。</li>
-                                <li><b>若莊家夠格，而你的牌較大：</b>你的「底注」和「加注」都贏1賠1。</li>
-                                <li><b>若莊家夠格，而莊家的牌較大：</b>你的「底注」和「加注」都會輸掉。</li>
-                                <li><b>若莊家夠格，而雙方平手：</b>「底注」和「加注」都會被退還。</li>
+            <div class="space-y-8 text-lg leading-relaxed" style="color: var(--color-text-secondary);">
+                <section>
+                    <h2 class="text-3xl mb-4">遊戲目標</h2>
+                    <p>三張牌撲克的目標是用您手中的三張牌，組成比莊家大的牌型。無論桌上有多少其他玩家，您都只與莊家對決。</p>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl mb-4">牌型大小</h2>
+                    <p>三張牌撲克的牌型大小順序與傳統撲克略有不同，因為只有三張牌，同花比順子更難拿到。從大到小依次為：</p>
+                    <ul class="list-disc list-inside">
+                        <li><strong>同花順 (Straight Flush):</strong> 三張花色相同且點數連續的牌。</li>
+                        <li><strong>三條 (Three of a Kind):</strong> 三張點數相同的牌。</li>
+                        <li><strong>順子 (Straight):</strong> 三張點數連續但花色不同的牌。</li>
+                        <li><strong>同花 (Flush):</strong> 三張花色相同但點數不連續的牌。</li>
+                        <li><strong>對子 (Pair):</strong> 兩張點數相同的牌。</li>
+                        <li><strong>高牌 (High Card):</strong> 不符合以上任何牌型的牌，以最大的一張牌決定大小。</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl mb-4">遊戲流程與投注</h2>
+                    <p>遊戲主要有兩種投注方式：底注 (Ante) 和 對子以上 (Pair Plus)。您可以只下一種，也可以兩種都下。</p>
+                    <ol class="list-decimal list-inside space-y-2">
+                        <li><strong>下底注 (Ante):</strong> 遊戲開始前，您必須先下底注。如果您想玩對子以上，也在此時下注。</li>
+                        <li><strong>發牌:</strong> 您和莊家各會收到三張牌，牌面朝下。</li>
+                        <li><strong>看牌與決策:</strong> 看完您的牌後，您有兩個選擇：
+                            <ul class="list-disc list-inside ml-6 mt-2">
+                                <li><strong>加注 (Play):</strong> 如果您覺得您的牌不錯，可以下一個與底注等額的「加注」。</li>
+                                <li><strong>棄牌 (Fold):</strong> 如果您覺得牌不好，可以棄牌，您會輸掉底注。</li>
                             </ul>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold" style="color:var(--color-accent-gold)">底注獎金 (Ante Bonus) & 對子+ (Pair Plus)</h3>
-                             <p class="mt-1 text-sm">這兩個是獨立的獎金，就算你最後輸給莊家，只要你自己的牌夠靚，一樣有錢收！</p>
-                            <ul class="list-disc list-inside text-sm mt-2 space-y-2">
-                                <li><b>底注獎金：</b>如果你拿到順子、三條或同花順，你的「底注」會獲得額外獎金（通常1至5倍）， независимо от того, выиграли вы или проиграли дилеру.</li>
-                                <li><b>對子+：</b>如果你在「對子+」區下了注，只要你的手牌是對子或更好，就會根據賠率表獲得派彩，賠率通常由1賠1（對子）到40賠1（同花順）不等。</li>
+                        </li>
+                        <li><strong>攤牌比大小:</strong> 做出決定後，莊家會亮出他的牌。
+                            <ul class="list-disc list-inside ml-6 mt-2">
+                                <li><strong>莊家夠格 (Qualify):</strong> 莊家必須持有 Q-High 或更好的牌才算「夠格」。</li>
+                                <li>如果莊家不夠格，您的底注贏得1賠1，加注則會退回 (Push)。</li>
+                                <li>如果莊家夠格，則比較您和莊家的牌型，牌大者贏。如果您贏了，底注和加注都會獲得1賠1的賠付。</li>
                             </ul>
-                        </div>
-                    </div>
-                </div>
+                        </li>
+                    </ol>
+                </section>
+                
+                <section>
+                    <h2 class="text-3xl mb-4">邊注：對子以上 (Pair Plus)</h2>
+                     <p>這是一個獨立的邊注，輸贏與莊家的牌無關，只看您自己的三張牌是否能組成對子或更好的牌型。即使您棄牌，只要下了此注，仍然可以贏錢。常見的賠率如下（各賭場可能不同）：</p>
+                     <ul class="list-disc list-inside">
+                         <li><strong>同花順:</strong> 40 賠 1</li>
+                         <li><strong>三條:</strong> 30 賠 1</li>
+                         <li><strong>順子:</strong> 6 賠 1</li>
+                         <li><strong>同花:</strong> 3 賠 1</li>
+                         <li><strong>對子:</strong> 1 賠 1</li>
+                     </ul>
+                </section>
             </div>
         </div>
     </main>
@@ -130,7 +149,7 @@
             <p id="footer-disclaimer" class="mt-2">請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。</p>
         </div>
     </footer>
-
+    
     <script src="../languages.js"></script>
     <script src="../app.js"></script>
 </body>
