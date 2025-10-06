@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UTH 基礎策略 - Bust the Casino</title>
+    <meta name="description" content="學習 Ultimate Texas Hold'em (UTH) 的最佳基礎策略，包括何時應該在翻牌前加注4倍，以及在翻牌後和河牌圈的正確決策。">
     <link rel="icon" type="image/png" href="../assets/images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,16 +20,13 @@
             --color-text-secondary: #a0aec0;
             --color-accent-blue: #4A90E2;
             --color-accent-gold: #F1C40F;
-            --color-accent-green: #2ECC71;
         }
         body { background-color: var(--color-bg-primary); color: var(--color-text-primary); font-family: var(--font-body); }
-        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
+        h1, h2, h3 { font-family: var(--font-heading); letter-spacing: -0.025em; font-weight: 700;}
         .sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); background-color: rgba(26, 29, 36, 0.8); }
-        .content-card { background-color: var(--color-bg-secondary); }
-        .strategy-grid { display: grid; grid-template-columns: repeat(13, minmax(0, 1fr)); gap: 0.25rem; }
-        .strategy-cell { aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; border-radius: 0.25rem; }
-        .raise-4x { background-color: var(--color-accent-green); color: var(--color-bg-primary); }
-        .check { background-color: #4A5568; }
+        .content-box { background-color: var(--color-bg-secondary); border-radius: 0.75rem; padding: 2rem; }
+        .content-box h2 { color: var(--color-accent-gold); font-weight: 900;}
+        .content-box li { margin-bottom: 0.5rem; }
         #nav-brand-text { color: var(--color-accent-gold); }
     </style>
 </head>
@@ -42,99 +40,94 @@
             </a>
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="../index.html#strategy" id="nav-strategy" class="text-gray-300 hover:text-white transition duration-300">策略中心</a>
-                <a href="#" id="nav-tools" class="text-gray-300 hover:text-white transition duration-300">實戰工具</a>
+                <div class="relative">
+                    <button id="nav-tools-toggle" class="text-gray-300 hover:text-white transition duration-300 flex items-center">
+                        <span id="nav-tools">實戰工具</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="nav-tools-dropdown" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="../blackjack/blackjack-basic-strategy.html" id="dropdown-bj-strategy-chart" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="../blackjack/blackjack-strategy-trainer.html" id="dropdown-bj-trainer" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點策略練習</a>
+                        <a href="../blackjack/blackjack-counting-trainer.html" id="dropdown-bj-counter" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="dropdown-money-div" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
                 <a href="../index.html#about" id="nav-about" class="text-gray-300 hover:text-white transition duration-300">關於我們</a>
                 <div id="language-selector" class="flex space-x-2">
                     <button data-lang="zh" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/e6273e/ffffff?text=ZH" alt="Chinese" class="w-6 rounded-sm"></button>
                     <button data-lang="en" class="p-1 opacity-75 hover:opacity-100 transition"><img src="https://placehold.co/30x20/0052b4/ffffff?text=EN" alt="English" class="w-6 rounded-sm"></button>
                 </div>
             </div>
-            <button class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
         </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="../index.html#strategy" id="mobile-nav-strategy" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">策略中心</a>
+                <div>
+                    <button id="mobile-nav-tools-toggle" class="w-full text-left text-gray-300 hover:bg-gray-700 hover:text-white flex justify-between items-center px-3 py-2 rounded-md text-base font-medium">
+                        <span id="mobile-nav-tools">實戰工具</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-nav-tools-dropdown" class="pl-4 mt-1 space-y-1 hidden">
+                        <a href="../blackjack/blackjack-basic-strategy.html" id="mobile-dropdown-bj-strategy-chart" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點基礎策略表</a>
+                        <a href="../blackjack/blackjack-strategy-trainer.html" id="mobile-dropdown-bj-trainer" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點策略練習</a>
+                        <a href="../blackjack/blackjack-counting-trainer.html" id="mobile-dropdown-bj-counter" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">21點算牌練習</a>
+                        <a href="../金錢卦.html" id="mobile-dropdown-money-div" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700">周易金錢卦</a>
+                    </div>
+                </div>
+                <a href="../index.html#about" id="mobile-nav-about" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">關於我們</a>
+            </div>
+        </div>
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="max-w-4xl mx-auto">
-            <a href="uth.html" id="back-to-uth" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回UTH專區</a>
-            <h1 id="uths-title" class="text-3xl md:text-4xl font-black text-center">UTH 基礎策略</h1>
-            <p id="uths-intro" class="mt-4 text-center max-w-3xl mx-auto" style="color: var(--color-text-secondary);">
-                UTH嘅核心策略就係決定「何時」以及「下注多少」。目標係喺有好牌時最大化你嘅注碼 (3倍或4倍)，喺牌唔明朗時保留選擇權 (過牌)，並喺劣勢時盡早放棄 (棄牌)。
-            </p>
+    <main class="container mx-auto px-6 py-12">
+        <a href="uth.html" id="back-to-uth" class="text-sm mb-6 inline-block" style="color: var(--color-accent-blue);">&larr; 返回 UTH 專區</a>
+        <div class="content-box max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-black mb-8 text-center">UTH 基礎策略</h1>
 
-            <div class="mt-12 space-y-10">
-                <!-- Pre-Flop Strategy -->
-                <div class="p-8 rounded-lg content-card">
-                    <h2 id="uths-preflop-title" class="text-2xl font-bold">翻牌前策略 (Pre-Flop): 4倍加注或過牌</h2>
-                    <p id="uths-preflop-desc" class="mt-2" style="color: var(--color-text-secondary);">
-                        呢個係成局遊戲中最重要嘅決定，因為佢俾你機會落最大嘅注碼。一個簡單有效嘅策略係，只用你嘅強牌去加注4倍，其他所有牌都選擇過牌。過牌並唔代表你弱，只係代表你想睇埋頭三張公共牌再決定。
-                    </p>
-                    <div class="mt-6 p-4 rounded-md" style="background-color: var(--color-bg-primary);">
-                        <h3 id="uths-preflop-raise-title" class="text-lg font-semibold text-center mb-4">建議加注4倍 (Raise 4x) 的起手牌</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                            <div>
-                                <h4 id="uths-pairs-title" class="font-bold" style="color: var(--color-accent-gold);">對子 (Pairs)</h4>
-                                <p id="uths-pairs-desc" style="color: var(--color-text-secondary);">3-3 或以上</p>
-                            </div>
-                            <div>
-                                <h4 id="uths-suited-title" class="font-bold" style="color: var(--color-accent-gold);">同花 (Suited)</h4>
-                                <p id="uths-suited-desc" style="color: var(--color-text-secondary);">任何 A<br>K-5s 或以上<br>Q-8s 或以上<br>J-9s 或以上</p>
-                            </div>
-                            <div>
-                                <h4 id="uths-offsuit-title" class="font-bold" style="color: var(--color-accent-gold);">非同花 (Off-suit)</h4>
-                                <p id="uths-offsuit-desc" style="color: var(--color-text-secondary);">A-Jo 或以上<br>K-Qo</p>
-                            </div>
-                        </div>
-                        <p id="uths-preflop-check" class="mt-4 text-xs text-center" style="color: var(--color-text-secondary);">
-                            * 所有其他牌都應該選擇過牌 (Check)。
-                        </p>
-                    </div>
-                </div>
+            <div class="space-y-8 text-lg leading-relaxed" style="color: var(--color-text-secondary);">
+                <section>
+                    <p>UTH 的策略核心圍繞著何時該加注，以及該加注多少。最大的優勢來自於在翻牌前，用強牌下 <strong>4倍</strong> 的加注。以下是根據不同階段的決策指南。</p>
+                </section>
 
-                <!-- Flop Strategy -->
-                <div class="p-8 rounded-lg content-card">
-                    <h2 id="uths-flop-title" class="text-2xl font-bold">翻牌後策略 (The Flop): 2倍加注或過牌</h2>
-                    <p id="uths-flop-desc" class="mt-2" style="color: var(--color-text-secondary);">
-                        如果你喺翻牌前選擇過牌，睇完頭三張公共牌後，你需要決定係咪值得落一個2倍嘅注碼。
-                    </p>
-                     <div class="mt-4 p-4 rounded-md text-sm" style="background-color: var(--color-bg-primary);">
-                        <h3 id="uths-flop-raise-title" class="text-lg font-semibold mb-2">建議加注2倍 (Raise 2x) 的情況：</h3>
-                        <ul class="list-disc list-inside space-y-1">
-                            <li id="uths-flop-cond1">你組成咗「兩對」或更好嘅牌型。</li>
-                            <li id="uths-flop-cond2">你手上嘅其中一張底牌同公共牌組成咗一對 (稱為隱藏對子, Hidden Pair)，並且呢對牌係頂對 (Top Pair) 或更好。 (例如：你手持 A-8，公共牌係 8-5-K)</li>
-                            <li id="uths-flop-cond3">你差一張就組成同花 (即有四張同花牌)，並且你嘅其中一張底牌係 10 或以上。</li>
-                        </ul>
-                         <p id="uths-flop-check" class="mt-4 text-xs">
-                           * 其他情況都應該選擇過牌 (Check)。
-                        </p>
-                    </div>
-                </div>
+                <section>
+                    <h2 class="text-3xl mb-4">翻牌前策略 (加注 3倍 或 4倍)</h2>
+                    <p>在看到您的兩張底牌後，您的目標是盡可能用強牌加注4倍。雖然3倍也是一個選項，但為了最大化您的潛在盈利，最佳策略是只在「加注4倍」和「過牌」之間做選擇。</p>
+                    <p class="font-bold my-4 text-gray-200">您應該用以下手牌加注4倍：</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>任何 A</strong></li>
+                        <li><strong>任何對子:</strong> 22 至 KK</li>
+                        <li><strong>同花 K:</strong> K2s, K3s, K4s...</li>
+                        <li><strong>K5o 或更好:</strong> (o = offsuit, 不同花)</li>
+                        <li><strong>Q8o 或更好, Q6s 或更好</strong> (s = suited, 同花)</li>
+                        <li><strong>J10o 或更好, J8s 或更好</strong></li>
+                    </ul>
+                     <p class="mt-4">如果您不符合以上任何條件，您應該「過牌」(Check)。</p>
+                </section>
+                
+                <section>
+                    <h2 class="text-3xl mb-4">翻牌後策略 (加注 2倍)</h2>
+                    <p>如果您在翻牌前選擇過牌，現在是您第二次加注的機會。在看到三張公共牌後：</p>
+                    <p class="font-bold my-4 text-gray-200">您應該用以下手牌加注2倍：</p>
+                     <ul class="list-disc list-inside space-y-2">
+                        <li><strong>任何頂對或更好牌力:</strong> 例如您有 A5，公共牌是 A-K-2。</li>
+                        <li><strong>有聽同花機會:</strong> 您需要公共牌中的兩張同花牌，並且您自己的一張底牌是 10 或更高。</li>
+                        <li><strong>隱藏的對子:</strong> 您的一張底牌與公共牌中的一張組成對子，並且這個對子比公共牌中最小的兩張牌都大。（例如您有 66，公共牌是 K-8-2）。</li>
+                    </ul>
+                     <p class="mt-4">如果不符合，則再次「過牌」。</p>
+                </section>
 
-                <!-- River Strategy -->
-                <div class="p-8 rounded-lg content-card">
-                    <h2 id="uths-river-title" class="text-2xl font-bold">轉牌/河牌後策略 (Turn/River): 1倍加注或棄牌</h2>
-                    <p id="uths-river-desc" class="mt-2" style="color: var(--color-text-secondary);">
-                        如果你過牌兩次，睇晒五張公共牌之後，呢個係你最後嘅決定。規則相對簡單：
-                    </p>
-                     <div class="mt-4 p-4 rounded-md text-sm" style="background-color: var(--color-bg-primary);">
-                        <h3 id="uths-river-raise-title" class="text-lg font-semibold mb-2">建議加注1倍 (Raise 1x) 的情況：</h3>
-                        <ul class="list-disc list-inside space-y-1">
-                            <li id="uths-river-cond1">你組成咗「隱藏對子」(Hidden Pair) 或更好嘅牌型。</li>
-                            <li id="uths-river-cond2">一個簡單嘅判斷標準：如果你嘅牌細過莊家嘅「隱藏對子」(即係話，如果莊家對中公共牌嘅最細一張牌，而你都贏唔到)，就應該棄牌。</li>
-                        </ul>
-                         <p id="uths-river-fold" class="mt-4 text-xs">
-                           * 其他所有牌都應該果斷棄牌 (Fold)，輸少當贏。
-                        </p>
-                    </div>
-                </div>
-
-                 <!-- Trips Bet -->
-                <div class="mt-4 text-center p-4 rounded-lg border border-yellow-500/50" style="background-color: rgba(241, 196, 15, 0.1);">
-                    <h3 id="uths-trips-title" class="font-bold text-lg text-yellow-400">關於「旅程 (Trips)」注</h3>
-                    <p id="uths-trips-desc" class="mt-2 text-sm" style="color: var(--color-text-secondary);">
-                        「旅程」注係一個獨立嘅邊注，佢只係賭你最終嘅五張牌能否組成三條或以上嘅牌型。呢個注嘅莊家優勢相對較高 (約3.5%)，類似買彩票。我哋嘅主要策略唔應該受到呢個邊注嘅影響。
-                    </p>
-                </div>
+                 <section>
+                    <h2 class="text-3xl mb-4">河牌圈策略 (加注 1倍 或 棄牌)</h2>
+                    <p>這是您最後的決策點。在五張公共牌全部發出後：</p>
+                     <p class="font-bold my-4 text-gray-200">您應該用以下手牌加注1倍：</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>任何隱藏的對子或更好牌力:</strong> 您的一張底牌與公共牌組成對子，並且這個組合比莊家可能持有的任何高牌都要大。</li>
+                        <li>一個簡單的判斷標準是：如果您的牌力能打敗莊家的一張 A 高牌，您就應該加注。</li>
+                    </ul>
+                    <p class="mt-4">如果您認為您的牌無法打敗莊家的高牌，您就應該「棄牌」(Fold)。</p>
+                </section>
             </div>
         </div>
     </main>
@@ -146,9 +139,8 @@
             <p id="footer-disclaimer" class="mt-2">請理智博弈，注意風險。本網站內容僅供學術探討和娛樂參考。</p>
         </div>
     </footer>
-
+    
     <script src="../languages.js"></script>
     <script src="../app.js"></script>
 </body>
 </html>
-
